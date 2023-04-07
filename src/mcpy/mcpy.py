@@ -13,13 +13,16 @@ class Datapack:
         self.file_category: str = None
         self.file_name: str = None
         self.opened_file: IO = None
+        self.write_handlers = []
+        self.write_handlers.append(Datapack.__mcfunction_handler)
+        self.write_handlers.append(Datapack.__json_file_handler)
 
     def get_namespace(self) -> str | None:
-        '''Get the current namespace directory'''
+        """Get the current namespace directory"""
         return self.namespace_stack[-1] if len(self.namespace_stack) > 0 else None
 
     def get_path(self) -> Path:
-        '''Get the current full path'''
+        """Get the current full path"""
         if not self.file_category:
             raise ValueError(
                 "File category not set! (e.g. pack/data/namespace/<category>/etc)"
@@ -39,36 +42,48 @@ class Datapack:
             return path_dir / self.file_name
         return path_dir
 
-    def __validate_and_transform(self, item: any) -> any:
-        if not self.opened_file or self.opened_file.closed:
-            raise ValueError("No opened files to write to")
-        if not self.file_name:
-            raise ValueError("Cannot write to empty or unspecified file name")
-        valid = False
+    def __json_file_handler(self, item: any) -> bool:
+        self.__validate_file()
+        if self.file_name.endswith(".json"):
+            if isinstance(item, dict):
+                item = json.dumps(item, indent=4)
+
+            # lastly, append a newline if its a string
+            if isinstance(item, str) and not item.endswith("\n"):
+                item += "\n"
+
+            self.opened_file.write(item)
+            return True
+        return False
+
+    def __mcfunction_handler(self, item: any) -> bool:
+        self.__validate_file()
         if self.file_name.endswith(".mcfunction"):
             if isinstance(item, list):
                 item = "\n".join(item)
                 valid = True
             # TODO fix multiline string indent issue
             item = textwrap.dedent(item)
-        elif self.file_name.endswith(".json"):
-            if isinstance(item, dict):
-                item = json.dumps(item, indent=4)
-                valid = True
 
-        # lastly, append a newline if its a string
-        if isinstance(item, str) and not item.endswith("\n"):
-            item += "\n"
-            valid = True
+            # add trailing newline if not present
+            if isinstance(item, str) and not item.endswith("\n"):
+                item += "\n"
 
-        if not valid:
-            raise ValueError(f"Unsupported write type: {type(item)} value: {item}")
-        return item
+            self.opened_file.write(item)
+            return True
+        return False
+
+    def __validate_file(self) -> None:
+        if not self.opened_file or self.opened_file.closed:
+            raise ValueError("No opened files to write to")
+        if not self.file_name:
+            raise ValueError("Cannot write to empty or unspecified file name")
 
     def write(self, item: any):
-        '''Write the given data to the current file'''
-        item = self.__validate_and_transform(item)
-        self.opened_file.write(item)
+        """Write the given data to the current file"""
+        for handler in self.write_handlers:
+            if handler(self, item):
+                break
 
     def build(self, items: Iterator | None) -> None:
         if items:
