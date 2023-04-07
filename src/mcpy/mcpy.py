@@ -15,9 +15,11 @@ class Datapack:
         self.opened_file: IO = None
 
     def get_namespace(self) -> str | None:
+        '''Get the current namespace directory'''
         return self.namespace_stack[-1] if len(self.namespace_stack) > 0 else None
 
     def get_path(self) -> Path:
+        '''Get the current full path'''
         if not self.file_category:
             raise ValueError(
                 "File category not set! (e.g. pack/data/namespace/<category>/etc)"
@@ -64,6 +66,7 @@ class Datapack:
         return item
 
     def write(self, item: any):
+        '''Write the given data to the current file'''
         item = self.__validate_and_transform(item)
         self.opened_file.write(item)
 

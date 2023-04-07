@@ -76,7 +76,6 @@ Which outputs:
 
 ## TODO
 
-1. Add json_file support
 1. Add file marker check so that non mcpy files are not overwritten
 1. Add tests
 1. Explore plugin system
