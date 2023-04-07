@@ -2,6 +2,7 @@ import contextlib
 import textwrap
 from typing import IO, Iterator
 from pathlib import Path
+import json
 
 
 class Datapack:
@@ -36,26 +37,40 @@ class Datapack:
             return path_dir / self.file_name
         return path_dir
 
-    def write_line(self, line: str | list[str]):
+    def __validate_and_transform(self, item: any) -> any:
         if not self.opened_file or self.opened_file.closed:
             raise ValueError("No opened files to write to")
-        if isinstance(line, list):
-            line = "\n".join(line)
-        if not line.endswith("\n"):
-            line += "\n"
-        # TODO fix multiline string indent issue
-        line = textwrap.dedent(line)
-        self.opened_file.write(line)
+        if not self.file_name:
+            raise ValueError("Cannot write to empty or unspecified file name")
+        valid = False
+        if self.file_name.endswith(".mcfunction"):
+            if isinstance(item, list):
+                item = "\n".join(item)
+                valid = True
+            # TODO fix multiline string indent issue
+            item = textwrap.dedent(item)
+        elif self.file_name.endswith(".json"):
+            if isinstance(item, dict):
+                item = json.dumps(item, indent=4)
+                valid = True
+
+        # lastly, append a newline if its a string
+        if isinstance(item, str) and not item.endswith("\n"):
+            item += "\n"
+            valid = True
+
+        if not valid:
+            raise ValueError(f"Unsupported write type: {type(item)} value: {item}")
+        return item
+
+    def write(self, item: any):
+        item = self.__validate_and_transform(item)
+        self.opened_file.write(item)
 
     def build(self, items: Iterator | None) -> None:
         if items:
             for item in items:
-                if isinstance(item, str) or isinstance(item, list):
-                    self.write_line(item)
-                else:
-                    raise ValueError(
-                        f"Unsupported yield type: {type(item)} value: {item}"
-                    )
+                self.write(item)
 
     @contextlib.contextmanager
     def dir(self, name: str):
@@ -85,8 +100,16 @@ class Datapack:
         self.file_category = old_category
 
     @contextlib.contextmanager
-    def mcfunction(self, name: str, *args):
+    def mcfunction(self, name: str, *args, **kwargs):
         if not name.endswith(".mcfunction"):
             name += ".mcfunction"
-        with self.file(name, category="functions", *args) as f:
+        with self.file(name, *args, category="functions", **kwargs) as f:
+            yield f
+
+    @contextlib.contextmanager
+    def json_file(self, name: str, *args, **kwargs):
+        if not name.endswith(".json"):
+            name += ".json"
+        # JSON files can be in multiple file categories so let caller pass it in
+        with self.file(name, *args, **kwargs) as f:
             yield f
