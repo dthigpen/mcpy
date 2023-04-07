@@ -1,82 +1,92 @@
 import contextlib
-import contextvars
-from dataclasses import dataclass, field
-import functools
+import textwrap
 from typing import IO, Iterator
 from pathlib import Path
-from collections.abc import Callable
 
-# TODO consider plain class with properties for this
-@dataclass
-class Context:
-    base_dir: Path = Path.cwd()
-    namespace_stack: list[str] = field(default_factory=list)
-    path_stack: list[str] = field(default_factory=list)
-    file_name: str = None
-    current_file: IO = None
-    file_category: str = None
 
-    def get_namespace(self) -> str:
-        return self.namespace_stack[-1]
-    
+class Datapack:
+    def __init__(self, base_dir=None):
+        self.base_dir = Path(base_dir) if base_dir else Path.cwd()
+        self.namespace_stack: list[str] = []
+        self.sub_dir_stack: list[Path] = []
+        self.file_category: str = None
+        self.file_name: str = None
+        self.opened_file: IO = None
+
+    def get_namespace(self) -> str | None:
+        return self.namespace_stack[-1] if len(self.namespace_stack) > 0 else None
+
     def get_path(self) -> Path:
-        if not self.get_namespace() or not self.file_category:
-            raise ValueError('Must set namespace and file category before using path!')
+        if not self.file_category:
+            raise ValueError(
+                "File category not set! (e.g. pack/data/namespace/<category>/etc)"
+            )
+        if not self.get_namespace():
+            raise ValueError(
+                "Namespace not set! (e.g. pack/data/<namespace>/functions/etc)"
+            )
 
-        dir_path = self.base_dir / 'data' / self.get_namespace() / self.file_category / Path('/'.join(self.path_stack))
-        return dir_path / self.file_name if self.file_name else dir_path
+        path_dir = (
+            self.base_dir
+            / "data"
+            / self.get_namespace()
+            / Path(self.file_category).joinpath(*self.sub_dir_stack)
+        )
+        if self.file_name:
+            return path_dir / self.file_name
+        return path_dir
 
+    def write_line(self, line: str | list[str]):
+        if not self.opened_file or self.opened_file.closed:
+            raise ValueError("No opened files to write to")
+        if isinstance(line, list):
+            line = "\n".join(line)
+        if not line.endswith("\n"):
+            line += "\n"
+        # TODO fix multiline string indent issue
+        line = textwrap.dedent(line)
+        self.opened_file.write(line)
 
-ctx = contextvars.ContextVar('ctx', default=Context())
+    def build(self, items: Iterator | None) -> None:
+        if items:
+            for item in items:
+                if isinstance(item, str) or isinstance(item, list):
+                    self.write_line(item)
+                else:
+                    raise ValueError(
+                        f"Unsupported yield type: {type(item)} value: {item}"
+                    )
 
-@contextlib.contextmanager
-def namespace(name):
-    ctx.get().namespace_stack.append(name)
-    # ctx.get().get_path().mkdir(parents=True, exist_ok=True)
-    yield
-    ctx.get().namespace_stack.pop()
+    @contextlib.contextmanager
+    def dir(self, name: str):
+        self.sub_dir_stack.append(Path(name))
+        yield
+        self.sub_dir_stack.pop()
 
-@contextlib.contextmanager
-def dir(name):
-    ctx.get().path_stack.append(name)
-    # ctx.get().get_path().mkdir(parents=True, exist_ok=True)
-    yield
-    ctx.get().path_stack.pop()
+    @contextlib.contextmanager
+    def namespace(self, name: str):
+        self.namespace_stack.append(name)
+        (self.base_dir / self.get_namespace()).mkdir(parents=True, exist_ok=True)
+        yield
+        self.namespace_stack.pop()
 
-@contextlib.contextmanager
-def mcfunction(name):
-    old_file_category: str = ctx.get().file_category
-    old_file_name = ctx.get().file_name
-    ctx.get().file_name = f'{name}.mcfunction'
-    ctx.get().file_category = 'functions'
-    full_path = ctx.get().get_path()
-    full_path.parent.mkdir(parents=True, exist_ok=True)
-    current_file = ctx.get().current_file
-    if current_file:
-        current_file.close()
-    ctx.get().current_file = open(full_path, 'w')
-    yield
-    ctx.get().current_file.close()
-    ctx.get().current_file = None
-    ctx.get().file_name = old_file_name
-    ctx.get().file_category = old_file_category
+    @contextlib.contextmanager
+    def file(self, name: str, category=None, mode="w", *args):
+        old_name = self.file_name
+        old_category = self.file_category
+        self.file_name = name
+        self.file_category = category
+        self.get_path().parent.mkdir(parents=True, exist_ok=True)
+        with open(self.get_path(), mode, *args) as f:
+            self.opened_file = f
+            yield f
+        self.opened_file = None
+        self.file_name = old_name
+        self.file_category = old_category
 
-
-def build_datapack(builder_fn: Callable[[],Iterator]):
-    cwd = Path.cwd()
-    base_dir = None
-    if cwd.joinpath('pack.mcmeta').is_file():
-        base_dir = cwd
-    elif cwd.parent.joinpath('pack.mcmeta').is_file():
-        base_dir = cwd.parent
-    else:
-        raise ValueError('Run inside datapack or datapack/src directory')
-    
-    print(f'Base dir: {base_dir}')
-    ctx.get().base_dir = base_dir
-    for item in builder_fn():
-        print(f'yielded: {item}')
-        if isinstance(item, str):
-            ctx.get().current_file.write(item + '\n')
-        else:
-            raise ValueError(f'Unsupported yield type: {type(item)}')
+    @contextlib.contextmanager
+    def mcfunction(self, name: str, *args):
+        if not name.endswith(".mcfunction"):
+            name += ".mcfunction"
+        with self.file(name, category="functions", *args) as f:
+            yield f
