@@ -1,2 +1,2 @@
-from .mcpy import *
+from .datapack import *
 from .plugin import *
