@@ -185,5 +185,5 @@ class CorePlugin(BasePlugin):
 
     @contextlib.contextmanager
     def items(self, name: str, *args, **kwargs):
-        with self.tag(name, category="items", *args, **kwargs) as f:
+        with self.tag(name, "items", *args, **kwargs) as f:
             yield f
