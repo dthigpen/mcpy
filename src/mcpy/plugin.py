@@ -8,6 +8,7 @@ from typing import IO, Callable
 from pathlib import Path
 from dataclasses import dataclass, field
 
+
 @dataclass
 class Context:
     base_dir: Path = Path.cwd()
@@ -88,8 +89,6 @@ class CorePlugin(BasePlugin):
         if self.ctx.file_name.endswith(".mcfunction"):
             if isinstance(item, list):
                 item = "\n".join(item)
-                valid = True
-            # TODO fix multiline string indent issue
             item = textwrap.dedent(item)
 
             # add trailing newline if not present
@@ -146,4 +145,24 @@ class CorePlugin(BasePlugin):
             name += ".json"
         # JSON files can be in multiple file categories so let caller pass it in
         with self.file(name, *args, **kwargs) as f:
+            yield f
+
+    @contextlib.contextmanager
+    def tag(self, name: str, category: str, *args, **kwargs):
+        with self.json_file(name, category=category, *args, **kwargs) as f:
+            yield f
+
+    @contextlib.contextmanager
+    def functions(self, name: str, *args, **kwargs):
+        with self.tag(name, category="functions", *args, **kwargs) as f:
+            yield f
+
+    @contextlib.contextmanager
+    def blocks(self, name: str, *args, **kwargs):
+        with self.tag(name, category="blocks", *args, **kwargs) as f:
+            yield f
+
+    @contextlib.contextmanager
+    def items(self, name: str, *args, **kwargs):
+        with self.tag(name, category="items", *args, **kwargs) as f:
             yield f

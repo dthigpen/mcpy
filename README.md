@@ -78,4 +78,3 @@ Which outputs:
 
 1. Add file marker check so that non mcpy files are not overwritten
 1. Add tests
-1. Explore plugin system
