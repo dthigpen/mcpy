@@ -14,7 +14,7 @@ DEFAULT_HEADER_MSG = "Built with mcpy (https://github.com/dthigpen/mcpy)"
 
 @dataclass
 class Context:
-    base_dir: Path = Path.cwd()
+    base_dir: Path
     namespace_stack: list[str] = field(default_factory=list)
     sub_dir_stack: list[Path] = field(default_factory=list)
     file_category: str = None
@@ -26,7 +26,7 @@ class Context:
 class BasePlugin(ABC):
     def __init__(self, base_dir=None):
         base_dir = Path.cwd() if base_dir is None else Path(base_dir)
-        self.ctx = Context(base_dir=base_dir)
+        self.ctx = Context(base_dir)
 
     def get_namespace(self) -> str | None:
         """Get the current namespace directory"""
@@ -61,7 +61,7 @@ class BasePlugin(ABC):
             if handler(self, item):
                 break
 
-    def handle_item(self, item: any):
+    def __handle_item(self, item: any):
         if not self.ctx.input_handler:
             raise ValueError("Unknown context. Cannot handle input")
         self.ctx.input_handler(item)
@@ -69,7 +69,7 @@ class BasePlugin(ABC):
     def build(self, items: Iterator | None) -> None:
         if items:
             for item in items:
-                self.handle_item(item)
+                self.__handle_item(item)
 
 
 class CorePlugin(BasePlugin):
@@ -127,7 +127,7 @@ class CorePlugin(BasePlugin):
     @contextlib.contextmanager
     def namespace(self, name: str):
         self.ctx.namespace_stack.append(name)
-        (self.ctx.base_dir / self.get_namespace()).mkdir(parents=True, exist_ok=True)
+        (self.ctx.base_dir / 'data' / self.get_namespace()).mkdir(parents=True, exist_ok=True)
         yield
         self.ctx.namespace_stack.pop()
 
