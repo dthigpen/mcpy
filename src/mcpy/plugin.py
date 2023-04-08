@@ -8,6 +8,8 @@ from typing import IO, Callable
 from pathlib import Path
 from dataclasses import dataclass, field
 
+DEFAULT_HEADER_MSG = "Built with mcpy (https://github.com/dthigpen/mcpy)"
+
 
 @dataclass
 class Context:
@@ -119,7 +121,7 @@ class CorePlugin(BasePlugin):
         self.ctx.namespace_stack.pop()
 
     @contextlib.contextmanager
-    def file(self, name: str, category=None, mode="w", *args):
+    def file(self, name: str, category=None, mode="w", header=False, *args):
         old_name = self.ctx.file_name
         old_category = self.ctx.file_category
         self.ctx.file_name = name
@@ -127,6 +129,8 @@ class CorePlugin(BasePlugin):
         self.get_path().parent.mkdir(parents=True, exist_ok=True)
         with open(self.get_path(), mode, *args) as f:
             self.ctx.opened_file = f
+            if header and mode == "w":
+                f.write(f"# {DEFAULT_HEADER_MSG}\n\n")
             yield f
         self.ctx.opened_file = None
         self.ctx.file_name = old_name
@@ -136,7 +140,7 @@ class CorePlugin(BasePlugin):
     def mcfunction(self, name: str, *args, **kwargs):
         if not name.endswith(".mcfunction"):
             name += ".mcfunction"
-        with self.file(name, *args, category="functions", **kwargs) as f:
+        with self.file(name, *args, category="functions", header=True, **kwargs) as f:
             yield f
 
     @contextlib.contextmanager
