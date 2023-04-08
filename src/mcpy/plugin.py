@@ -19,7 +19,7 @@ class Context:
     file_category: str = None
     file_name: str = None
     opened_file: IO = None
-    write_handlers: list[Callable] = field(default_factory=list)
+    input_handler: Callable = None
 
 
 class BasePlugin(ABC):
@@ -60,17 +60,20 @@ class BasePlugin(ABC):
             if handler(self, item):
                 break
 
+    def handle_item(self, item: any):
+        if not self.ctx.input_handler:
+            raise ValueError('Unknown context. Cannot handle input')
+        self.ctx.input_handler(item)
+
     def build(self, items: Iterator | None) -> None:
         if items:
             for item in items:
-                self.write(item)
+                self.handle_item(item)
 
 
 class CorePlugin(BasePlugin):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.ctx.write_handlers.append(CorePlugin.__mcfunction_handler)
-        self.ctx.write_handlers.append(CorePlugin.__json_file_handler)
 
     def __json_file_handler(self, item: any) -> bool:
         self.__validate_file()
@@ -148,7 +151,10 @@ class CorePlugin(BasePlugin):
         if not name.endswith(".mcfunction"):
             name += ".mcfunction"
         with self.file(name, *args, category="functions", header=True, **kwargs) as f:
+            old_handler = self.ctx.input_handler
+            self.ctx.input_handler = self.__mcfunction_handler
             yield f
+            self.ctx.input_handler = old_handler
 
     @contextlib.contextmanager
     def json_file(self, name: str, *args, **kwargs):
@@ -156,7 +162,10 @@ class CorePlugin(BasePlugin):
             name += ".json"
         # JSON files can be in multiple file categories so let caller pass it in
         with self.file(name, *args, **kwargs) as f:
+            old_handler = self.ctx.input_handler
+            self.ctx.input_handler = self.__json_file_handler
             yield f
+            self.ctx.input_handler = old_handler
 
     @contextlib.contextmanager
     def tag(self, name: str, tag_type: str, *args, **kwargs):
