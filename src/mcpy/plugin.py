@@ -107,8 +107,15 @@ class CorePlugin(BasePlugin):
         if not self.ctx.file_name:
             raise ValueError("Cannot write to empty or unspecified file name")
 
+    def __validate_not_in_file_context(self):
+        if self.ctx.file_name is not None or self.ctx.opened_file is not None:
+            raise ValueError(
+                "Illegal state, already in a file context. Try reordering your contexts"
+            )
+
     @contextlib.contextmanager
     def dir(self, name: str):
+        self.__validate_not_in_file_context()
         self.ctx.sub_dir_stack.append(Path(name))
         yield
         self.ctx.sub_dir_stack.pop()
@@ -152,18 +159,19 @@ class CorePlugin(BasePlugin):
             yield f
 
     @contextlib.contextmanager
-    def tag(self, name: str, category: str, *args, **kwargs):
-        with self.json_file(name, category=category, *args, **kwargs) as f:
-            yield f
+    def tag(self, name: str, tag_type: str, *args, **kwargs):
+        with self.dir(tag_type):
+            with self.json_file(name, category="tags", *args, **kwargs) as f:
+                yield f
 
     @contextlib.contextmanager
     def functions(self, name: str, *args, **kwargs):
-        with self.tag(name, category="functions", *args, **kwargs) as f:
+        with self.tag(name, "functions", *args, **kwargs) as f:
             yield f
 
     @contextlib.contextmanager
     def blocks(self, name: str, *args, **kwargs):
-        with self.tag(name, category="blocks", *args, **kwargs) as f:
+        with self.tag(name, "blocks", *args, **kwargs) as f:
             yield f
 
     @contextlib.contextmanager

@@ -1,5 +1,6 @@
 from .plugin import CorePlugin
 
+
 class __Memoize:
     def __init__(self, f):
         self.f = f
@@ -9,7 +10,7 @@ class __Memoize:
         return self.memo.setdefault(args, self.f(*args))
 
 
-def Datapack(*args, plugins=None, **kwargs):
+def Datapack(*args, base_dir=None, plugins=None, **kwargs):
     if plugins is None:
         plugins = []
 
@@ -20,4 +21,4 @@ def Datapack(*args, plugins=None, **kwargs):
 
         return Datapack
 
-    return mix_in_plugins(CorePlugin, *plugins)(*args, **kwargs)
+    return mix_in_plugins(CorePlugin, *plugins)(base_dir=base_dir, *args, **kwargs)
