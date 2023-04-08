@@ -7,6 +7,7 @@ from abc import ABC
 from typing import IO, Callable
 from pathlib import Path
 from dataclasses import dataclass, field
+from .util import scoped_setattr
 
 DEFAULT_HEADER_MSG = "Built with mcpy (https://github.com/dthigpen/mcpy)"
 
@@ -62,7 +63,7 @@ class BasePlugin(ABC):
 
     def handle_item(self, item: any):
         if not self.ctx.input_handler:
-            raise ValueError('Unknown context. Cannot handle input')
+            raise ValueError("Unknown context. Cannot handle input")
         self.ctx.input_handler(item)
 
     def build(self, items: Iterator | None) -> None:
@@ -131,34 +132,39 @@ class CorePlugin(BasePlugin):
         self.ctx.namespace_stack.pop()
 
     @contextlib.contextmanager
-    def file(self, name: str, category=None, mode="w", header=False, ctx_handler=None, *args):
-        old_name = self.ctx.file_name
-        old_category = self.ctx.file_category
-        self.ctx.file_name = name
-        self.ctx.file_category = category
-        old_handler = self.ctx.input_handler
-        if ctx_handler:
-            self.ctx.input_handler = ctx_handler
-        self.get_path().parent.mkdir(parents=True, exist_ok=True)
-        with open(self.get_path(), mode, *args) as f:
-            self.ctx.opened_file = f
-            if header and mode == "w":
-                f.write(f"# {DEFAULT_HEADER_MSG}\n\n")
-            if ctx_handler:
-                yield self.ctx.input_handler
-            else:
-                yield f
-        self.ctx.opened_file = None
-        self.ctx.file_name = old_name
-        self.ctx.file_category = old_category
-        if ctx_handler:
-            self.ctx.input_handler = old_handler
+    def file(
+        self, name: str, category=None, mode="w", header=False, ctx_handler=None, *args
+    ):
+        with scoped_setattr(
+            self.ctx,
+            file_name=name,
+            file_category=category,
+            opened_file=self.ctx.opened_file,
+            input_handler=ctx_handler if ctx_handler else self.ctx.input_handler,
+        ):
+            
+            self.get_path().parent.mkdir(parents=True, exist_ok=True)
+            with open(self.get_path(), mode, *args) as f:
+                self.ctx.opened_file = f
+                if header and mode == "w":
+                    f.write(f"# {DEFAULT_HEADER_MSG}\n\n")
+                if ctx_handler:
+                    yield self.ctx.input_handler
+                else:
+                    yield f
 
     @contextlib.contextmanager
     def mcfunction(self, name: str, *args, **kwargs):
         if not name.endswith(".mcfunction"):
             name += ".mcfunction"
-        with self.file(name, *args, category="functions", header=True,ctx_handler=self.__mcfunction_handler, **kwargs) as f:
+        with self.file(
+            name,
+            *args,
+            category="functions",
+            header=True,
+            ctx_handler=self.__mcfunction_handler,
+            **kwargs,
+        ) as f:
             yield f
 
     @contextlib.contextmanager
@@ -166,7 +172,9 @@ class CorePlugin(BasePlugin):
         if not name.endswith(".json"):
             name += ".json"
         # JSON files can be in multiple file categories so let caller pass it in
-        with self.file(name, *args, ctx_handler=self.__json_file_handler, **kwargs) as f:
+        with self.file(
+            name, *args, ctx_handler=self.__json_file_handler, **kwargs
+        ) as f:
             yield f
 
     @contextlib.contextmanager
