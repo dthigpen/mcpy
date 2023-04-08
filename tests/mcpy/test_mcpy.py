@@ -20,8 +20,12 @@ def test_file_creations(tmp_path):
     def builder():
         with pack.namespace("py.test"):
             # mcfunction
-            with pack.mcfunction("myfile") as f:
+            with pack.mcfunction("myfile"):
                 yield "say hello"
+            
+            # mcfunction
+            with pack.mcfunction("myfile2") as f:
+                f("say hello")
 
             # raw json file
             with pack.dir("functions"):
@@ -34,6 +38,13 @@ def test_file_creations(tmp_path):
     pack.build(builder())
     mcfunction_path = tmp_path.joinpath(
         "data", "py.test", "functions", "myfile.mcfunction"
+    )
+    assert mcfunction_path.is_file() is True
+    assert mcfunction_path.read_text() == expected_mcfunction_content
+
+    # check the non yielding version
+    mcfunction_path = tmp_path.joinpath(
+        "data", "py.test", "functions", "myfile2.mcfunction"
     )
     assert mcfunction_path.is_file() is True
     assert mcfunction_path.read_text() == expected_mcfunction_content

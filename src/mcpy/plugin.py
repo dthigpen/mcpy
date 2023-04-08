@@ -131,41 +131,43 @@ class CorePlugin(BasePlugin):
         self.ctx.namespace_stack.pop()
 
     @contextlib.contextmanager
-    def file(self, name: str, category=None, mode="w", header=False, *args):
+    def file(self, name: str, category=None, mode="w", header=False, ctx_handler=None, *args):
         old_name = self.ctx.file_name
         old_category = self.ctx.file_category
         self.ctx.file_name = name
         self.ctx.file_category = category
+        old_handler = self.ctx.input_handler
+        if ctx_handler:
+            self.ctx.input_handler = ctx_handler
         self.get_path().parent.mkdir(parents=True, exist_ok=True)
         with open(self.get_path(), mode, *args) as f:
             self.ctx.opened_file = f
             if header and mode == "w":
                 f.write(f"# {DEFAULT_HEADER_MSG}\n\n")
-            yield f
+            if ctx_handler:
+                yield self.ctx.input_handler
+            else:
+                yield f
         self.ctx.opened_file = None
         self.ctx.file_name = old_name
         self.ctx.file_category = old_category
+        if ctx_handler:
+            self.ctx.input_handler = old_handler
 
     @contextlib.contextmanager
     def mcfunction(self, name: str, *args, **kwargs):
         if not name.endswith(".mcfunction"):
             name += ".mcfunction"
-        with self.file(name, *args, category="functions", header=True, **kwargs) as f:
-            old_handler = self.ctx.input_handler
-            self.ctx.input_handler = self.__mcfunction_handler
+        with self.file(name, *args, category="functions", header=True,ctx_handler=self.__mcfunction_handler, **kwargs) as f:
             yield f
-            self.ctx.input_handler = old_handler
 
     @contextlib.contextmanager
     def json_file(self, name: str, *args, **kwargs):
         if not name.endswith(".json"):
             name += ".json"
         # JSON files can be in multiple file categories so let caller pass it in
-        with self.file(name, *args, **kwargs) as f:
-            old_handler = self.ctx.input_handler
-            self.ctx.input_handler = self.__json_file_handler
+        with self.file(name, *args, ctx_handler=self.__json_file_handler, **kwargs) as f:
             yield f
-            self.ctx.input_handler = old_handler
 
     @contextlib.contextmanager
     def tag(self, name: str, tag_type: str, *args, **kwargs):
