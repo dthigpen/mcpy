@@ -1,4 +1,6 @@
 from mcpy import Datapack
+from mcpy.cmd import *
+
 
 if __name__ == "__main__":
     pack = Datapack()
@@ -21,13 +23,21 @@ if __name__ == "__main__":
 
         # now add our tick function
         with pack.mcfunction("on_tick"):
+            two_score = Player('$two', 'dt.example')
+            five_score = Player('$five', 'dt.example')
+            mod_five_score = Player('$dt.mod5', 'dt.example')
+            tmp_score = Player('$dt.tmp', 'dt.example')
+            ticker_score = Player('$dt.ticker', 'dt.example')
+            pack.write([
+
+            ])
             pack.write(
-                """\
-            scoreboard players set $two dt.example 2
-            scoreboard players set $five dt.example 5
-            scoreboard players reset $dt.mod5 dt.example
-            scoreboard players operation $dt.tmp dt.example = $dt.ticker dt.example
-            scoreboard players operation $dt.tmp dt.example %= $five dt.example
+                f"""\
+            {scoreboard.players().set(two_score, 2)}
+            {scoreboard.players().set(five_score, 5)}
+            {scoreboard.players().reset(mod_five_score)}
+            {scoreboard.players().operation(tmp_score).assign(ticker_score)}
+            {scoreboard.players().operation(tmp_score).mod(five_score)}
             execute if score $dt.tmp dt.example matches 0 run scoreboard players set $dt.mod5 dt.example 1
             execute if score $dt.mod5 dt.example matches 1 run scoreboard players operation $dt.tmp dt.example = $dt.ticker dt.example
             execute if score $dt.mod5 dt.example matches 1 run scoreboard players operation $dt.tmp dt.example %= $two dt.example
@@ -41,3 +51,4 @@ if __name__ == "__main__":
         with pack.namespace("minecraft"):
             with pack.functions("tick"):
                 pack.write({"values": ["dt.example:on_tick"]})
+        print("DONE")
