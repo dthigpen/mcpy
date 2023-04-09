@@ -55,13 +55,8 @@ class BasePlugin(ABC):
             return path_dir / self.ctx.file_name
         return path_dir
 
-    def write(self, item: any):
-        """Write the given data to the current file"""
-        for handler in self.ctx.write_handlers:
-            if handler(self, item):
-                break
-
-    def __handle_item(self, item: any):
+    def write(self, item: any) -> None:
+        """Handle the given input depending on the current context"""
         if not self.ctx.input_handler:
             raise ValueError("Unknown context. Cannot handle input")
         self.ctx.input_handler(item)
@@ -69,41 +64,34 @@ class BasePlugin(ABC):
     def build(self, items: Iterator | None) -> None:
         if items:
             for item in items:
-                self.__handle_item(item)
+                self.write(item)
 
 
 class CorePlugin(BasePlugin):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-    def __json_file_handler(self, item: any) -> bool:
+    def __json_file_handler(self, item: dict | str) -> None:
         self.__validate_file()
-        if self.ctx.file_name.endswith(".json"):
-            if isinstance(item, dict):
-                item = json.dumps(item, indent=4)
+        if isinstance(item, dict):
+            item = json.dumps(item, indent=4)
 
-            # lastly, append a newline if its a string
-            if isinstance(item, str) and not item.endswith("\n"):
-                item += "\n"
+        if isinstance(item, str) and not item.endswith("\n"):
+            item += "\n"
 
-            self.ctx.opened_file.write(item)
-            return True
-        return False
+        self.ctx.opened_file.write(item)
 
-    def __mcfunction_handler(self, item: any) -> bool:
+    def __mcfunction_handler(self, item: str | list[str]):
         self.__validate_file()
-        if self.ctx.file_name.endswith(".mcfunction"):
-            if isinstance(item, list):
-                item = "\n".join(item)
-            item = textwrap.dedent(item)
+        if isinstance(item, list):
+            item = "\n".join(item)
+        item = textwrap.dedent(item)
 
-            # add trailing newline if not present
-            if isinstance(item, str) and not item.endswith("\n"):
-                item += "\n"
+        # add trailing newline if not present
+        if isinstance(item, str) and not item.endswith("\n"):
+            item += "\n"
 
-            self.ctx.opened_file.write(item)
-            return True
-        return False
+        self.ctx.opened_file.write(item)
 
     def __validate_file(self) -> None:
         if not self.ctx.opened_file or self.ctx.opened_file.closed:
@@ -126,8 +114,11 @@ class CorePlugin(BasePlugin):
 
     @contextlib.contextmanager
     def namespace(self, name: str):
+        self.__validate_not_in_file_context()
         self.ctx.namespace_stack.append(name)
-        (self.ctx.base_dir / 'data' / self.get_namespace()).mkdir(parents=True, exist_ok=True)
+        (self.ctx.base_dir / "data" / self.get_namespace()).mkdir(
+            parents=True, exist_ok=True
+        )
         yield
         self.ctx.namespace_stack.pop()
 
@@ -142,7 +133,6 @@ class CorePlugin(BasePlugin):
             opened_file=self.ctx.opened_file,
             input_handler=ctx_handler if ctx_handler else self.ctx.input_handler,
         ):
-            
             self.get_path().parent.mkdir(parents=True, exist_ok=True)
             with open(self.get_path(), mode, *args) as f:
                 self.ctx.opened_file = f
@@ -179,9 +169,10 @@ class CorePlugin(BasePlugin):
 
     @contextlib.contextmanager
     def tag(self, name: str, tag_type: str, *args, **kwargs):
-        with self.dir(tag_type):
-            with self.json_file(name, category="tags", *args, **kwargs) as f:
-                yield f
+        with self.dir(tag_type), self.json_file(
+            name, category="tags", *args, **kwargs
+        ) as f:
+            yield f
 
     @contextlib.contextmanager
     def functions(self, name: str, *args, **kwargs):

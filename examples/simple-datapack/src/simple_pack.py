@@ -6,34 +6,51 @@ if __name__ == "__main__":
 
     def builder():
         with pack.namespace("dt.simple"):
-
             with pack.dir("api/greeting"):
                 with pack.mcfunction("hello"):
                     yield "say Hello"
                     yield "say There!"
+
                 # or with multiple commands in one str:
-                with pack.mcfunction("hello"):
+                with pack.mcfunction("morning"):
                     yield """\
                     say Good
                     say Morning!
                     """
 
+                # or as a list
+                with pack.mcfunction("all"):
+                    yield [
+                        "say Good evening",
+                        "say Good afternoon!",
+                        "say Good night!",
+                    ]
+
     pack.build(builder())
 
-    # Alternatively this can be expressed without yields such as below
-    # for the exact same result using the context managers "as" value
+    # ----------------------------------------------------
     pack = Datapack()
     with pack.namespace("dt.simple"):
-
         with pack.dir("api/greeting"):
-            with pack.mcfunction("hello") as write:
-                write("say Hello")
-                write("say There!")
+            with pack.mcfunction("hello"):
+                pack.write("say Hello")
+                pack.write("say There!")
+
             # or with multiple commands in one str:
-            with pack.mcfunction("morning") as write:
-                write(
+            with pack.mcfunction("morning"):
+                pack.write(
                     """\
                 say Good
                 say Morning!
                 """
+                )
+
+            # or as a list
+            with pack.mcfunction("all"):
+                pack.write(
+                    [
+                        "say Good evening",
+                        "say Good afternoon!",
+                        "say Good night!",
+                    ]
                 )

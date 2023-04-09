@@ -21,10 +21,10 @@ def test_file_creations(tmp_path):
             # mcfunction
             with pack.mcfunction("myfile"):
                 yield "say hello"
-            
+
             # mcfunction
-            with pack.mcfunction("myfile2") as f:
-                f("say hello")
+            with pack.mcfunction("myfile2"):
+                pack.write("say hello")
 
             # raw json file
             with pack.dir("functions"):
@@ -36,30 +36,23 @@ def test_file_creations(tmp_path):
 
             # different namespace
             with pack.namespace("py.dev"):
-                with pack.mcfunction('say_hi'):
+                with pack.mcfunction("say_hi"):
                     yield "say hello"
+
     pack.build(builder())
 
     # data and namespace dirs
     assert tmp_path.joinpath("data", "py.test").is_dir()
-    
+
     # mcfunction files
-    file_path = tmp_path.joinpath(
-        "data", "py.test", "functions", "myfile.mcfunction"
-    )
+    file_path = tmp_path.joinpath("data", "py.test", "functions", "myfile.mcfunction")
     assert file_path.read_text() == expected_mcfunction_content
     # check the non yielding version
-    file_path = tmp_path.joinpath(
-        "data", "py.test", "functions", "myfile2.mcfunction"
-    )
-    assert file_path.read_text() == expected_mcfunction_content
-    
-    file_path = tmp_path.joinpath(
-        "data", "py.dev", "functions", "say_hi.mcfunction"
-    )
+    file_path = tmp_path.joinpath("data", "py.test", "functions", "myfile2.mcfunction")
     assert file_path.read_text() == expected_mcfunction_content
 
-    
+    file_path = tmp_path.joinpath("data", "py.dev", "functions", "say_hi.mcfunction")
+    assert file_path.read_text() == expected_mcfunction_content
 
     file_path = tmp_path.joinpath(
         "data", "py.test", "tags", "functions", "my_json.json"
@@ -70,9 +63,7 @@ def test_file_creations(tmp_path):
         actual_content_dict
     )
 
-    file_path = tmp_path.joinpath(
-        "data", "py.test", "tags", "blocks", "my_blocks.json"
-    )
+    file_path = tmp_path.joinpath("data", "py.test", "tags", "blocks", "my_blocks.json")
     actual_content_dict = json.loads(file_path.read_text())
     assert json.dumps(expected_json_file_content_dict) == json.dumps(
         actual_content_dict

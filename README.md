@@ -11,6 +11,7 @@ with pack.namespace("mypack"):
         for i in range(3):
             yield f"say {i+1}.."
         yield "say Hello!"
+
 # Outputs the data dir:
 # my-pack
 # ├── data
@@ -27,9 +28,9 @@ with pack.namespace("mypack"):
   - [Usage](#usage)
   - [Examples](#examples)
   - [Features](#features)
-    - [Simply Syntax](#simply-syntax)
+    - [Simple Syntax](#simple-syntax)
     - [Flexible Syntax](#flexible-syntax)
-    - [Extensible library](#extensible-library)
+    - [Plugin Support](#plugin-support)
     - [Organize Complexity](#organize-complexity)
 
 ## Motivation
@@ -120,10 +121,9 @@ mypack
 │               └── say_hello.mcfunction
 ```
 
-
 ## Features
 
-### Simply Syntax
+### Simple Syntax
 
 ```python
 # enter a namespace
@@ -139,7 +139,7 @@ with pack.dir('name'):
 with pack.mcfunction('name'):
     ...
 
-# enter an functions tag
+# enter a functions tag
 with pack.functions('name'):
     ...
 
@@ -152,7 +152,6 @@ with pack.blocks('name'):
 ### Flexible Syntax
 
 ```python
-# Use yields or context manager values
 # With yields:
 pack = Datapack()
 def builder():
@@ -162,12 +161,12 @@ def builder():
 pack.build(builder())
 
 # OR
-# Use with/as value
-with pack.mcfunction('say_hello') as write:
-    write('Hello there!')
+# Using the write function directly
+with pack.mcfunction('say_hello'):
+    pack.write('Hello there!')
 ```
 
-### Extensible library
+### Plugin Support
 
 ```python
 # Import packages/plugins like any other program
@@ -178,8 +177,8 @@ from mcpy_cool_plugin import CoolPlugin
 pack = Datapack(plugins=[IterPlugin,CallStackPlugin])
 ...
 # Using pack.recurse from IterPlugin
-with pack.recurse(...) as f:
-    f('say Over and over')
+with pack.recurse(...):
+    pack.write('say Over and over')
 
 ```
 
@@ -196,7 +195,7 @@ with pack.mcfunction('my_thing'):
     yield from lots_of_logic('Hello', 1, 5)
 
 # OR
-with pack.mcfunction('my_thing') as f:
+with pack.mcfunction('my_thing'):
     for line in lots_of_logic('Hello', 1, 5):
-        f(line)
+        pack.write(line)
 ```
