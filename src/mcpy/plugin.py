@@ -7,8 +7,8 @@ from abc import ABC
 from typing import IO, Callable
 from pathlib import Path
 from dataclasses import dataclass, field
+import inspect
 from .util import scoped_setattr
-
 DEFAULT_HEADER_MSG = "Built with mcpy (https://github.com/dthigpen/mcpy)"
 
 
@@ -83,15 +83,28 @@ class CorePlugin(BasePlugin):
 
     def __mcfunction_handler(self, item: str | list[str]):
         self.__validate_file()
-        if isinstance(item, list):
-            item = "\n".join(item)
-        item = textwrap.dedent(item)
-
-        # add trailing newline if not present
-        if isinstance(item, str) and not item.endswith("\n"):
-            item += "\n"
-
-        self.ctx.opened_file.write(item)
+        def write_str(content: str):
+            newline_count = content.count('\n')
+            if content.endswith('\n'):
+                newline_count -= 1
+            
+            # unindent indented multiline strings
+            if newline_count > 0:
+                content = textwrap.dedent(content)
+            
+            # add trailing newline if not present
+            if not content.endswith("\n"):
+                content += "\n"
+            
+            self.ctx.opened_file.write(content)
+        
+        if isinstance(item, list) or inspect.isgenerator(item):
+            for content in item:
+                write_str(str(content))
+        else:
+            write_str(str(item))
+        
+        
 
     def __validate_file(self) -> None:
         if not self.ctx.opened_file or self.ctx.opened_file.closed:
