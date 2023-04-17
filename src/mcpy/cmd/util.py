@@ -39,8 +39,8 @@ class BaseCmd(ABC):
     def __str__(self) -> str:
         raise ValueError("Unable to convert to string")
 
-    def __convert(self, *suffix_tokens: str) -> str:
-        prefix = self.__parent.__convert() if self.__parent else ""
+    def _convert(self, *suffix_tokens: str) -> str:
+        prefix = self.__parent._convert() if self.__parent else ""
         cmd = run_templates_to_str(self.__template_str_list, self.__template_args)
         return tokens_to_str(prefix, cmd, *suffix_tokens)
 
@@ -56,4 +56,4 @@ class SubCmd(BaseCmd, ABC):
 
 class EndCmd(BaseCmd):
     def __str__(self) -> str:
-        return self.__convert()
+        return self._convert()
