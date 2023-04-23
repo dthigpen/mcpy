@@ -3,21 +3,17 @@ import functools
 from .util import RootCmd, SubCmd, BaseCmd, EndCmd, tokens_to_str
 from .common import Pos
 
-class Data(RootCmd):
-    def __init__(self, *args, **kwargs) -> None:
-        super().__init__("data", *args, *kwargs)
+class Data:
 
-    class Target(SubCmd):
+    class Target(RootCmd):
         def __init__(
             self,
-            # parent: BaseCmd | str,
             target_type: str,
             target: str,
             target_path: str = None,
         ) -> None:
             super().__init__(
-                Data(),
-                "",
+                "data",
                 template_args={
                     "target": target,
                     "target_type": target_type,
@@ -133,13 +129,3 @@ class Data(RootCmd):
         set_from = functools.partialmethod(__action_from, "set")
         set_string = functools.partialmethod(__action_string, "set")
         set_value = functools.partialmethod(__action_value, "set")
-
-
-class Entity(Data.Entity):
-    pass
-
-class Storage(Data.Storage):
-    pass
-
-class Block(Data.Block):
-    pass
