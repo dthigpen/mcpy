@@ -4,14 +4,21 @@ A library for writing Minecraft datapacks using the Python language.
 
 ```python
 # my-pack/src/pack.py
-...
-with pack.namespace("mypack"):
-    with pack.mcfunction("say_hello"):
-         # in mcfunction context
-        for i in range(3):
-            yield f"say {i+1}.."
-        yield "say Hello!"
+def run():
+    pack = Datapack()
+    def builder():
+        with pack.namespace("mypack"):
+            with pack.mcfunction("say_hello"):
+                # in mcfunction context
+                for i in range(3):
+                    yield f"say {i+1}.."
+                yield "say Hello!"
+    pack.build(builder())
 
+```
+
+```bash
+> python -m mcpy pack:run
 # Outputs the data dir:
 # my-pack
 # ├── data
@@ -74,7 +81,7 @@ Disadvantages:
     # py_pack.py
     from mcpy import Datapack
 
-        if __name__ == '__main__':
+        def run():
             pack = Datapack()
             def builder():
                 with pack.namespace('mypack'):
@@ -86,7 +93,7 @@ Disadvantages:
 3. Run the script from the `src` or datapack directory to generate the `data` folder with your pack contents.
 
     ```bash
-    > python my_pack.py
+    > python -m mcpy py_pack:run
     ```
 
 ## Examples
