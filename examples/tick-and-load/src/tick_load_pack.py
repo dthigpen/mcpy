@@ -1,10 +1,12 @@
 from mcpy import Datapack
 from mcpy.cmd import *
 
+def run():
+    print('hello!')
 
+    
 if __name__ == "__main__":
     pack = Datapack()
-
     with pack.namespace("dt.example"):
         # define our on_load function
         with pack.mcfunction("on_load"):
@@ -23,23 +25,24 @@ if __name__ == "__main__":
 
         # now add our tick function
         with pack.mcfunction("on_tick"):
-            two_score = Player('$two', 'dt.example')
-            five_score = Player('$five', 'dt.example')
-            mod_five_score = Player('$dt.mod5', 'dt.example')
-            tmp_score = Player('$dt.tmp', 'dt.example')
-            ticker_score = Player('$dt.ticker', 'dt.example')
             def write_cmds():
-                yield scoreboard.players().set(two_score, 2)
-                yield scoreboard.players().set(five_score, 5)
-                yield scoreboard.players().reset(mod_five_score)
-                yield scoreboard.players().operation(tmp_score).assign(ticker_score)
-                yield scoreboard.players().operation(tmp_score).mod(five_score)
+                two_score = Player('$two', 'dt.example')
+                five_score = Player('$five', 'dt.example')
+                mod_five_score = Player('$dt.mod5', 'dt.example')
+                tmp_score = Player('$dt.tmp', 'dt.example')
+                ticker_score = Player('$dt.ticker', 'dt.example')
+            
+                yield two_score.set(2)
+                yield five_score.set(5)
+                yield mod_five_score.reset()
+                yield tmp_score.assign(ticker_score)
+                yield tmp_score.mod(five_score)
                 yield f"""\
                 execute if score $dt.tmp dt.example matches 0 run scoreboard players set $dt.mod5 dt.example 1
-                execute if score {mod_five_score} matches 1 run scoreboard players operation $dt.tmp dt.example = $dt.ticker dt.example
-                execute if score {mod_five_score} matches 1 run scoreboard players operation $dt.tmp dt.example %= $two dt.example
-                execute if score {mod_five_score} matches 1 if score $dt.tmp dt.example matches 0 run say Tick!
-                execute if score {mod_five_score} matches 1 unless score $dt.tmp dt.example matches 0 run say Tock!
+                execute if score $dt.mod5 dt.example matches 1 run scoreboard players operation $dt.tmp dt.example = $dt.ticker dt.example
+                execute if score $dt.mod5 dt.example matches 1 run scoreboard players operation $dt.tmp dt.example %= $two dt.example
+                execute if score $dt.mod5 dt.example matches 1 if score $dt.tmp dt.example matches 0 run say Tick!
+                execute if score $dt.mod5 dt.example matches 1 unless score $dt.tmp dt.example matches 0 run say Tock!
                 scoreboard players add $dt.ticker dt.example 1
                 """
             pack.write(write_cmds())
