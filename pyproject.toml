@@ -1,25 +1,17 @@
 [project]
 name = "mcpy"
 version = "0.1.0"
-authors = [
-    {name = "David Thigpen", email = "davidthigs@gmail.com"},
-]
+authors = [{ name = "David Thigpen", email = "davidthigs@gmail.com" }]
 description = "A library for writing Minecraft datapacks in Python syntax"
 readme = "README.md"
 requires-python = ">=3.8"
-dependencies = []
+dependencies = ['watchfiles ~= 0.19.0']
 
 [project.optional-dependencies]
 # development dependency groups
-dev = [
-    "pytest"
-]
-test = [
-    "pytest"
-]
+dev = ["pytest"]
+test = ["pytest"]
 # pytest options
 [tool.pytest.ini_options]
-addopts =" -ra -q"
-testpaths = [
-    "tests"
-]
+addopts = " -ra -q"
+testpaths = ["tests"]

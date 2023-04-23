@@ -2,10 +2,6 @@ from mcpy import Datapack
 from mcpy.cmd import *
 
 def run():
-    print('hello!')
-
-    
-if __name__ == "__main__":
     pack = Datapack()
     with pack.namespace("dt.example"):
         # define our on_load function
@@ -35,8 +31,8 @@ if __name__ == "__main__":
                 yield two_score.set(2)
                 yield five_score.set(5)
                 yield mod_five_score.reset()
-                yield tmp_score.assign(ticker_score)
-                yield tmp_score.mod(five_score)
+                yield tmp_score.operation().assign(ticker_score)
+                yield tmp_score.operation().mod(five_score)
                 yield f"""\
                 execute if score $dt.tmp dt.example matches 0 run scoreboard players set $dt.mod5 dt.example 1
                 execute if score $dt.mod5 dt.example matches 1 run scoreboard players operation $dt.tmp dt.example = $dt.ticker dt.example
@@ -52,3 +48,6 @@ if __name__ == "__main__":
             with pack.functions("tick"):
                 pack.write({"values": ["dt.example:on_tick"]})
         print("DONE")
+
+if __name__ == "__main__":
+    run()
