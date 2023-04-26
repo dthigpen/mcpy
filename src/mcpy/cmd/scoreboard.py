@@ -5,41 +5,51 @@ from .util import (
     EndCmd,
 )
 
+from typing import Union
 
-class Scoreboard(RootCmd):
-    def __init__(self, *args, **kwargs) -> None:
-        super().__init__("scoreboard", *args, **kwargs)
 
-    class Objective(SubCmd):
-        def __init__(self, parent: BaseCmd | str, *args, **kwargs) -> None:
-            super().__init__(parent, "objectives", *args, **kwargs)
+class Scoreboard:
+    class Objectives(RootCmd):
+        def __init__(self) -> None:
+            super().__init__('scoreboard objectives')
 
         def list(self):
             return EndCmd(self, "list")
 
-        def add(self, objective: str, criteria: str, display_name: str = None):
-            return EndCmd(
-                self,
-                ["add $objective $criteria", "$display_name"],
-                {
+        def add(self, objective: str, criteria="dummy", display_name=None):
+            return Scoreboard.Objective(objective, criteria=criteria, display_name=display_name).add()
+
+    class Objective(SubCmd):
+        def __init__(self, objective: str, criteria="dummy", display_name=None) -> None:
+            super().__init__(
+                Scoreboard.Objectives(),
+                '',
+                template_args={
                     "objective": objective,
                     "criteria": criteria,
                     "display_name": display_name,
                 },
             )
 
-    def objectives(self, *args, **kwargs):
-        return Scoreboard.Objective(self, *args, **kwargs)
-
-    class Player(SubCmd):
-        def __init__(self, name: str, objective: str, *args, **kwargs) -> None:
-            super().__init__(
-                Scoreboard(),
-                "players",
-                template_args={"name": name, "objective": objective},
-                *args,
-                **kwargs,
+        def add(self):
+            return EndCmd(
+                self,
+                ["add $objective $criteria", "$display_name"],
             )
+
+    def objectives():
+        return Scoreboard.Objectives()
+
+    class Player(RootCmd):
+        def __init__(
+            self, name: str, objective: Union["Scoreboard.Objective", str]
+        ) -> None:
+            template_args = {"name": name}
+            if isinstance(objective, Scoreboard.Objective):
+                template_args = template_args | objective._template_args
+            else:
+                template_args = template_args | {"objective": objective}
+            super().__init__("scoreboard players", template_args=template_args)
 
         def set(self, score: int):
             return EndCmd(
@@ -97,9 +107,3 @@ class Scoreboard(RootCmd):
 
     def players(self, name: str, objective: str):
         return Scoreboard.Player(name, objective)
-
-
-# Re define at top-level
-class Player(Scoreboard.Player):
-    pass
-
