@@ -3,8 +3,8 @@ import functools
 from .util import RootCmd, SubCmd, BaseCmd, EndCmd, tokens_to_str
 from .common import Pos
 
-class Data:
 
+class Data:
     class Target(RootCmd):
         def __init__(
             self,
@@ -48,7 +48,7 @@ class Data:
 
         def modify(self):
             return Data.ModifyCmd(self)
-    
+
     class Entity(Target):
         def __init__(self, target: str, target_path: str = None) -> None:
             super().__init__("entity", target, target_path)
@@ -74,7 +74,7 @@ class Data:
         def __action_from(
             self,
             action: str,
-            source: any, #"DataCmd.Block" | "DataCmd.Entity" | "DataCmd.Storage"
+            source: any,  # "DataCmd.Block" | "DataCmd.Entity" | "DataCmd.Storage"
         ):
             return EndCmd(
                 self,
@@ -85,7 +85,7 @@ class Data:
         def __action_string(
             self,
             action: str,
-            source: any, #"DataCmd.Block" | "DataCmd.Entity" | "DataCmd.Storage" | str,
+            source: any,  # "DataCmd.Block" | "DataCmd.Entity" | "DataCmd.Storage" | str,
             start: int = None,
             end: int = None,
         ):

@@ -11,19 +11,21 @@ from typing import Union
 class Scoreboard:
     class Objectives(RootCmd):
         def __init__(self) -> None:
-            super().__init__('scoreboard objectives')
+            super().__init__("scoreboard objectives")
 
         def list(self):
             return EndCmd(self, "list")
 
         def add(self, objective: str, criteria="dummy", display_name=None):
-            return Scoreboard.Objective(objective, criteria=criteria, display_name=display_name).add()
+            return Scoreboard.Objective(
+                objective, criteria=criteria, display_name=display_name
+            ).add()
 
     class Objective(SubCmd):
         def __init__(self, objective: str, criteria="dummy", display_name=None) -> None:
             super().__init__(
                 Scoreboard.Objectives(),
-                '',
+                "",
                 template_args={
                     "objective": objective,
                     "criteria": criteria,
