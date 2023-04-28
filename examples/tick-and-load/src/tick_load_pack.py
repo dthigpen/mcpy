@@ -1,6 +1,5 @@
 from mcpy import *
-from mcpy.cmd import *
-
+from mcpy_cmd import *
 
 def run():
     pack = Datapack()
