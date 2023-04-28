@@ -1,28 +1,28 @@
-from mcpy import Datapack
+from mcpy import *
 from mcpy.cmd import *
 
 
 def run():
     pack = Datapack()
 
-    def builder():
+    def builder(ctx: Context):
         pack_namespace = "dt.example"
         pack_objective = Scoreboard.Objective(pack_namespace)
-        with pack.namespace("dt.example"):
+        with namespace(ctx, "dt.example"):
             # define our on_load function
-            with pack.mcfunction("on_load"):
+            with mcfunction(ctx, "on_load"):
                 yield pack_objective.add()
                 yield Scoreboard.Player("*", pack_objective).reset()
                 ticker_score = Scoreboard.Player("$dt.ticker", "dt.example")
                 yield ticker_score.set(0)
                 yield "say Loaded Tick-And-Load"
             # add it to the minecraft load tag
-            with pack.namespace("minecraft"):
-                with pack.functions("load"):
+            with namespace(ctx, "minecraft"):
+                with functions(ctx, "load"):
                     yield {"values": ["dt.example:on_load"]}
 
             # now add our tick function
-            with pack.mcfunction("on_tick"):
+            with mcfunction(ctx, "on_tick"):
                 two_score = Scoreboard.Player("$two", "dt.example")
                 five_score = Scoreboard.Player("$five", "dt.example")
                 mod_five_score = Scoreboard.Player("$dt.mod5", "dt.example")
@@ -44,11 +44,11 @@ def run():
                 """
 
             # and add it to the minecraft tick tag
-            with pack.namespace("minecraft"):
-                with pack.functions("tick"):
+            with namespace(ctx, "minecraft"):
+                with functions(ctx, "tick"):
                     yield {"values": ["dt.example:on_tick"]}
 
-    pack.build(builder())
+    pack.build(builder)
 
 
 if __name__ == "__main__":

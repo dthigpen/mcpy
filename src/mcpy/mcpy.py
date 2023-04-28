@@ -7,14 +7,14 @@ from datetime import timedelta
 
 from watchfiles import watch
 
+
 def module_attr(module_attr_str: str) -> tuple:
     if ":" not in module_attr_str:
         raise argparse.ArgumentTypeError(
             "Bad module run specifier. Use format <module.sub>:<run_function> format"
         )
     name, attr = module_attr_str.split(":", 1)
-    mod = importlib.import_module(name)
-    return mod, getattr(mod, attr)
+    return name, attr
 
 
 def get_args() -> argparse.Namespace:
@@ -36,19 +36,23 @@ def run(entrypoint_fn: Callable):
 
 def main():
     args = get_args()
-    entrypoint_mod, entrypoint_fn = args.entrypoint
-    def timed_build():
-        print('Starting build...')
+    module_name, entrypoint_fn_name = args.entrypoint
+    entrypoint_mod = importlib.import_module(module_name)
+    
+    def timed_build(runner_fn):
+        print("Starting build...")
         start = timer()
-        run(entrypoint_fn)
+        run(runner_fn)
         end = timer()
-        delta = timedelta(seconds=end-start)
-        print(f'Build time: {delta}')
-    timed_build()
+        delta = timedelta(seconds=end - start)
+        print(f"Build time: {delta}")
+
+    timed_build(getattr(entrypoint_mod, entrypoint_fn_name))
     if args.watch:
         mod_path = Path(entrypoint_mod.__file__)
-        print(f'Watching files in {mod_path.parent}')
-        print('Press Ctrl-C to stop at anytime')
+        print(f"Watching files in {mod_path.parent}")
+        print("Press Ctrl-C to stop at anytime")
         for changes in watch(mod_path.parent):
-            timed_build()
-    
+            entrypoint_mod = importlib.reload(entrypoint_mod)
+            runner = getattr(entrypoint_mod, entrypoint_fn_name)
+            timed_build(runner)
