@@ -3,10 +3,10 @@ import importlib
 from typing import Callable
 from pathlib import Path
 from timeit import default_timer as timer
+import traceback
 from datetime import timedelta
 
 from watchfiles import watch
-
 
 def module_attr(module_attr_str: str) -> tuple:
     if ":" not in module_attr_str:
@@ -52,7 +52,12 @@ def main():
         mod_path = Path(entrypoint_mod.__file__)
         print(f"Watching files in {mod_path.parent}")
         print("Press Ctrl-C to stop at anytime")
-        for changes in watch(mod_path.parent):
-            entrypoint_mod = importlib.reload(entrypoint_mod)
-            runner = getattr(entrypoint_mod, entrypoint_fn_name)
-            timed_build(runner)
+        for changes in watch(mod_path.parent, raise_interrupt=False):
+            try:
+                entrypoint_mod = importlib.reload(entrypoint_mod)
+                runner = getattr(entrypoint_mod, entrypoint_fn_name)
+                timed_build(runner)
+            except KeyboardInterrupt as e:
+                raise e
+            except Exception:
+                print(traceback.format_exc())
