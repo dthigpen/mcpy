@@ -44,6 +44,11 @@ class Context:
             return path_dir / self.file_name
         return path_dir
 
+def write(ctx, item: any) -> None:
+        """Handle the given input depending on the current context"""
+        if not ctx.input_handler:
+            raise ValueError("Unknown context. Cannot handle input")
+        ctx.input_handler(ctx, item)
 
 def validate_files(ctx) -> None:
     if not ctx.opened_file or ctx.opened_file.closed:

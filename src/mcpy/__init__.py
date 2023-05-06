@@ -1,2 +1,2 @@
-from .datapack import *
 from .context import *
+from .util import *
