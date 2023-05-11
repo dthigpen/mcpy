@@ -1,12 +1,13 @@
 from mcpy import *
 
 
-def run(ctx: Context):
+@datapack
+def simple_pack(ctx: Context):
     with namespace(ctx, "dt.simple"):
         with dir(ctx, "api/greeting"):
             with mcfunction(ctx, "hello"):
                 yield "say Hello"
-                yield "say There!"
+                yield "say There!!"
 
             # or with multiple commands in one str:
             with mcfunction(ctx, "morning"):
