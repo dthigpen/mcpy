@@ -1,7 +1,8 @@
 from mcpy import *
 from mcpy_cmd import *
 
-def run(ctx: Context):
+@datapack
+def tick_and_load(ctx: Context):
     pack_namespace = "dt.example"
     pack_objective = Scoreboard.Objective(pack_namespace)
     with namespace(ctx, "dt.example"):
@@ -11,7 +12,7 @@ def run(ctx: Context):
             yield Scoreboard.Player("*", pack_objective).reset()
             ticker_score = Scoreboard.Player("$dt.ticker", "dt.example")
             yield ticker_score.set(0)
-            yield "say Loaded Tick-And-Load"
+            yield "say Loaded Tick-And-Load!!!"
         # add it to the minecraft load tag
         with namespace(ctx, "minecraft"):
             with functions(ctx, "load"):
@@ -43,8 +44,3 @@ def run(ctx: Context):
         with namespace(ctx, "minecraft"):
             with functions(ctx, "tick"):
                 yield {"values": ["dt.example:on_tick"]}
-
-
-
-if __name__ == "__main__":
-    run()

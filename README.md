@@ -3,22 +3,20 @@
 A library for writing Minecraft datapacks using the Python language.
 
 ```python
-# my-pack/src/pack.py
-def run():
-    pack = Datapack()
-    def builder(ctx: Context):
-        with namespace(ctx, "mypack"):
-            with mcfunction(ctx, "say_hello"):
-                # in mcfunction context
-                for i in range(3):
-                    yield f"say {i+1}.."
-                yield "say Hello!"
-    pack.build(builder)
+from mcpy import *
 
+@datapack
+def simple_pack():
+    with namespace(ctx, "mypack"):
+        with mcfunction(ctx, "say_hello"):
+            # in mcfunction context
+            for i in range(3):
+                yield f"say {i+1}.."
+            yield "say Hello!"
 ```
 
 ```bash
-> python -m mcpy pack:run
+> python -m mcpy
 # Outputs the data dir:
 # my-pack
 # ├── data
@@ -77,16 +75,16 @@ Disadvantages:
 2. In `src/` create a `.py` file and use the `mcpy` library
 
     ```python
-    # py_pack.py
-    from mcpy import Datapack
+    from mcpy import *
 
-    def run():
-        pack = Datapack()
-        def builder(ctx: Context):
-            with namespace(ctx, 'mypack'):
-                with mcfunction(ctx,'my_func'):
-                    yield 'Hello from my func'
-        pack.build(builder)
+    @datapack
+    def simple_pack():
+        with namespace(ctx, "mypack"):
+            with mcfunction(ctx, "say_hello"):
+                # in mcfunction context
+                for i in range(3):
+                    yield f"say {i+1}.."
+                yield "say Hello!"
     ```
 
 3. Run the script from the `src` or datapack directory to generate the `data` folder with your pack contents.
@@ -132,8 +130,8 @@ with blocks(ctx, 'name'):
 # import using standard python
 from mcpy_recurse import recurse
 ...
-with pack.recurse(ctx, some, args):
-    pack.write('say Over and over')
+with recurse(ctx, some, args):
+    yield 'say Over and over'
 ```
 
 ### Organize Complexity
