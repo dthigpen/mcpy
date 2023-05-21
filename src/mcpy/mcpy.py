@@ -9,25 +9,48 @@ from datetime import timedelta
 from .context import Context, write
 import functools
 import json
-from watchfiles import watch
+import tempfile
+import shutil
 
+from watchfiles import watch
 import dpbuild
 
 
-def datapack(func):
-    @functools.wraps(func)
-    def datapack_wrapper(*args, **kwargs):
-        return func(*args, **kwargs)
+def datapack(_func=None, *, include: list[str | Path] = None):
+    def decorator_datapack(func):
+        @functools.wraps(func)
+        def datapack_wrapper(*args, **kwargs):
+            return func(*args, **kwargs)
 
-    datapack_wrapper.mcpy_datapack = True
-    return datapack_wrapper
+        datapack_wrapper.mcpy_datapack = True
+        datapack_wrapper.mcpy_include = include if include else []
+        return datapack_wrapper
+
+    if _func is None:
+        return decorator_datapack
+    else:
+        return decorator_datapack(_func)
+
 
 class Datapack:
     def __init__(self, path: str | Path) -> None:
         self.path = valid_datapack_path(path)
 
     def build(self, changed_files: list[Path]) -> None:
+        '''Build the datapack at the current path'''
         pass
+    
+    def dist(self, output_dir: Path) -> None:
+        '''Build this datapack and bundle with dependencies'''
+        # TODO this could be copy since there are no deps
+        dpbuild.run(self.path,[], output_dir)
+
+class ArchiveDatapack(Datapack):
+   def dist(self, output_dir: Path) -> None:
+       return shutil.copyfile(self.path, output_dir / self.path.name)
+   
+   def __init__(self, path: str | Path) -> None:
+       self.path = Path(path)
 
 
 class McpyDatapack(Datapack):
@@ -35,6 +58,20 @@ class McpyDatapack(Datapack):
         super().__init__(path)
         valid_mcpy_datapack_path(path)
         self.module = None
+
+    def __get_fn(self) -> Callable:
+        marked_functions = [
+            f
+            for _, f in self.module.__dict__.items()
+            if callable(f) and hasattr(f, "mcpy_datapack") and f.mcpy_datapack is True
+        ]
+        if len(marked_functions) == 0:
+            raise ValueError(
+                "No entrypoint found. Use @mcpy.entrypoint decorator to specify an entrypoint"
+            )
+        if len(marked_functions) > 1:
+            raise ValueError("More than one entrypoint found. Only one is allowed")
+        return marked_functions[0]
 
     def get_config(self) -> dict:
         config_file_name = "mcpy_config.json"
@@ -73,19 +110,40 @@ class McpyDatapack(Datapack):
         else:
             self.module = importlib.reload(self.module)
 
-        marked_functions = [
-            f
-            for _, f in self.module.__dict__.items()
-            if callable(f) and hasattr(f, "mcpy_datapack") and f.mcpy_datapack is True
-        ]
-        if len(marked_functions) == 0:
-            raise ValueError(
-                "No entrypoint found. Use @mcpy.entrypoint decorator to specify an entrypoint"
-            )
-        if len(marked_functions) > 1:
-            raise ValueError("More than one entrypoint found. Only one is allowed")
+        build(self.__get_fn(), output_dir)
 
-        build(marked_functions[0], output_dir)
+    def get_includes(self) -> list[str | Path]:
+        return getattr(self.__get_fn(), "mcpy_include")
+
+    def dist(self, output_dir: Path):
+        if not self.module:
+            self.build()
+        
+        dep_paths: list[Path] = []
+        with tempfile.TemporaryDirectory(prefix=f'deps_{self.path.stem}') as tmpdirname:
+            tmpdir = Path(tmpdirname)
+            for p in self.get_includes():
+                p = self.path.parent.resolve() / p
+                try:
+                    dep_path = valid_mcpy_datapack_path(p)
+                    dep_pack = McpyDatapack(p)
+                    dep_pack.dist(tmpdir)
+                    dep_paths.append(p)
+                except Exception as e1:
+                    try:
+                        dep_path = valid_datapack_path(p)
+                        dep_pack = Datapack(p)
+                        dep_pack.dist(tmpdir)
+                        dep_paths.append(dep_path)
+                    except Exception as e2:
+                        if p.is_file() and p.suffix == '.zip':
+                            dep_pack = ArchiveDatapack(p)
+                            dep_pack.dist(tmpdir)
+                            dep_paths.append(p)
+                        else:
+                            print(f'Unknown datapack type at path: {p}')
+
+            dpbuild.run(self.path, dep_paths, output_dir)
 
 
 def get_args() -> argparse.Namespace:
@@ -146,20 +204,15 @@ def valid_mcpy_datapack_path(path_str: str) -> Path:
     path = valid_datapack_path(path_str)
 
     if (
-        path.glob("*.py")
-        or (path / "src").glob("*.py")
-        or (path / "src").glob("*/*.py")
+        list(path.glob("*.py"))
+        or list((path / "src").glob("*.py"))
+        or list((path / "src").glob("*/*.py"))
     ):
         return path
     raise argparse.ArgumentTypeError(
         f"Datapack does not contain a .py file at {path.name}, {path / 'src'} or {path / 'src' / 'module'}"
     )
 
-
-def output_bundled(output_dir: Path, datapack_paths: list[Path]):
-    print("bundling")
-    if output_dir:
-        dpbuild.run([datapack_paths], output_dir, strict=True)
 
 def main():
     args = get_args()
@@ -168,17 +221,32 @@ def main():
     def timed_build():
         print(f"Building {datapack.path}")
         start = timer()
-        datapack.build(output_dir = args.output_dir)
+        datapack.build()
+        if args.output_dir:
+            datapack.dist(args.output_dir)
         end = timer()
         delta = timedelta(seconds=end - start)
         print(f"Build time: {delta}")
-    
+
     timed_build()
-    
+
     if args.watch:
+        watch_dirs = [datapack.get_module_path().parent]
+        if args.output_dir:
+            for p in datapack.get_includes():
+                p = datapack.path.parent.resolve() / p
+                try:
+                    dep_pack = McpyDatapack(p)
+                    watch_dirs.append(dep_pack.get_module_path().parent)
+                except:
+                    try:
+                        dep_pack = valid_datapack_path(p)
+                        watch_dirs.append(dep_pack)
+                    except:
+                        pass
         print(f"Watching files")
         print("Press Ctrl-C to stop at anytime")
-        for _ in watch(datapack.get_module_path().parent, raise_interrupt=False):
+        for _ in watch(*watch_dirs, raise_interrupt=False):
             try:
                 timed_build()
             except KeyboardInterrupt as e:
