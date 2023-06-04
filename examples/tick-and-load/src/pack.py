@@ -1,7 +1,7 @@
 from mcpy import *
 from mcpy_cmd import *
 
-@datapack
+@datapack(include=['simple-datapack'])
 def tick_and_load(ctx: Context):
     pack_namespace = "dt.example"
     pack_objective = Scoreboard.Objective(pack_namespace)
