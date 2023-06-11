@@ -11,6 +11,17 @@ import functools
 import json
 import tempfile
 import shutil
+import re
+from string import Template
+
+from .config import (
+    load_config,
+    write_config,
+    load_config_for_datapack,
+    find_config_path,
+    DEFAULT_CONFIG,
+    DEFAULT_NAME,
+)
 
 from watchfiles import watch
 import dpbuild
@@ -37,20 +48,21 @@ class Datapack:
         self.path = valid_datapack_path(path)
 
     def build(self, changed_files: list[Path]) -> None:
-        '''Build the datapack at the current path'''
+        """Build the datapack at the current path"""
         pass
-    
+
     def dist(self, output_dir: Path) -> None:
-        '''Build this datapack and bundle with dependencies'''
+        """Build this datapack and bundle with dependencies"""
         # TODO this could be copy since there are no deps
-        dpbuild.run(self.path,[], output_dir)
+        dpbuild.run(self.path, [], output_dir)
+
 
 class ArchiveDatapack(Datapack):
-   def dist(self, output_dir: Path) -> None:
-       return shutil.copyfile(self.path, output_dir / self.path.name)
-   
-   def __init__(self, path: str | Path) -> None:
-       self.path = Path(path)
+    def dist(self, output_dir: Path) -> None:
+        return shutil.copyfile(self.path, output_dir / self.path.name)
+
+    def __init__(self, path: str | Path) -> None:
+        self.path = Path(path)
 
 
 class McpyDatapack(Datapack):
@@ -73,22 +85,11 @@ class McpyDatapack(Datapack):
             raise ValueError("More than one entrypoint found. Only one is allowed")
         return marked_functions[0]
 
-    def get_config(self) -> dict:
-        config_file_name = "mcpy_config.json"
-        config = {"entrypoint": "pack.py"}
-        config_file_path = None
-        if (p := self.path / config_file_name).is_file():
-            config_file_path = p
-        elif (p := self.path / "src" / config_file_name).is_file():
-            config_file_path = p
-        # TODO lastly check inside module folder with glob
-        if config_file_path:
-            with open(config_file_path) as f:
-                config = json.load(f)
-        return config
+    def load_config(self) -> dict:
+        return load_config_for_datapack(self.path)
 
     def get_module_path(self) -> Path:
-        config = self.get_config()
+        config = self.load_config()
         if "entrypoint" in config:
             pack_file_name = config["entrypoint"]
             if (p := self.path / pack_file_name).is_file():
@@ -118,9 +119,9 @@ class McpyDatapack(Datapack):
     def dist(self, output_dir: Path):
         if not self.module:
             self.build()
-        
+
         dep_paths: list[Path] = []
-        with tempfile.TemporaryDirectory(prefix=f'deps_{self.path.stem}') as tmpdirname:
+        with tempfile.TemporaryDirectory(prefix=f"deps_{self.path.stem}") as tmpdirname:
             tmpdir = Path(tmpdirname)
             for p in self.get_includes():
                 p = self.path.parent.resolve() / p
@@ -136,31 +137,37 @@ class McpyDatapack(Datapack):
                         dep_pack.dist(tmpdir)
                         dep_paths.append(dep_path)
                     except Exception as e2:
-                        if p.is_file() and p.suffix == '.zip':
+                        if p.is_file() and p.suffix == ".zip":
                             dep_pack = ArchiveDatapack(p)
                             dep_pack.dist(tmpdir)
                             dep_paths.append(p)
                         else:
-                            print(f'Unknown datapack type at path: {p}')
+                            print(f"Unknown datapack type at path: {p}")
 
             dpbuild.run(self.path, dep_paths, output_dir)
 
 
 def get_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Build mcpy datapacks!")
-    parser.add_argument(
+    subparsers = parser.add_subparsers(dest="command")
+    init_parser = subparsers.add_parser("init")
+    # TODO type dir not just path
+    init_parser.add_argument("dir", type=Path, default=".", help="Directory")
+    build_parser = subparsers.add_parser("build")
+    build_parser.add_argument(
         "mcpy_datapack",
         nargs="?",
         type=McpyDatapack,
         default=".",
-        help="mcpy python file",
+        help="mcpy datapack directory",
     )
-    parser.add_argument(
+    build_parser.add_argument(
         "-w", "--watch", action="store_true", help="watch file changes and rebuild"
     )
-    parser.add_argument(
+    build_parser.add_argument(
         "-o", "--output-dir", type=Path, help="Directory to put compiled datapack"
     )
+    # parser.add_argument('--init',action='store_true',help='Initialize a datapack directory as an mcpy project')
     return parser.parse_args()
 
 
@@ -214,8 +221,84 @@ def valid_mcpy_datapack_path(path_str: str) -> Path:
     )
 
 
+def init_project(datapack_path: Path):
+    def input_value(name: str, default: str = None) -> str:
+        prompt = f"{name}: "
+        if default:
+            prompt += f"({default}) "
+        res = input(prompt)
+        return res if res.strip() else default
+
+    def confirm(text: str) -> bool:
+        res = input(f"{text}").strip().lower()
+        return res in ["y", "yes"]
+
+    if not datapack_path.is_dir():
+        if confirm(f"Create datapack dir at {datapack_path}? "):
+            datapack_path.mkdir(exist_ok=True, parents=True)
+        else:
+            return
+    mc_meta = datapack_path / "pack.mcmeta"
+    if not mc_meta.is_file():
+        desc = input_value("description", default="")
+        version = input_value("pack_format", default=15)
+        obj = {"version": version, "description": desc}
+        mc_meta.write_text(json.dumps(obj, indent=True))
+
+    # used for hello world
+    default_namespace = re.sub(f"[^a-z0-9_.\-]", "", datapack_path.stem.lower())
+    pack_namespace = input_value("Datapack namespace", default=default_namespace)
+    # TODO write hello world pack.py and build once?
+
+    src_path = datapack_path / "src"
+    src_path.mkdir(parents=True, exist_ok=True)
+    pack_file_name = input_value("entrypoint file", default="pack.py")
+    pack_file_path = src_path / pack_file_name
+    config_path = find_config_path(datapack_path, use_default=True)
+    config = load_config(config_path, nonexistent_ok=True)
+    do_write_config = False
+
+    # add override to config
+    if pack_file_name != "pack.py":
+        do_write_config = True
+        config["entrypoint"] = pack_file_name
+
+    # ask if want config only if not already writing
+    if do_write_config:
+        write_config(config_path, config)
+    else:
+        if confirm("Create config file? (mcpy_config.json) "):
+            write_config(config_path, config)
+
+    if pack_file_path.is_file():
+        print(f"Pack file exists at {pack_file_path}, will not write sample mcpy file.")
+    else:
+        default_program = Template(
+            """\
+from mcpy import *
+
+@datapack
+def simple_pack(ctx: Context):
+    with namespace(ctx, "$datapack_namespace"):
+        with dir(ctx, "api/greetings"):
+            with mcfunction(ctx, "hello"):
+                yield "say Hello!"
+
+    with namespace(ctx, "minecraft"):
+        with functions(ctx, "load"):
+            yield {"values": ["$datapack_namespace:api/greetings/hello"]}
+"""
+        ).safe_substitute({"datapack_namespace": pack_namespace})
+        pack_file_path.write_text(default_program)
+
+
 def main():
     args = get_args()
+
+    if args.command == "init":
+        init_project(args.dir)
+        return
+
     datapack = args.mcpy_datapack
 
     def timed_build():
