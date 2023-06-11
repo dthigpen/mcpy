@@ -1,3 +1,3 @@
-from .mcpy import main
+from .mcpy import _main
 
-main()
+_main()

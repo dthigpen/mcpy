@@ -28,6 +28,12 @@ import dpbuild
 
 
 def datapack(_func=None, *, include: list[str | Path] = None):
+    '''Decorator to wrap a datapack creation function
+
+    Args:
+        include: The names of dependencies to bundle this datapack with
+
+    '''
     def decorator_datapack(func):
         @functools.wraps(func)
         def datapack_wrapper(*args, **kwargs):
@@ -44,8 +50,9 @@ def datapack(_func=None, *, include: list[str | Path] = None):
 
 
 class Datapack:
+    '''Class to represent a datapack on the filesystem'''
     def __init__(self, path: str | Path) -> None:
-        self.path = valid_datapack_path(path)
+        self.path = _valid_datapack_path(path)
 
     def build(self, changed_files: list[Path]) -> None:
         """Build the datapack at the current path"""
@@ -58,17 +65,19 @@ class Datapack:
 
 
 class ArchiveDatapack(Datapack):
-    def dist(self, output_dir: Path) -> None:
-        return shutil.copyfile(self.path, output_dir / self.path.name)
-
-    def __init__(self, path: str | Path) -> None:
-        self.path = Path(path)
+   '''Class to represent a compressed datapack'''
+   def dist(self, output_dir: Path) -> None:
+       return shutil.copyfile(self.path, output_dir / self.path.name)
+   
+   def __init__(self, path: str | Path) -> None:
+       self.path = Path(path)
 
 
 class McpyDatapack(Datapack):
+    '''Class to represent an Mcpy datapack'''
     def __init__(self, path) -> None:
         super().__init__(path)
-        valid_mcpy_datapack_path(path)
+        _valid_mcpy_datapack_path(path)
         self.module = None
 
     def __get_fn(self) -> Callable:
@@ -86,9 +95,16 @@ class McpyDatapack(Datapack):
         return marked_functions[0]
 
     def load_config(self) -> dict:
+        '''Get the config file for this datapack
+        
+        Returns
+            A dict of the config keys and values
+        
+        '''
         return load_config_for_datapack(self.path)
 
     def get_module_path(self) -> Path:
+        '''Get the path to this datapack's python module (e.g. pack.py)'''
         config = self.load_config()
         if "entrypoint" in config:
             pack_file_name = config["entrypoint"]
@@ -102,6 +118,7 @@ class McpyDatapack(Datapack):
         raise ValueError("Unable to find entrypoint .py file!")
 
     def build(self, output_dir=None) -> None:
+        '''Update the datapack's data directory by running its code'''
         if not output_dir:
             output_dir = self.path
         if not self.module:
@@ -111,12 +128,19 @@ class McpyDatapack(Datapack):
         else:
             self.module = importlib.reload(self.module)
 
-        build(self.__get_fn(), output_dir)
+        _build(self.__get_fn(), output_dir)
 
     def get_includes(self) -> list[str | Path]:
+        '''Get the list of dependency paths to be included in the bundled datapack
+        
+        Returns:
+            A list of dependency paths relative to the datapack's root
+            
+        '''
         return getattr(self.__get_fn(), "mcpy_include")
 
     def dist(self, output_dir: Path):
+        '''Bundle the datapack and dependencies to an output directory'''
         if not self.module:
             self.build()
 
@@ -126,13 +150,13 @@ class McpyDatapack(Datapack):
             for p in self.get_includes():
                 p = self.path.parent.resolve() / p
                 try:
-                    dep_path = valid_mcpy_datapack_path(p)
+                    dep_path = _valid_mcpy_datapack_path(p)
                     dep_pack = McpyDatapack(p)
                     dep_pack.dist(tmpdir)
                     dep_paths.append(p)
                 except Exception as e1:
                     try:
-                        dep_path = valid_datapack_path(p)
+                        dep_path = _valid_datapack_path(p)
                         dep_pack = Datapack(p)
                         dep_pack.dist(tmpdir)
                         dep_paths.append(dep_path)
@@ -147,7 +171,7 @@ class McpyDatapack(Datapack):
             dpbuild.run(self.path, dep_paths, output_dir)
 
 
-def get_args() -> argparse.Namespace:
+def __get_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Build mcpy datapacks!")
     subparsers = parser.add_subparsers(dest="command")
     init_parser = subparsers.add_parser("init")
@@ -185,7 +209,7 @@ def __get_base_dir(base_dir: Path = None) -> Path:
     return Path.cwd() if base_dir is None else Path(base_dir)
 
 
-def build(builder_fn: Callable[[Context], None], output_dir: Path):
+def _build(builder_fn: Callable[[Context], None], output_dir: Path):
     ctx = Context(__get_base_dir(output_dir))
     items = builder_fn(ctx)
     if items:
@@ -193,7 +217,7 @@ def build(builder_fn: Callable[[Context], None], output_dir: Path):
             write(ctx, item)
 
 
-def valid_datapack_path(path_str: str) -> Path:
+def _valid_datapack_path(path_str: str) -> Path:
     path = Path(path_str)
     if not path.is_dir():
         raise argparse.ArgumentTypeError(f"Path to datapack does not exist: {path}")
@@ -207,8 +231,8 @@ def valid_datapack_path(path_str: str) -> Path:
     return path
 
 
-def valid_mcpy_datapack_path(path_str: str) -> Path:
-    path = valid_datapack_path(path_str)
+def _valid_mcpy_datapack_path(path_str: str) -> Path:
+    path = _valid_datapack_path(path_str)
 
     if (
         list(path.glob("*.py"))
@@ -246,7 +270,7 @@ def init_project(datapack_path: Path):
         mc_meta.write_text(json.dumps(obj, indent=True))
 
     # used for hello world
-    default_namespace = re.sub(f"[^a-z0-9_.\-]", "", datapack_path.stem.lower())
+    default_namespace = re.sub(r"[^a-z0-9_.\-]", "", datapack_path.stem.lower())
     pack_namespace = input_value("Datapack namespace", default=default_namespace)
     # TODO write hello world pack.py and build once?
 
@@ -292,13 +316,8 @@ def simple_pack(ctx: Context):
         pack_file_path.write_text(default_program)
 
 
-def main():
-    args = get_args()
-
-    if args.command == "init":
-        init_project(args.dir)
-        return
-
+def _main():
+    args = __get_args()
     datapack = args.mcpy_datapack
 
     def timed_build():
@@ -323,7 +342,7 @@ def main():
                     watch_dirs.append(dep_pack.get_module_path().parent)
                 except:
                     try:
-                        dep_pack = valid_datapack_path(p)
+                        dep_pack = _valid_datapack_path(p)
                         watch_dirs.append(dep_pack)
                     except:
                         pass

@@ -1,6 +1,6 @@
 import contextlib
 import textwrap
-from typing import Iterator
+from typing import Iterator, Literal
 from pathlib import Path
 import json
 from abc import ABC
@@ -15,6 +15,9 @@ DEFAULT_HEADER_MSG = "Built with mcpy (https://github.com/dthigpen/mcpy)"
 
 @dataclass
 class Context:
+    '''
+    A class to represent the state of the datapack. This gets passed into any function that needs to change the state.
+    '''
     base_dir: Path
     sub_dir_stack: list[Path] = field(default_factory=list)
     namespace: str = None
@@ -24,7 +27,8 @@ class Context:
     input_handler: Callable = None
 
     def get_path(self) -> Path:
-        """Get the current full path"""
+        """Returns the current full path in the datapack"""
+
         if not self.file_category:
             raise ValueError(
                 "File category not set! (e.g. pack/data/namespace/<category>/etc)"
@@ -52,22 +56,22 @@ def write(ctx, item: any) -> None:
     ctx.input_handler(ctx, item)
 
 
-def validate_files(ctx) -> None:
+def __validate_files(ctx) -> None:
     if not ctx.opened_file or ctx.opened_file.closed:
         raise ValueError("No opened files to write to")
     if not ctx.file_name:
         raise ValueError("Cannot write to empty or unspecified file name")
 
 
-def validate_not_in_file_context(ctx):
+def __validate_not_in_file_context(ctx):
     if ctx.file_name is not None or ctx.opened_file is not None:
         raise ValueError(
             "Illegal state, already in a file context. Try reordering your contexts"
         )
 
 
-def json_file_handler(ctx: Context, item: dict | str) -> None:
-    validate_files(ctx)
+def __json_file_handler(ctx: Context, item: dict | str) -> None:
+    __validate_files(ctx)
     if isinstance(item, dict):
         item = json.dumps(item, indent=4)
 
@@ -77,8 +81,8 @@ def json_file_handler(ctx: Context, item: dict | str) -> None:
     ctx.opened_file.write(item)
 
 
-def mcfunction_handler(ctx: Context, item: str | list[str]):
-    validate_files(ctx)
+def __mcfunction_handler(ctx: Context, item: str | list[str]):
+    __validate_files(ctx)
 
     def write_str(content: str):
         newline_count = content.count("\n")
@@ -103,16 +107,30 @@ def mcfunction_handler(ctx: Context, item: str | list[str]):
 
 
 @contextlib.contextmanager
-def dir(ctx: Context, name: str):
-    validate_not_in_file_context(ctx)
+def dir(ctx: Context, name: str) -> Iterator[None]:
+    '''Create a directory in the datapack
+    
+    Args:
+        ctx: The datapack context to apply the directory
+        name: The directory name
+    
+    '''
+    __validate_not_in_file_context(ctx)
     ctx.sub_dir_stack.append(Path(name))
     yield
     ctx.sub_dir_stack.pop()
 
 
 @contextlib.contextmanager
-def namespace(ctx: Context, name: str):
-    validate_not_in_file_context(ctx)
+def namespace(ctx: Context, name: str) -> Iterator[None]:
+    '''Create a namespace directory in the datapack
+    
+    Args:
+        ctx: The datapack context to apply the namespace
+        name: The namespace
+    
+    '''
+    __validate_not_in_file_context(ctx)
     prev_namespace = ctx.namespace
     ctx.namespace = name
     (ctx.base_dir / "data" / ctx.namespace).mkdir(parents=True, exist_ok=True)
@@ -124,12 +142,22 @@ def namespace(ctx: Context, name: str):
 def file(
     ctx: Context,
     name: str,
-    category=None,
-    mode="w",
-    header=False,
-    ctx_handler=None,
+    category: Literal['functions', 'tags', 'blocks','items, advancements']=None,
+    mode: str="w",
+    header: bool=False,
+    ctx_handler: Callable[[Context, any],None]=None,
     *args,
-):
+) -> Iterator[None]:
+    '''Underlying function to create a file in the datapack
+    
+    See mcfunction, functions, blocks, etc to write specific types.
+    
+    Args:
+        ctx: The datapack context to apply the file
+        name: The file name
+        category: the category of file. E.g. functions, tags, blocks, items, advancements
+    
+    '''
     with scoped_setattr(
         ctx,
         file_name=name,
@@ -149,51 +177,89 @@ def file(
 
 
 @contextlib.contextmanager
-def mcfunction(ctx: Context, name: str, *args, **kwargs):
+def tag(ctx: Context, name: str, tag_type: str) -> Iterator[None]:
+    '''Underlying function to create a tag file in the datapack
+    
+    Args:
+        ctx: The datapack context to apply the file
+        name: The name of the file
+        tag_type: The type of the tag file. E.g. functions, items, etc
+
+    '''
+    with dir(ctx, tag_type), json_file(
+        ctx, name, category="tags"
+    ) as f:
+        yield f
+
+
+@contextlib.contextmanager
+def mcfunction(ctx: Context, name: str) -> Iterator[None]:
+    '''Create an mcfunction file in the datapack
+    
+    Args:
+        ctx: The datapack context to apply the file
+        name: The name of the file
+    '''
     if not name.endswith(".mcfunction"):
         name += ".mcfunction"
     with file(
         ctx,
         name,
-        *args,
         category="functions",
         header=True,
-        ctx_handler=mcfunction_handler,
-        **kwargs,
+        ctx_handler=__mcfunction_handler,
     ) as f:
         yield f
 
 
 @contextlib.contextmanager
-def json_file(ctx: Context, name: str, *args, **kwargs):
+def json_file(ctx: Context, name: str, *args, **kwargs) -> Iterator[None]:
+    '''Create a JSON file in the datapack
+    
+    Args:
+        ctx: The datapack context to apply the file
+        name: The name of the file
+        *args: Additional arguments to be passed to the base file context manager
+        **kwargs: Additional keyword arguments to be passed to the base file context manager
+    '''
     if not name.endswith(".json"):
         name += ".json"
     # JSON files can be in multiple file categories so let caller pass it in
-    with file(ctx, name, *args, ctx_handler=json_file_handler, **kwargs) as f:
+    with file(ctx, name, *args, ctx_handler=__json_file_handler, **kwargs) as f:
         yield f
 
 
 @contextlib.contextmanager
-def tag(ctx: Context, name: str, tag_type: str, *args, **kwargs):
-    with dir(ctx, tag_type), json_file(
-        ctx, name, category="tags", *args, **kwargs
-    ) as f:
+def functions(ctx: Context, name: str) -> Iterator[None]:
+    '''Create a functions tag file in the datapack
+    
+    Args:
+        ctx: The datapack context to apply the file
+        name: The name of the file
+    '''
+    with tag(ctx, name, "functions") as f:
         yield f
 
 
 @contextlib.contextmanager
-def functions(ctx: Context, name: str, *args, **kwargs):
-    with tag(ctx, name, "functions", *args, **kwargs) as f:
+def blocks(ctx: Context, name: str) -> Iterator[None]:
+    '''Create a blocks tag file in the datapack
+    
+    Args:
+        ctx: The datapack context to apply the file
+        name: The name of the file
+    '''
+    with tag(ctx, name, "blocks") as f:
         yield f
 
 
 @contextlib.contextmanager
-def blocks(ctx: Context, name: str, *args, **kwargs):
-    with tag(ctx, name, "blocks", *args, **kwargs) as f:
-        yield f
-
-
-@contextlib.contextmanager
-def items(ctx: Context, name: str, *args, **kwargs):
-    with tag(ctx, name, "items", *args, **kwargs) as f:
+def items(ctx: Context, name: str) -> Iterator[None]:
+    '''Create an items tag file in the datapack
+    
+    Args:
+        ctx: The datapack context to apply the file
+        name: The name of the file
+    '''
+    with tag(ctx, name, "items") as f:
         yield f
