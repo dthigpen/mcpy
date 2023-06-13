@@ -4,23 +4,38 @@
 
 First, make sure you have Python 3 installed. You can check by running the command `python --version`. If it returns an error you can download it from [here](https://www.python.org/downloads/) or using your package manager.
 
+Create a directory for your datapack. For a simple datapack this can be directly in your world's datapacks folder. (e.g. `~/.minecraft/saves/<world>/datapacks/<your-datapack-name>`) Or anywhere else on the file system. Then navigate inside it
+```
+$ mkdir simple-datapack && cd simple-datapack
+```
+
+Create your project's Python environment and activate it. (This step is not strictly required but its a good practice!)
+
+```
+$ python -m venv env
+$ source env/bin/activate
+```
+
 Install the `mcpy` package
 
-```$ pip install git+https://github.com/dthigpen/mcpy```
+```
+$ pip install git+https://github.com/dthigpen/mcpy
+```
 
-Next create a directory for your datapack. For a simple datapack this can be directly in your world's datapacks folder. (e.g. `~/.minecraft/saves/<world>/datapacks/<your-datapack-name>`) Or anywhere else on the file system. Then navigate inside it
-
-`$ mkdir simple-datapack && cd simple-datapack`
 
 Initialize the project. Hit enter to use default values
 
-```$ python -m mcpy init```
+```
+$ python -m mcpy init
+```
 
 ## Building
 
 Build your pack's `data/` files with the following. Optionally, add `-w` or `--watch` to continuously build on file changes
 
-```$ python -m mcpy build```
+```
+$ python -m mcpy build
+```
 
 Open the Minecraft World with the datapack we just created and reload datapacks using the `/reload` command.
 
@@ -30,7 +45,20 @@ That's it! You should see the hello message upon reload.
 
 Open up the `pack.py` file and inspect the lines. The concepts should look familiar (E.g. namespaces, `.mcfunction` files, and `JSON` files are written)
 
-Notice how namespaces and mcfunctions are entered. Anything indented under the `namespace` line will be applied under the `simple_datapack` namespace.
+```python title="pack.py"
+@datapack
+def simple_pack(ctx: Context):
+    with namespace(ctx, "simple_datapack"):
+        with dir(ctx, "api/greetings"):
+            with mcfunction(ctx, "hello"):
+                yield "say Hello!"
+
+    with namespace(ctx, "minecraft"):
+        with functions(ctx, "load"):
+            yield {"values": ["simple_datapack:api/greetings/hello"]}
+```
+
+Notice how namespaces and mcfunction files are entered. Anything indented under the `namespace` line will be applied under the `simple_datapack` namespace.
 
 ```python title="pack.py"
 with namespace(ctx, "simple_datapack"):
@@ -49,8 +77,6 @@ with mcfunction(ctx, "hello"):
 Results in:
 
 ```mcfunction title="hello.mcfunction"
-# Built with mcpy (https://github.com/dthigpen/mcpy)
-
 say Hello There!
 ```
 
