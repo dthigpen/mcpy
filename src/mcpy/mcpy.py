@@ -176,7 +176,7 @@ def __get_args() -> argparse.Namespace:
     subparsers = parser.add_subparsers(dest="command")
     init_parser = subparsers.add_parser("init")
     # TODO type dir not just path
-    init_parser.add_argument("dir", type=Path, default=".", help="Directory")
+    init_parser.add_argument("dir", nargs="?", type=Path, default=".", help="Directory")
     build_parser = subparsers.add_parser("build")
     build_parser.add_argument(
         "mcpy_datapack",
@@ -254,7 +254,7 @@ def init_project(datapack_path: Path):
         return res if res.strip() else default
 
     def confirm(text: str) -> bool:
-        res = input(f"{text}").strip().lower()
+        res = input(f"{text}[y/n] ").strip().lower()
         return res in ["y", "yes"]
 
     if not datapack_path.is_dir():
@@ -270,7 +270,7 @@ def init_project(datapack_path: Path):
         mc_meta.write_text(json.dumps(obj, indent=True))
 
     # used for hello world
-    default_namespace = re.sub(r"[^a-z0-9_.\-]", "", datapack_path.stem.lower())
+    default_namespace = re.sub(r"[^a-z0-9_.\-]", "", datapack_path.resolve().stem.lower())
     pack_namespace = input_value("Datapack namespace", default=default_namespace)
     # TODO write hello world pack.py and build once?
 
@@ -317,6 +317,10 @@ def simple_pack(ctx: Context):
 
 
 def _main():
+    args = __get_args()
+    if args.command == "init":
+        init_project(args.dir)
+        return
     args = __get_args()
     datapack = args.mcpy_datapack
 
