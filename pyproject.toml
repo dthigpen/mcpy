@@ -5,7 +5,7 @@ authors = [{ name = "David Thigpen", email = "davidthigs@gmail.com" }]
 description = "A library for writing Minecraft datapacks in Python syntax"
 readme = "README.md"
 requires-python = ">=3.8"
-dependencies = ['watchfiles ~= 0.19.0', 'dpbuild >= 0.1.0']
+dependencies = ['watchfiles ~= 0.19.0', 'dpbuild@git+https://github.com/dthigpen/dpbuild']
 
 [project.optional-dependencies]
 # development dependency groups
