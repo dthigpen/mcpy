@@ -58,7 +58,7 @@ class Datapack:
         """Build the datapack at the current path"""
         pass
 
-    def dist(self, output_dir: Path) -> None:
+    def bundle(self, output_dir: Path) -> None:
         """Build this datapack and bundle with dependencies"""
         # TODO this could be copy since there are no deps
         dpbuild.run(self.path, [], output_dir)
@@ -66,7 +66,7 @@ class Datapack:
 
 class ArchiveDatapack(Datapack):
    '''Class to represent a compressed datapack'''
-   def dist(self, output_dir: Path) -> None:
+   def bundle(self, output_dir: Path) -> None:
        return shutil.copyfile(self.path, output_dir / self.path.name)
    
    def __init__(self, path: str | Path) -> None:
@@ -139,7 +139,7 @@ class McpyDatapack(Datapack):
         '''
         return getattr(self.__get_fn(), "mcpy_include")
 
-    def dist(self, output_dir: Path):
+    def bundle(self, output_dir: Path):
         '''Bundle the datapack and dependencies to an output directory'''
         if not self.module:
             self.build()
@@ -152,18 +152,18 @@ class McpyDatapack(Datapack):
                 try:
                     dep_path = _valid_mcpy_datapack_path(p)
                     dep_pack = McpyDatapack(p)
-                    dep_pack.dist(tmpdir)
+                    dep_pack.bundle(tmpdir)
                     dep_paths.append(p)
                 except Exception as e1:
                     try:
                         dep_path = _valid_datapack_path(p)
                         dep_pack = Datapack(p)
-                        dep_pack.dist(tmpdir)
+                        dep_pack.bundle(tmpdir)
                         dep_paths.append(dep_path)
                     except Exception as e2:
                         if p.is_file() and p.suffix == ".zip":
                             dep_pack = ArchiveDatapack(p)
-                            dep_pack.dist(tmpdir)
+                            dep_pack.bundle(tmpdir)
                             dep_paths.append(p)
                         else:
                             print(f"Unknown datapack type at path: {p}")
@@ -322,14 +322,14 @@ def _main():
         init_project(args.dir)
         return
     args = __get_args()
-    datapack = args.mcpy_datapack
+    datapack: Datapack = args.mcpy_datapack
 
     def timed_build():
         print(f"Building {datapack.path}")
         start = timer()
         datapack.build()
         if args.output_dir:
-            datapack.dist(args.output_dir)
+            datapack.bundle(args.output_dir)
         end = timer()
         delta = timedelta(seconds=end - start)
         print(f"Build time: {delta}")
