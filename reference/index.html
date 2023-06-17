@@ -388,8 +388,8 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#mcpy.mcpy.Datapack.dist" class="md-nav__link">
-    dist()
+  <a href="#mcpy.mcpy.Datapack.bundle" class="md-nav__link">
+    bundle()
   </a>
   
 </li>
@@ -415,8 +415,8 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#mcpy.mcpy.McpyDatapack.dist" class="md-nav__link">
-    dist()
+  <a href="#mcpy.mcpy.McpyDatapack.bundle" class="md-nav__link">
+    bundle()
   </a>
   
 </li>
@@ -615,8 +615,8 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#mcpy.mcpy.Datapack.dist" class="md-nav__link">
-    dist()
+  <a href="#mcpy.mcpy.Datapack.bundle" class="md-nav__link">
+    bundle()
   </a>
   
 </li>
@@ -642,8 +642,8 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#mcpy.mcpy.McpyDatapack.dist" class="md-nav__link">
-    dist()
+  <a href="#mcpy.mcpy.McpyDatapack.bundle" class="md-nav__link">
+    bundle()
   </a>
   
 </li>
@@ -1882,7 +1882,7 @@
 <span class="normal"><a href="#__codelineno-0-72">72</a></span>
 <span class="normal"><a href="#__codelineno-0-73">73</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-67"><a id="__codelineno-0-67" name="__codelineno-0-67"></a><span class="k">class</span> <span class="nc">ArchiveDatapack</span><span class="p">(</span><span class="n">Datapack</span><span class="p">):</span>
 </span><span id="__span-0-68"><a id="__codelineno-0-68" name="__codelineno-0-68"></a><span class="w">   </span><span class="sd">&#39;&#39;&#39;Class to represent a compressed datapack&#39;&#39;&#39;</span>
-</span><span id="__span-0-69"><a id="__codelineno-0-69" name="__codelineno-0-69"></a>   <span class="k">def</span> <span class="nf">dist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-0-69"><a id="__codelineno-0-69" name="__codelineno-0-69"></a>   <span class="k">def</span> <span class="nf">bundle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="__span-0-70"><a id="__codelineno-0-70" name="__codelineno-0-70"></a>       <span class="k">return</span> <span class="n">shutil</span><span class="o">.</span><span class="n">copyfile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">output_dir</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 </span><span id="__span-0-71"><a id="__codelineno-0-71" name="__codelineno-0-71"></a>
 </span><span id="__span-0-72"><a id="__codelineno-0-72" name="__codelineno-0-72"></a>   <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -1950,7 +1950,7 @@
 </span><span id="__span-0-58"><a id="__codelineno-0-58" name="__codelineno-0-58"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Build the datapack at the current path&quot;&quot;&quot;</span>
 </span><span id="__span-0-59"><a id="__codelineno-0-59" name="__codelineno-0-59"></a>        <span class="k">pass</span>
 </span><span id="__span-0-60"><a id="__codelineno-0-60" name="__codelineno-0-60"></a>
-</span><span id="__span-0-61"><a id="__codelineno-0-61" name="__codelineno-0-61"></a>    <span class="k">def</span> <span class="nf">dist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-0-61"><a id="__codelineno-0-61" name="__codelineno-0-61"></a>    <span class="k">def</span> <span class="nf">bundle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="__span-0-62"><a id="__codelineno-0-62" name="__codelineno-0-62"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Build this datapack and bundle with dependencies&quot;&quot;&quot;</span>
 </span><span id="__span-0-63"><a id="__codelineno-0-63" name="__codelineno-0-63"></a>        <span class="c1"># TODO this could be copy since there are no deps</span>
 </span><span id="__span-0-64"><a id="__codelineno-0-64" name="__codelineno-0-64"></a>        <span class="n">dpbuild</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="p">[],</span> <span class="n">output_dir</span><span class="p">)</span>
@@ -2000,8 +2000,8 @@
 
 
 
-<h3 id="mcpy.mcpy.Datapack.dist" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">dist</span><span class="p">(</span><span class="n">output_dir</span><span class="p">)</span></code>
+<h3 id="mcpy.mcpy.Datapack.bundle" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">bundle</span><span class="p">(</span><span class="n">output_dir</span><span class="p">)</span></code>
 
 </h3>
 
@@ -2015,7 +2015,7 @@
         <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-61">61</a></span>
 <span class="normal"><a href="#__codelineno-0-62">62</a></span>
 <span class="normal"><a href="#__codelineno-0-63">63</a></span>
-<span class="normal"><a href="#__codelineno-0-64">64</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-61"><a id="__codelineno-0-61" name="__codelineno-0-61"></a><span class="k">def</span> <span class="nf">dist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal"><a href="#__codelineno-0-64">64</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-61"><a id="__codelineno-0-61" name="__codelineno-0-61"></a><span class="k">def</span> <span class="nf">bundle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="__span-0-62"><a id="__codelineno-0-62" name="__codelineno-0-62"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Build this datapack and bundle with dependencies&quot;&quot;&quot;</span>
 </span><span id="__span-0-63"><a id="__codelineno-0-63" name="__codelineno-0-63"></a>    <span class="c1"># TODO this could be copy since there are no deps</span>
 </span><span id="__span-0-64"><a id="__codelineno-0-64" name="__codelineno-0-64"></a>    <span class="n">dpbuild</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="p">[],</span> <span class="n">output_dir</span><span class="p">)</span>
@@ -2215,7 +2215,7 @@
 </span><span id="__span-0-139"><a id="__codelineno-0-139" name="__codelineno-0-139"></a><span class="sd">        &#39;&#39;&#39;</span>
 </span><span id="__span-0-140"><a id="__codelineno-0-140" name="__codelineno-0-140"></a>        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__get_fn</span><span class="p">(),</span> <span class="s2">&quot;mcpy_include&quot;</span><span class="p">)</span>
 </span><span id="__span-0-141"><a id="__codelineno-0-141" name="__codelineno-0-141"></a>
-</span><span id="__span-0-142"><a id="__codelineno-0-142" name="__codelineno-0-142"></a>    <span class="k">def</span> <span class="nf">dist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">):</span>
+</span><span id="__span-0-142"><a id="__codelineno-0-142" name="__codelineno-0-142"></a>    <span class="k">def</span> <span class="nf">bundle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">):</span>
 </span><span id="__span-0-143"><a id="__codelineno-0-143" name="__codelineno-0-143"></a><span class="w">        </span><span class="sd">&#39;&#39;&#39;Bundle the datapack and dependencies to an output directory&#39;&#39;&#39;</span>
 </span><span id="__span-0-144"><a id="__codelineno-0-144" name="__codelineno-0-144"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="p">:</span>
 </span><span id="__span-0-145"><a id="__codelineno-0-145" name="__codelineno-0-145"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
@@ -2228,18 +2228,18 @@
 </span><span id="__span-0-152"><a id="__codelineno-0-152" name="__codelineno-0-152"></a>                <span class="k">try</span><span class="p">:</span>
 </span><span id="__span-0-153"><a id="__codelineno-0-153" name="__codelineno-0-153"></a>                    <span class="n">dep_path</span> <span class="o">=</span> <span class="n">_valid_mcpy_datapack_path</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
 </span><span id="__span-0-154"><a id="__codelineno-0-154" name="__codelineno-0-154"></a>                    <span class="n">dep_pack</span> <span class="o">=</span> <span class="n">McpyDatapack</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
-</span><span id="__span-0-155"><a id="__codelineno-0-155" name="__codelineno-0-155"></a>                    <span class="n">dep_pack</span><span class="o">.</span><span class="n">dist</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">)</span>
+</span><span id="__span-0-155"><a id="__codelineno-0-155" name="__codelineno-0-155"></a>                    <span class="n">dep_pack</span><span class="o">.</span><span class="n">bundle</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">)</span>
 </span><span id="__span-0-156"><a id="__codelineno-0-156" name="__codelineno-0-156"></a>                    <span class="n">dep_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
 </span><span id="__span-0-157"><a id="__codelineno-0-157" name="__codelineno-0-157"></a>                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e1</span><span class="p">:</span>
 </span><span id="__span-0-158"><a id="__codelineno-0-158" name="__codelineno-0-158"></a>                    <span class="k">try</span><span class="p">:</span>
 </span><span id="__span-0-159"><a id="__codelineno-0-159" name="__codelineno-0-159"></a>                        <span class="n">dep_path</span> <span class="o">=</span> <span class="n">_valid_datapack_path</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
 </span><span id="__span-0-160"><a id="__codelineno-0-160" name="__codelineno-0-160"></a>                        <span class="n">dep_pack</span> <span class="o">=</span> <span class="n">Datapack</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
-</span><span id="__span-0-161"><a id="__codelineno-0-161" name="__codelineno-0-161"></a>                        <span class="n">dep_pack</span><span class="o">.</span><span class="n">dist</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">)</span>
+</span><span id="__span-0-161"><a id="__codelineno-0-161" name="__codelineno-0-161"></a>                        <span class="n">dep_pack</span><span class="o">.</span><span class="n">bundle</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">)</span>
 </span><span id="__span-0-162"><a id="__codelineno-0-162" name="__codelineno-0-162"></a>                        <span class="n">dep_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dep_path</span><span class="p">)</span>
 </span><span id="__span-0-163"><a id="__codelineno-0-163" name="__codelineno-0-163"></a>                    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e2</span><span class="p">:</span>
 </span><span id="__span-0-164"><a id="__codelineno-0-164" name="__codelineno-0-164"></a>                        <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="ow">and</span> <span class="n">p</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s2">&quot;.zip&quot;</span><span class="p">:</span>
 </span><span id="__span-0-165"><a id="__codelineno-0-165" name="__codelineno-0-165"></a>                            <span class="n">dep_pack</span> <span class="o">=</span> <span class="n">ArchiveDatapack</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
-</span><span id="__span-0-166"><a id="__codelineno-0-166" name="__codelineno-0-166"></a>                            <span class="n">dep_pack</span><span class="o">.</span><span class="n">dist</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">)</span>
+</span><span id="__span-0-166"><a id="__codelineno-0-166" name="__codelineno-0-166"></a>                            <span class="n">dep_pack</span><span class="o">.</span><span class="n">bundle</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">)</span>
 </span><span id="__span-0-167"><a id="__codelineno-0-167" name="__codelineno-0-167"></a>                            <span class="n">dep_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
 </span><span id="__span-0-168"><a id="__codelineno-0-168" name="__codelineno-0-168"></a>                        <span class="k">else</span><span class="p">:</span>
 </span><span id="__span-0-169"><a id="__codelineno-0-169" name="__codelineno-0-169"></a>                            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown datapack type at path: </span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -2309,8 +2309,8 @@
 
 
 
-<h3 id="mcpy.mcpy.McpyDatapack.dist" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">dist</span><span class="p">(</span><span class="n">output_dir</span><span class="p">)</span></code>
+<h3 id="mcpy.mcpy.McpyDatapack.bundle" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">bundle</span><span class="p">(</span><span class="n">output_dir</span><span class="p">)</span></code>
 
 </h3>
 
@@ -2350,7 +2350,7 @@
 <span class="normal"><a href="#__codelineno-0-168">168</a></span>
 <span class="normal"><a href="#__codelineno-0-169">169</a></span>
 <span class="normal"><a href="#__codelineno-0-170">170</a></span>
-<span class="normal"><a href="#__codelineno-0-171">171</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-142"><a id="__codelineno-0-142" name="__codelineno-0-142"></a><span class="k">def</span> <span class="nf">dist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">):</span>
+<span class="normal"><a href="#__codelineno-0-171">171</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-142"><a id="__codelineno-0-142" name="__codelineno-0-142"></a><span class="k">def</span> <span class="nf">bundle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">):</span>
 </span><span id="__span-0-143"><a id="__codelineno-0-143" name="__codelineno-0-143"></a><span class="w">    </span><span class="sd">&#39;&#39;&#39;Bundle the datapack and dependencies to an output directory&#39;&#39;&#39;</span>
 </span><span id="__span-0-144"><a id="__codelineno-0-144" name="__codelineno-0-144"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="p">:</span>
 </span><span id="__span-0-145"><a id="__codelineno-0-145" name="__codelineno-0-145"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
@@ -2363,18 +2363,18 @@
 </span><span id="__span-0-152"><a id="__codelineno-0-152" name="__codelineno-0-152"></a>            <span class="k">try</span><span class="p">:</span>
 </span><span id="__span-0-153"><a id="__codelineno-0-153" name="__codelineno-0-153"></a>                <span class="n">dep_path</span> <span class="o">=</span> <span class="n">_valid_mcpy_datapack_path</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
 </span><span id="__span-0-154"><a id="__codelineno-0-154" name="__codelineno-0-154"></a>                <span class="n">dep_pack</span> <span class="o">=</span> <span class="n">McpyDatapack</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
-</span><span id="__span-0-155"><a id="__codelineno-0-155" name="__codelineno-0-155"></a>                <span class="n">dep_pack</span><span class="o">.</span><span class="n">dist</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">)</span>
+</span><span id="__span-0-155"><a id="__codelineno-0-155" name="__codelineno-0-155"></a>                <span class="n">dep_pack</span><span class="o">.</span><span class="n">bundle</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">)</span>
 </span><span id="__span-0-156"><a id="__codelineno-0-156" name="__codelineno-0-156"></a>                <span class="n">dep_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
 </span><span id="__span-0-157"><a id="__codelineno-0-157" name="__codelineno-0-157"></a>            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e1</span><span class="p">:</span>
 </span><span id="__span-0-158"><a id="__codelineno-0-158" name="__codelineno-0-158"></a>                <span class="k">try</span><span class="p">:</span>
 </span><span id="__span-0-159"><a id="__codelineno-0-159" name="__codelineno-0-159"></a>                    <span class="n">dep_path</span> <span class="o">=</span> <span class="n">_valid_datapack_path</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
 </span><span id="__span-0-160"><a id="__codelineno-0-160" name="__codelineno-0-160"></a>                    <span class="n">dep_pack</span> <span class="o">=</span> <span class="n">Datapack</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
-</span><span id="__span-0-161"><a id="__codelineno-0-161" name="__codelineno-0-161"></a>                    <span class="n">dep_pack</span><span class="o">.</span><span class="n">dist</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">)</span>
+</span><span id="__span-0-161"><a id="__codelineno-0-161" name="__codelineno-0-161"></a>                    <span class="n">dep_pack</span><span class="o">.</span><span class="n">bundle</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">)</span>
 </span><span id="__span-0-162"><a id="__codelineno-0-162" name="__codelineno-0-162"></a>                    <span class="n">dep_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dep_path</span><span class="p">)</span>
 </span><span id="__span-0-163"><a id="__codelineno-0-163" name="__codelineno-0-163"></a>                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e2</span><span class="p">:</span>
 </span><span id="__span-0-164"><a id="__codelineno-0-164" name="__codelineno-0-164"></a>                    <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="ow">and</span> <span class="n">p</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s2">&quot;.zip&quot;</span><span class="p">:</span>
 </span><span id="__span-0-165"><a id="__codelineno-0-165" name="__codelineno-0-165"></a>                        <span class="n">dep_pack</span> <span class="o">=</span> <span class="n">ArchiveDatapack</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
-</span><span id="__span-0-166"><a id="__codelineno-0-166" name="__codelineno-0-166"></a>                        <span class="n">dep_pack</span><span class="o">.</span><span class="n">dist</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">)</span>
+</span><span id="__span-0-166"><a id="__codelineno-0-166" name="__codelineno-0-166"></a>                        <span class="n">dep_pack</span><span class="o">.</span><span class="n">bundle</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">)</span>
 </span><span id="__span-0-167"><a id="__codelineno-0-167" name="__codelineno-0-167"></a>                        <span class="n">dep_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
 </span><span id="__span-0-168"><a id="__codelineno-0-168" name="__codelineno-0-168"></a>                    <span class="k">else</span><span class="p">:</span>
 </span><span id="__span-0-169"><a id="__codelineno-0-169" name="__codelineno-0-169"></a>                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown datapack type at path: </span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
