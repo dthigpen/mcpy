@@ -148,7 +148,8 @@ class McpyDatapack(Datapack):
         with tempfile.TemporaryDirectory(prefix=f"deps_{self.path.stem}") as tmpdirname:
             tmpdir = Path(tmpdirname)
             for p in self.get_includes():
-                p = self.path.parent.resolve() / p
+
+                p = self.path.resolve().parent.resolve() / p
                 try:
                     dep_path = _valid_mcpy_datapack_path(p)
                     dep_pack = McpyDatapack(p)
@@ -340,7 +341,7 @@ def _main():
         watch_dirs = [datapack.get_module_path().parent]
         if args.output_dir:
             for p in datapack.get_includes():
-                p = datapack.path.parent.resolve() / p
+                p = datapack.path.resolve().parent.resolve() / p
                 try:
                     dep_pack = McpyDatapack(p)
                     watch_dirs.append(dep_pack.get_module_path().parent)
