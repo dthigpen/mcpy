@@ -7,8 +7,8 @@ from mcpy import *
 
 @datapack
 def simple_pack(ctx: Context):
-    with namespace(ctx, "mypack"):
-        with mcfunction(ctx, "say_hello"):
+    with namespace("mypack"):
+        with mcfunction("say_hello"):
             # in mcfunction context
             for i in range(3):
                 yield f"say {i+1}.."
@@ -79,8 +79,8 @@ Disadvantages:
 
     @datapack
     def simple_pack(ctx: Context):
-        with namespace(ctx, "mypack"):
-            with mcfunction(ctx, "say_hello"):
+        with namespace("mypack"):
+            with mcfunction("say_hello"):
                 # in mcfunction context
                 for i in range(3):
                     yield f"say {i+1}.."
@@ -103,24 +103,24 @@ See the examples folder in this repository for full examples
 
 ```python
 # enter a namespace
-with namespace(ctx, 'name'):
+with namespace('name'):
     ...
 # (and implicit exit of each)
 
 # enter a dir
-with dir(ctx, 'name'):
+with dir('name'):
     ...
 
 # enter an mcfunction
-with mcfunction(ctx, 'name'):
+with mcfunction('name'):
     ...
 
 # enter a functions tag
-with functions(ctx, 'name'):
+with functions('name'):
     ...
 
 # enter a blocks tag
-with blocks(ctx, 'name'):
+with blocks('name'):
     ...
 ```
 
@@ -130,7 +130,7 @@ with blocks(ctx, 'name'):
 # import using standard python
 from mcpy_recurse import recurse
 ...
-with recurse(ctx, some, args):
+with recurse(some, args):
     yield 'say Over and over'
 ```
 
@@ -143,6 +143,6 @@ def lots_of_logic(greeting: str, start: int, end: int):
         yield f'say {i}. {greeting}!'
 
 # And call with
-with mcfunction(ctx, 'my_thing'):
+with mcfunction('my_thing'):
     yield from lots_of_logic('Hello', 1, 5)
 ```

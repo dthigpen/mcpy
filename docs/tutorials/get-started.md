@@ -48,29 +48,29 @@ Open up the `pack.py` file and inspect the lines. The concepts should look famil
 ```python title="pack.py"
 @datapack
 def simple_pack(ctx: Context):
-    with namespace(ctx, "simple_datapack"):
-        with dir(ctx, "api/greetings"):
-            with mcfunction(ctx, "hello"):
+    with namespace("simple_datapack"):
+        with dir("api/greetings"):
+            with mcfunction("hello"):
                 yield "say Hello!"
 
-    with namespace(ctx, "minecraft"):
-        with functions(ctx, "load"):
+    with namespace("minecraft"):
+        with functions("load"):
             yield {"values": ["simple_datapack:api/greetings/hello"]}
 ```
 
 Notice how namespaces and mcfunction files are entered. Anything indented under the `namespace` line will be applied under the `simple_datapack` namespace.
 
 ```python title="pack.py"
-with namespace(ctx, "simple_datapack"):
+with namespace("simple_datapack"):
     ...
-    with mcfunction(ctx, "hello"):
+    with mcfunction("hello"):
     ...
 ```
 
 Notice how lines are written to `.mcfunction` files. When Minecraft command strings are [yielded](https://docs.python.org/3/reference/expressions.html#yieldexpr) within the `mcfunction` context, they are written to the open `.mcfunction` file.
 
 ```python title="pack.py"
-with mcfunction(ctx, "hello"):
+with mcfunction("hello"):
     yield 'say Hello There!'
 ```
 
@@ -83,7 +83,7 @@ say Hello There!
 Similarly, JSON based files like the `load.json` and `tick.json` files work in the same way except that we can yield a Python `dict` to represent the JSON structure.
 
 ```python title="pack.py"
-with functions(ctx, "load"):
+with functions("load"):
     yield {"values": ["simple_datapack:api/greetings/hello"]}
 ```
 

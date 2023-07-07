@@ -5,21 +5,21 @@ from mcpy_cmd import *
 def tick_and_load(ctx: Context):
     pack_namespace = "dt.example"
     pack_objective = Scoreboard.Objective(pack_namespace)
-    with namespace(ctx, "dt.example"):
+    with namespace("dt.example"):
         # define our on_load function
-        with mcfunction(ctx, "on_load"):
+        with mcfunction("on_load"):
             yield pack_objective.add()
             yield Scoreboard.Player("*", pack_objective).reset()
             ticker_score = Scoreboard.Player("$dt.ticker", "dt.example")
             yield ticker_score.set(0)
             yield "say Loaded Tick-And-Load!!!"
         # add it to the minecraft load tag
-        with namespace(ctx, "minecraft"):
-            with functions(ctx, "load"):
+        with namespace("minecraft"):
+            with functions("load"):
                 yield {"values": ["dt.example:on_load"]}
 
         # now add our tick function
-        with mcfunction(ctx, "on_tick"):
+        with mcfunction("on_tick"):
             two_score = Scoreboard.Player("$two", "dt.example")
             five_score = Scoreboard.Player("$five", "dt.example")
             mod_five_score = Scoreboard.Player("$dt.mod5", "dt.example")
@@ -41,6 +41,6 @@ def tick_and_load(ctx: Context):
             """
 
         # and add it to the minecraft tick tag
-        with namespace(ctx, "minecraft"):
-            with functions(ctx, "tick"):
+        with namespace("minecraft"):
+            with functions("tick"):
                 yield {"values": ["dt.example:on_tick"]}

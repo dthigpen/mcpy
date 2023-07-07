@@ -12,8 +12,8 @@ from mcpy import *
 
 @datapack(include=['PlayerDB.v2.0.2.zip'])
 def simple_datapack(ctx: Context):
-    with namespace(ctx, "simple_datapack"):
-        with mcfunction(ctx, "say_hello"):
+    with namespace("simple_datapack"):
+        with mcfunction("say_hello"):
             # yield commands in mcfunction context
             for i in range(3):
                 yield f"say {i+1}.."
@@ -26,7 +26,7 @@ def simple_datapack(ctx: Context):
                 ])
 
         # Use functions from dependencies
-        with mcfunction(ctx, "save_data"):
+        with mcfunction("save_data"):
             yield 'function #rx.playerdb:api/v2/get/self'
             yield 'data modify storage rx.playerdb:io player.data.cool_pack set value {eggs: 3b}'
             yield 'function #rx.playerdb:api/v2/save/self
