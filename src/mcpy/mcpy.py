@@ -6,7 +6,7 @@ from pathlib import Path
 from timeit import default_timer as timer
 import traceback
 from datetime import timedelta
-from .context import Context, write
+from .context import Context, write, set_context, get_context
 import functools
 import json
 import tempfile
@@ -193,7 +193,13 @@ def __get_args() -> argparse.Namespace:
         "-o", "--output-dir", type=Path, help="Directory to put compiled datapack"
     )
     # parser.add_argument('--init',action='store_true',help='Initialize a datapack directory as an mcpy project')
-    return parser.parse_args()
+    args = parser.parse_args()
+    sub_commands = ('init', 'build')
+    if args.command not in sub_commands:
+        print(f'Must specify a valid command: {", ".join(sub_commands)}')
+        print(f'See help command for details.')
+        exit(1)
+    return args
 
 
 def __get_base_dir(base_dir: Path = None) -> Path:
@@ -212,10 +218,11 @@ def __get_base_dir(base_dir: Path = None) -> Path:
 
 def _build(builder_fn: Callable[[Context], None], output_dir: Path):
     ctx = Context(__get_base_dir(output_dir))
-    items = builder_fn(ctx)
+    set_context(ctx)
+    items = builder_fn()
     if items:
         for item in items:
-            write(ctx, item)
+            write(item)
 
 
 def _valid_datapack_path(path_str: str) -> Path:
@@ -303,14 +310,14 @@ def init_project(datapack_path: Path):
 from mcpy import *
 
 @datapack
-def simple_pack(ctx: Context):
-    with namespace(ctx, "$datapack_namespace"):
-        with dir(ctx, "api/greetings"):
-            with mcfunction(ctx, "hello"):
+def simple_pack():
+    with namespace("$datapack_namespace"):
+        with dir("api/greetings"):
+            with mcfunction("hello"):
                 yield "say Hello!"
 
-    with namespace(ctx, "minecraft"):
-        with functions(ctx, "load"):
+    with namespace("minecraft"):
+        with functions("load"):
             yield {"values": ["$datapack_namespace:api/greetings/hello"]}
 """
         ).safe_substitute({"datapack_namespace": pack_namespace})
@@ -322,7 +329,8 @@ def _main():
     if args.command == "init":
         init_project(args.dir)
         return
-    args = __get_args()
+    
+
     datapack: Datapack = args.mcpy_datapack
 
     def timed_build():
