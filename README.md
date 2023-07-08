@@ -6,7 +6,7 @@ A library for writing Minecraft datapacks using the Python language.
 from mcpy import *
 
 @datapack
-def simple_pack(ctx: Context):
+def simple_pack():
     with namespace("mypack"):
         with mcfunction("say_hello"):
             # in mcfunction context
@@ -78,7 +78,7 @@ Disadvantages:
     from mcpy import *
 
     @datapack
-    def simple_pack(ctx: Context):
+    def simple_pack():
         with namespace("mypack"):
             with mcfunction("say_hello"):
                 # in mcfunction context

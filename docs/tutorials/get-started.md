@@ -47,7 +47,7 @@ Open up the `pack.py` file and inspect the lines. The concepts should look famil
 
 ```python title="pack.py"
 @datapack
-def simple_pack(ctx: Context):
+def simple_pack():
     with namespace("simple_datapack"):
         with dir("api/greetings"):
             with mcfunction("hello"):

@@ -126,9 +126,6 @@ def dir(name: str) -> Iterator[None]:
 def get_context() -> Context:
     return __CONTEXT.get()
 
-def set_context(ctx: Context) -> contextvars.Token:
-    return __CONTEXT.set(ctx)
-
 
 @contextlib.contextmanager    
 def create_context(**context_changes):
