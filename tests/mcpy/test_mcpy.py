@@ -1,4 +1,5 @@
-from mcpy import Datapack, DEFAULT_HEADER_MSG
+from mcpy import *
+from mcpy.mcpy import build
 from pathlib import Path
 import json
 
@@ -10,37 +11,34 @@ def create_datapack_env(root_dir: Path):
 
 def test_file_creations(tmp_path):
     create_datapack_env(tmp_path)
-    pack = Datapack(base_dir=tmp_path)
     expected_mcfunction_content = (
         "# Built with mcpy (https://github.com/dthigpen/mcpy)\n" "\n" f"say hello" "\n"
     )
     expected_json_file_content_dict = {"values": ["test:foo", "test:bar"]}
-
+    @datapack
     def builder():
-        with pack.namespace("py.test"):
+        with namespace("py.test"):
             # mcfunction
-            with pack.mcfunction("myfile"):
+            with mcfunction("myfile"):
                 yield "say hello"
 
             # mcfunction
-            with pack.mcfunction("myfile2"):
-                pack.write("say hello")
+            with mcfunction("myfile2"):
+                yield ("say hello")
 
             # raw json file
-            with pack.dir("functions"):
-                with pack.json_file("my_json", category="tags"):
+            with dir("functions"):
+                with json_file("my_json", category="tags"):
                     yield expected_json_file_content_dict
             # blocks tag file
-            with pack.blocks("my_blocks"):
+            with blocks("my_blocks"):
                 yield expected_json_file_content_dict
 
             # different namespace
-            with pack.namespace("py.dev"):
-                with pack.mcfunction("say_hi"):
+            with namespace("py.dev"):
+                with mcfunction("say_hi"):
                     yield "say hello"
-
-    pack.build(builder())
-
+    build(builder, tmp_path)
     # data and namespace dirs
     assert tmp_path.joinpath("data", "py.test").is_dir()
 

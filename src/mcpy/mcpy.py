@@ -128,7 +128,7 @@ class _McpyDatapack(_Datapack):
         else:
             self.module = importlib.reload(self.module)
 
-        _build(self.__get_fn(), output_dir)
+        build(self.__get_fn(), output_dir)
 
     def get_includes(self) -> list[str | Path]:
         '''Get the list of dependency paths to be included in the bundled datapack
@@ -201,7 +201,16 @@ def __get_args() -> argparse.Namespace:
     return args
 
 
-def _build(builder_fn: Callable[[Context], None], output_dir: Path):
+def build(builder_fn: Callable[[Context], None], output_dir: Path):
+    '''Calls the given datapack builder function and writes the datapack to the output directory
+    
+    This automatically gets called when using the CLI tool.
+    
+    Args:
+        builder_fn: The datapack builder function
+        output_dir: The output location of the datapack
+    
+    '''
     with create_context(base_dir=output_dir):
         items = builder_fn()
         if items:

@@ -49,6 +49,11 @@ class Context:
             return path_dir / self.file_name
         return path_dir
 
+    def write(self, item: any) -> None:
+        """Handle the given input depending on the current context"""
+        if not self.input_handler:
+            raise ValueError("Unknown context. Cannot handle input")
+        self.input_handler(self, item)
 
 def write(item: any) -> None:
     """Handle the given input depending on the current context"""
