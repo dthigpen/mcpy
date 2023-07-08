@@ -113,7 +113,6 @@ def dir(name: str) -> Iterator[None]:
     '''Create a directory in the datapack
     
     Args:
-        ctx: The datapack context to apply the directory
         name: The directory name
     
     '''
@@ -124,11 +123,22 @@ def dir(name: str) -> Iterator[None]:
 
 
 def get_context() -> Context:
+    '''Get the current context of the datapack
+    
+    Returns:
+        Current context object
+
+    '''
     return __CONTEXT.get()
 
 
 @contextlib.contextmanager    
-def create_context(**context_changes):
+def create_context(**context_changes: any):
+    '''Underlying context manager for making changes to the current context
+    
+    Args:
+        context_changes: changes to apply to the new context
+    '''
     try:
         ctx = __CONTEXT.get()
     except LookupError as e:
@@ -142,7 +152,6 @@ def namespace(name: str) -> Iterator[None]:
     '''Create a namespace directory in the datapack
     
     Args:
-        ctx: The datapack context to apply the namespace
         name: The namespace
     
     '''
@@ -218,7 +227,7 @@ def mcfunction(name: str) -> Iterator[None]:
 
 
 @contextlib.contextmanager
-def json_file(name: str, *args, **kwargs) -> Iterator[None]:
+def json_file(name: str, *args: any, **kwargs: any) -> Iterator[None]:
     '''Create a JSON file in the datapack
     
     Args:
