@@ -6,7 +6,7 @@ from pathlib import Path
 from timeit import default_timer as timer
 import traceback
 from datetime import timedelta
-from .context import Context, write, set_context, get_context
+from .context import Context, write, create_context
 import functools
 import json
 import tempfile
@@ -49,7 +49,7 @@ def datapack(_func=None, *, include: list[str | Path] = None):
         return decorator_datapack(_func)
 
 
-class Datapack:
+class _Datapack:
     '''Class to represent a datapack on the filesystem'''
     def __init__(self, path: str | Path) -> None:
         self.path = _valid_datapack_path(path)
@@ -64,7 +64,7 @@ class Datapack:
         dpbuild.run(self.path, [], output_dir)
 
 
-class ArchiveDatapack(Datapack):
+class _ArchiveDatapack(_Datapack):
    '''Class to represent a compressed datapack'''
    def bundle(self, output_dir: Path) -> None:
        return shutil.copyfile(self.path, output_dir / self.path.name)
@@ -73,7 +73,7 @@ class ArchiveDatapack(Datapack):
        self.path = Path(path)
 
 
-class McpyDatapack(Datapack):
+class _McpyDatapack(_Datapack):
     '''Class to represent an Mcpy datapack'''
     def __init__(self, path) -> None:
         super().__init__(path)
@@ -152,18 +152,18 @@ class McpyDatapack(Datapack):
                 p = self.path.resolve().parent.resolve() / p
                 try:
                     dep_path = _valid_mcpy_datapack_path(p)
-                    dep_pack = McpyDatapack(p)
+                    dep_pack = _McpyDatapack(p)
                     dep_pack.bundle(tmpdir)
                     dep_paths.append(p)
                 except Exception as e1:
                     try:
                         dep_path = _valid_datapack_path(p)
-                        dep_pack = Datapack(p)
+                        dep_pack = _Datapack(p)
                         dep_pack.bundle(tmpdir)
                         dep_paths.append(dep_path)
                     except Exception as e2:
                         if p.is_file() and p.suffix == ".zip":
-                            dep_pack = ArchiveDatapack(p)
+                            dep_pack = _ArchiveDatapack(p)
                             dep_pack.bundle(tmpdir)
                             dep_paths.append(p)
                         else:
@@ -182,7 +182,7 @@ def __get_args() -> argparse.Namespace:
     build_parser.add_argument(
         "mcpy_datapack",
         nargs="?",
-        type=McpyDatapack,
+        type=_McpyDatapack,
         default=".",
         help="mcpy datapack directory",
     )
@@ -192,7 +192,6 @@ def __get_args() -> argparse.Namespace:
     build_parser.add_argument(
         "-o", "--output-dir", type=Path, help="Directory to put compiled datapack"
     )
-    # parser.add_argument('--init',action='store_true',help='Initialize a datapack directory as an mcpy project')
     args = parser.parse_args()
     sub_commands = ('init', 'build')
     if args.command not in sub_commands:
@@ -202,27 +201,12 @@ def __get_args() -> argparse.Namespace:
     return args
 
 
-def __get_base_dir(base_dir: Path = None) -> Path:
-    if base_dir is None:
-        cwd = Path.cwd()
-        if cwd.joinpath("pack.mcmeta").is_file():
-            base_dir = cwd
-        elif cwd.parent.joinpath("pack.mcmeta").is_file():
-            base_dir = cwd.parent
-        else:
-            raise ValueError(
-                "Must run from either the root of the datapack directory or inside the datapack-dir/src folder. Or manually pass in a directory with base_dir=<Path>"
-            )
-    return Path.cwd() if base_dir is None else Path(base_dir)
-
-
 def _build(builder_fn: Callable[[Context], None], output_dir: Path):
-    ctx = Context(__get_base_dir(output_dir))
-    set_context(ctx)
-    items = builder_fn()
-    if items:
-        for item in items:
-            write(item)
+    with create_context(base_dir=output_dir):
+        items = builder_fn()
+        if items:
+            for item in items:
+                write(item)
 
 
 def _valid_datapack_path(path_str: str) -> Path:
@@ -331,7 +315,7 @@ def _main():
         return
     
 
-    datapack: Datapack = args.mcpy_datapack
+    datapack: _Datapack = args.mcpy_datapack
 
     def timed_build():
         print(f"Building {datapack.path}")
@@ -351,7 +335,7 @@ def _main():
             for p in datapack.get_includes():
                 p = datapack.path.resolve().parent.resolve() / p
                 try:
-                    dep_pack = McpyDatapack(p)
+                    dep_pack = _McpyDatapack(p)
                     watch_dirs.append(dep_pack.get_module_path().parent)
                 except:
                     try:
