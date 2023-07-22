@@ -122,7 +122,7 @@ def dir(name: str) -> Iterator[None]:
     
     '''
     ctx = get_context()
-    __validate_not_in_file_context(ctx)
+    # __validate_not_in_file_context(ctx)
     with create_context(sub_dir_stack=(*ctx.sub_dir_stack, Path(name))):
         yield
 
@@ -137,6 +137,12 @@ def get_context() -> Context:
     return __CONTEXT.get()
 
 
+@contextlib.contextmanager
+def open_context(ctx: Context):
+    token = __CONTEXT.set(ctx)
+    yield
+    __CONTEXT.reset(token)
+
 @contextlib.contextmanager    
 def create_context(**context_changes: any):
     '''Underlying context manager for making changes to the current context
@@ -148,9 +154,8 @@ def create_context(**context_changes: any):
         ctx = __CONTEXT.get()
     except LookupError as e:
         ctx = Context(None)
-    token = __CONTEXT.set(replace(ctx, **context_changes))
-    yield
-    __CONTEXT.reset(token)
+    with open_context(replace(ctx, **context_changes)):
+        yield
 
 @contextlib.contextmanager
 def namespace(name: str) -> Iterator[None]:
@@ -161,7 +166,7 @@ def namespace(name: str) -> Iterator[None]:
     
     '''
     ctx = get_context()
-    __validate_not_in_file_context(ctx)
+    # __validate_not_in_file_context(ctx)
     with create_context(namespace=name):
         ctx = get_context()
         (ctx.base_dir / "data" / ctx.namespace).mkdir(parents=True, exist_ok=True)
