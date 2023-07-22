@@ -1,7 +1,7 @@
 from pathlib import Path
 import json
 
-DEFAULT_CONFIG = {"entrypoint": "pack.py"}
+DEFAULT_CONFIG = {"entrypoint": "pack.py", "generated_dir": "__generated__"}
 DEFAULT_NAME = "mcpy_config.json"
 
 
@@ -44,6 +44,8 @@ def load_config(config_path: Path, nonexistent_ok=False) -> dict:
             config = __merge(json.load(f), config)
     return config
 
+def load_default_config() -> dict:
+    return DEFAULT_CONFIG.copy()
 
 def load_config_for_datapack(datapack_path: Path) -> dict:
     config = DEFAULT_CONFIG.copy()

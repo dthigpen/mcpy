@@ -5,21 +5,28 @@ from pathlib import Path
 import json
 from typing import IO, Callable
 from pathlib import Path
-from dataclasses import dataclass, field, replace
+from dataclasses import dataclass, field, replace, KW_ONLY
 import inspect
 import contextvars
-
+from collections import defaultdict
 
 DEFAULT_HEADER_MSG = "Built with mcpy (https://github.com/dthigpen/mcpy)"
 
 __CONTEXT = contextvars.ContextVar('mcpy.context')
+__GLOBAL = contextvars.ContextVar('mcpy.global_context')
+
+@dataclass(frozen=True)
+class GlobalContext:
+    base_dir: Path
+    config: dict
+    counter: defaultdict[int] = field(default_factory=lambda: defaultdict(int), init=False)
+
 
 @dataclass(frozen=True)
 class Context:
     '''
     A class to represent the state of the datapack.
     '''
-    base_dir: Path
     sub_dir_stack: tuple[Path] = field(default_factory=tuple)
     namespace: str = None
     file_category: str = None
@@ -40,7 +47,7 @@ class Context:
             )
 
         path_dir = (
-            self.base_dir
+            get_global_context().base_dir
             / "data"
             / self.namespace
             / Path(self.file_category).joinpath(*self.sub_dir_stack)
@@ -122,8 +129,8 @@ def dir(name: str) -> Iterator[None]:
     
     '''
     ctx = get_context()
-    __validate_not_in_file_context(ctx)
-    with create_context(sub_dir_stack=(*ctx.sub_dir_stack, Path(name))):
+    # __validate_not_in_file_context(ctx)
+    with update_context(sub_dir_stack=(*ctx.sub_dir_stack, Path(name))):
         yield
 
 
@@ -136,21 +143,32 @@ def get_context() -> Context:
     '''
     return __CONTEXT.get()
 
+def get_global_context() -> GlobalContext:
+    return __GLOBAL.get()
+
+@contextlib.contextmanager
+def switch_context(ctx: Context):
+    token = __CONTEXT.set(ctx)
+    yield
+    __CONTEXT.reset(token)
 
 @contextlib.contextmanager    
-def create_context(**context_changes: any):
+def init_context(base_dir, config, **inital_ctx_args: any):
+    __GLOBAL.set(GlobalContext(base_dir, config))
+    ctx = Context(**inital_ctx_args)
+    with switch_context(ctx):
+        yield
+
+@contextlib.contextmanager    
+def update_context(**context_changes: any):
     '''Underlying context manager for making changes to the current context
     
     Args:
         context_changes: changes to apply to the new context
     '''
-    try:
-        ctx = __CONTEXT.get()
-    except LookupError as e:
-        ctx = Context(None)
-    token = __CONTEXT.set(replace(ctx, **context_changes))
-    yield
-    __CONTEXT.reset(token)
+    ctx = get_context()
+    with switch_context(replace(ctx, **context_changes)):
+        yield
 
 @contextlib.contextmanager
 def namespace(name: str) -> Iterator[None]:
@@ -161,10 +179,10 @@ def namespace(name: str) -> Iterator[None]:
     
     '''
     ctx = get_context()
-    __validate_not_in_file_context(ctx)
-    with create_context(namespace=name):
+    # __validate_not_in_file_context(ctx)
+    with update_context(namespace=name):
         ctx = get_context()
-        (ctx.base_dir / "data" / ctx.namespace).mkdir(parents=True, exist_ok=True)
+        (get_global_context().base_dir / "data" / ctx.namespace).mkdir(parents=True, exist_ok=True)
         yield
 
 
@@ -187,13 +205,13 @@ def file(
     
     '''
     ctx = get_context()
-    with create_context(file_name=name,
+    with update_context(file_name=name,
         file_category=category,
         input_handler=ctx_handler if ctx_handler else ctx.input_handler):
         ctx = get_context()
         ctx.get_path().parent.mkdir(parents=True, exist_ok=True)
         with open(ctx.get_path(), mode, *args) as f:
-            with create_context(opened_file=f):
+            with update_context(opened_file=f):
                 if header and mode == "w":
                     f.write(f"# {DEFAULT_HEADER_MSG}\n\n")
                 yield
