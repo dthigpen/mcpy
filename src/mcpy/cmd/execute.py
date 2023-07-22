@@ -49,7 +49,8 @@ def execute(conditions: str | list[str], limit=3):
                 yield
     if lines_buffer:
         with switch_context(prev_ctx):
-            item = tokens_to_str('execute',conditions, 'run', item)
-            write(item)
+            for line in lines_buffer:
+                line = tokens_to_str('execute',conditions, 'run', line)
+                write(line)
 
             

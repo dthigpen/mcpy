@@ -1,5 +1,6 @@
 from mcpy import *
 from mcpy.mcpy import build
+from mcpy.cmd import execute
 from pathlib import Path
 import json
 
@@ -26,6 +27,24 @@ def test_file_creations(tmp_path):
             with mcfunction("myfile2"):
                 yield ("say hello")
 
+            # mcfunction with execute
+            with mcfunction("myfile3"):
+                yield 'say before execute'
+
+                with execute('if score $holder obj matches 1'):
+                    yield 'say cmd 1'
+                    yield 'say cmd 2'
+
+                with execute('if score $holder obj matches 1'):
+                    yield 'say cmd 1'
+                    yield 'say cmd 2'
+                    yield 'say cmd 3'
+                    
+                with execute('if score $holder obj matches 1'):
+                    yield 'say cmd 1'
+                    yield 'say cmd 2'
+                    yield 'say cmd 3'
+                    yield 'say cmd 4'
             # raw json file
             with dir("functions"):
                 with json_file("my_json", category="tags"):
@@ -38,6 +57,7 @@ def test_file_creations(tmp_path):
             with namespace("py.dev"):
                 with mcfunction("say_hi"):
                     yield "say hello"
+
     build(builder, tmp_path)
     # data and namespace dirs
     assert tmp_path.joinpath("data", "py.test").is_dir()
@@ -48,7 +68,30 @@ def test_file_creations(tmp_path):
     # check the non yielding version
     file_path = tmp_path.joinpath("data", "py.test", "functions", "myfile2.mcfunction")
     assert file_path.read_text() == expected_mcfunction_content
-
+    # check execute was properly handled
+    file_path = tmp_path.joinpath("data", "py.test", "functions", "myfile3.mcfunction")
+    expected_execute_content = (
+        "# Built with mcpy (https://github.com/dthigpen/mcpy)\n"
+        "\n"
+        f"say before execute\n"
+        f"execute if score $holder obj matches 1 run say cmd 1\n"
+        f"execute if score $holder obj matches 1 run say cmd 2\n"
+        f"execute if score $holder obj matches 1 run say cmd 1\n"
+        f"execute if score $holder obj matches 1 run say cmd 2\n"
+        f"execute if score $holder obj matches 1 run say cmd 3\n"
+        f"execute if score $holder obj matches 1 run function py.test:__generated__/gen_myfile32\n"
+    )
+    assert file_path.read_text() == expected_execute_content
+    file_path = tmp_path.joinpath("data", "py.test", "functions", "__generated__","gen_myfile32.mcfunction")
+    expected_execute_content = (
+            "# Built with mcpy (https://github.com/dthigpen/mcpy)\n"
+            "\n"
+            f"say cmd 1\n"
+            f"say cmd 2\n"
+            f"say cmd 3\n"
+            f"say cmd 4\n"
+        )
+    assert file_path.read_text() == expected_execute_content
     file_path = tmp_path.joinpath("data", "py.dev", "functions", "say_hi.mcfunction")
     assert file_path.read_text() == expected_mcfunction_content
 
