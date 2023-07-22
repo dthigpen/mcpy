@@ -6,7 +6,7 @@ from pathlib import Path
 from timeit import default_timer as timer
 import traceback
 from datetime import timedelta
-from .context import Context, write, create_context
+from .context import Context, write, init_context
 import functools
 import json
 import tempfile
@@ -16,6 +16,7 @@ from string import Template
 
 from .config import (
     load_config,
+    load_default_config,
     write_config,
     load_config_for_datapack,
     find_config_path,
@@ -128,7 +129,7 @@ class _McpyDatapack(_Datapack):
         else:
             self.module = importlib.reload(self.module)
 
-        build(self.__get_fn(), output_dir)
+        build(self.__get_fn(), output_dir, config=self.load_config())
 
     def get_includes(self) -> list[str | Path]:
         '''Get the list of dependency paths to be included in the bundled datapack
@@ -201,7 +202,7 @@ def __get_args() -> argparse.Namespace:
     return args
 
 
-def build(builder_fn: Callable[[Context], None], output_dir: Path):
+def build(builder_fn: Callable[[Context], None], output_dir: Path, config=None):
     '''Calls the given datapack builder function and writes the datapack to the output directory
     
     This automatically gets called when using the CLI tool.
@@ -211,7 +212,9 @@ def build(builder_fn: Callable[[Context], None], output_dir: Path):
         output_dir: The output location of the datapack
     
     '''
-    with create_context(base_dir=output_dir):
+    if config is None:
+        config = load_default_config()
+    with init_context(output_dir, config):
         items = builder_fn()
         if items:
             for item in items:
