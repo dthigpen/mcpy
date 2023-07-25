@@ -67,7 +67,12 @@ def write(item: any) -> None:
     ctx = get_context()
     if not ctx.input_handler:
         raise ValueError("Unknown context. Cannot handle input")
-    ctx.input_handler(ctx, item)
+    if isinstance(item, list) or inspect.isgenerator(item):
+        for content in item:
+            ctx.input_handler(ctx, content)
+    else:
+        ctx.input_handler(ctx, item)
+    
 
 
 def __validate_files(ctx) -> None:
@@ -145,7 +150,7 @@ def switch_context(ctx: Context):
     __CONTEXT.reset(token)
 
 @contextlib.contextmanager    
-def init_context(base_dir, config, **inital_ctx_args: any):
+def init_context(base_dir: Path, config: dict, **initial_ctx_args: any):
     '''Underlying context manager for creating an initial datapack context
     
     Args:
@@ -154,7 +159,7 @@ def init_context(base_dir, config, **inital_ctx_args: any):
         initial_ctx_args: initial values to apply to the context
     '''
     __GLOBAL.set(GlobalContext(base_dir, config))
-    ctx = Context(**inital_ctx_args)
+    ctx = Context(**initial_ctx_args)
     with switch_context(ctx):
         yield
 

@@ -11,7 +11,7 @@ Build complex datapacks with ease using Python's expressive syntax and style!
 from mcpy import *
 
 @datapack(include=['PlayerDB.v2.0.2.zip'])
-def simple_datapack(ctx: Context):
+def simple_datapack():
     with namespace("simple_datapack"):
         with mcfunction("say_hello"):
             # yield commands in mcfunction context

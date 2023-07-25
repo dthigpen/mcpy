@@ -19,4 +19,5 @@ nav:
 - Get Started: tutorials/get-started.md
 - How-To Guides:
   - user-guides/how-to-include-dependencies.md
-- API Reference: reference.md
+- Mcpy API Reference: reference.md
+- Command API Reference: cmd_reference.md
