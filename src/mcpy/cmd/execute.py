@@ -1,10 +1,16 @@
-from .util import stringify, listify, tokens_to_str, file_path_to_mcfunction_path
+from .util import stringify, tokens_to_str, file_path_to_mcfunction_path
 from mcpy import Context, get_context, get_global_context, update_context, dir, mcfunction, write, switch_context
 import contextlib
 import dataclasses
 
 @contextlib.contextmanager
 def execute(conditions: str | list[str], limit=3):
+    '''Context manager to execute the inner statements with the given conditions
+    
+    Args:
+        conditions: execute conditions e.g. if, unless, store, etc to apply to each command
+        limit: the maximum number of inline commands to allow before creating a generated mcfunction file
+    '''
     conditions = stringify(conditions)
     lines_buffer = []
     wrote_temp_file = False
@@ -49,7 +55,8 @@ def execute(conditions: str | list[str], limit=3):
                 yield
     if lines_buffer:
         with switch_context(prev_ctx):
-            item = tokens_to_str('execute',conditions, 'run', item)
-            write(item)
+            for line in lines_buffer:
+                line = tokens_to_str('execute',conditions, 'run', line)
+                write(line)
 
             

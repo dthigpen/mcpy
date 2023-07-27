@@ -67,7 +67,12 @@ def write(item: any) -> None:
     ctx = get_context()
     if not ctx.input_handler:
         raise ValueError("Unknown context. Cannot handle input")
-    ctx.input_handler(ctx, item)
+    if isinstance(item, list) or inspect.isgenerator(item):
+        for content in item:
+            ctx.input_handler(ctx, content)
+    else:
+        ctx.input_handler(ctx, item)
+    
 
 
 def __validate_files(ctx) -> None:
@@ -75,13 +80,6 @@ def __validate_files(ctx) -> None:
         raise ValueError("No opened files to write to")
     if not ctx.file_name:
         raise ValueError("Cannot write to empty or unspecified file name")
-
-
-def __validate_not_in_file_context(ctx):
-    if ctx.file_name is not None or ctx.opened_file is not None:
-        raise ValueError(
-            "Illegal state, already in a file context. Try reordering your contexts"
-        )
 
 
 def __json_file_handler(ctx: Context, item: dict | str) -> None:
@@ -129,7 +127,6 @@ def dir(name: str) -> Iterator[None]:
     
     '''
     ctx = get_context()
-    # __validate_not_in_file_context(ctx)
     with update_context(sub_dir_stack=(*ctx.sub_dir_stack, Path(name))):
         yield
 
@@ -153,9 +150,16 @@ def switch_context(ctx: Context):
     __CONTEXT.reset(token)
 
 @contextlib.contextmanager    
-def init_context(base_dir, config, **inital_ctx_args: any):
+def init_context(base_dir: Path, config: dict, **initial_ctx_args: any):
+    '''Underlying context manager for creating an initial datapack context
+    
+    Args:
+        base_dir: datapack base directory
+        config: datapack config
+        initial_ctx_args: initial values to apply to the context
+    '''
     __GLOBAL.set(GlobalContext(base_dir, config))
-    ctx = Context(**inital_ctx_args)
+    ctx = Context(**initial_ctx_args)
     with switch_context(ctx):
         yield
 
@@ -179,7 +183,6 @@ def namespace(name: str) -> Iterator[None]:
     
     '''
     ctx = get_context()
-    # __validate_not_in_file_context(ctx)
     with update_context(namespace=name):
         ctx = get_context()
         (get_global_context().base_dir / "data" / ctx.namespace).mkdir(parents=True, exist_ok=True)
