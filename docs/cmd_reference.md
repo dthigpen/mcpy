@@ -34,19 +34,13 @@ with scope():
     arr.append(item)
 ```
 
-## Common
-
-Types used in many different commands
-
-::: mcpy.cmd.common
-
 ## Data Command
 
 ::: mcpy.cmd.data
 
 ## Execute Command
 
-::: mcpy.cmd.execute
+::: mcpy.cmd.exec
 
 ## Scoreboard Command
 

@@ -308,13 +308,15 @@ from mcpy import *
 @datapack
 def simple_pack():
     with namespace("$datapack_namespace"):
-        with dir("api/greetings"):
-            with mcfunction("hello"):
+        with directory("api/greetings"):
+            @mcfunction
+            def hello():
                 yield "say Hello!"
 
     with namespace("minecraft"):
-        with functions("load"):
-            yield {"values": ["$datapack_namespace:api/greetings/hello"]}
+        @functions
+        def load():
+            yield {"values": [str(hello)]}
 """
         ).safe_substitute({"datapack_namespace": pack_namespace})
         pack_file_path.write_text(default_program)

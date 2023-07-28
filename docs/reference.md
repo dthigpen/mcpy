@@ -1,5 +1,15 @@
 # API Reference
 
+## Context Managers
+
+::: mcpy.context_managers
+
+## Decorators
+
+::: mcpy.decorators
+
+## Context
+
 ::: mcpy.context
 
 ## Building
