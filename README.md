@@ -8,20 +8,27 @@ from mcpy import *
 @datapack
 def simple_pack():
     with namespace("mypack"):
-        with mcfunction("say_hello"):
-            # in mcfunction context
+        @mcfunction()
+        def greet():
+            yield "say Hello!"
+
+        @mcfunction()
+        def tick():
+            # count down messages
             for i in range(3):
                 yield f"say {i+1}.."
-            yield "say Hello!"
+            # call greeting message
+            greet()
 ```
 
 ```bash
-> python -m mcpy
+> python -m mcpy build
 # Outputs the data dir:
 # my-pack
 # ├── data
 # │   └── mypack
-# │       └── say_hello.mcfunction
+# │       ├── greet.mcfunction
+# │       └── tick.mcfunction
 ```
 
 ## Table of Contents
@@ -32,10 +39,6 @@ def simple_pack():
   - [Installation](#installation)
   - [Usage](#usage)
   - [Examples](#examples)
-  - [Features](#features)
-    - [Simple Syntax](#simple-syntax)
-    - [Extensible](#extensible)
-    - [Organize Complexity](#organize-complexity)
 
 ## Motivation
 
@@ -61,88 +64,8 @@ Disadvantages:
 
 ## Usage
 
-1. Prepare a directory for your new datapack. In your directory you will need a `pack.mcmeta` and a `src` folder for your Python code.
-
-    For example with a datapack called `my_pack`:
-
-    ```
-    .
-    └── my_pack
-        ├── pack.mcmeta
-        └── src
-    ```
-
-2. In `src/` create a `.py` file and use the `mcpy` library
-
-    ```python
-    from mcpy import *
-
-    @datapack
-    def simple_pack():
-        with namespace("mypack"):
-            with mcfunction("say_hello"):
-                # in mcfunction context
-                for i in range(3):
-                    yield f"say {i+1}.."
-                yield "say Hello!"
-    ```
-
-3. Run the script from the `src` or datapack directory to generate the `data` folder with your pack contents.
-
-    ```bash
-    > python -m mcpy py_pack:run
-    ```
+See the [Get Started](https://dthigpen.github.io/mcpy/tutorials/get-started/) Guide
 
 ## Examples
 
-See the examples folder in this repository for full examples
-
-## Features
-
-### Simple Syntax
-
-```python
-# enter a namespace
-with namespace('name'):
-    ...
-# (and implicit exit of each)
-
-# enter a dir
-with dir('name'):
-    ...
-
-# enter an mcfunction
-with mcfunction('name'):
-    ...
-
-# enter a functions tag
-with functions('name'):
-    ...
-
-# enter a blocks tag
-with blocks('name'):
-    ...
-```
-
-### Extensible
-
-```python
-# import using standard python
-from mcpy_recurse import recurse
-...
-with recurse(some, args):
-    yield 'say Over and over'
-```
-
-### Organize Complexity
-
-```python
-# organize with functions:
-def lots_of_logic(greeting: str, start: int, end: int):
-    for i in range(start, end):
-        yield f'say {i}. {greeting}!'
-
-# And call with
-with mcfunction('my_thing'):
-    yield from lots_of_logic('Hello', 1, 5)
-```
+Full examples can be found in the `examples` directory of this repository.

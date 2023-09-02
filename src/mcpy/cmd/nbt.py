@@ -1,5 +1,6 @@
+from __future__ import annotations
 from dataclasses import dataclass, replace
-from .common import CmdObject
+from .block import CmdObject
 from typing import Union
 
 NbtPrimitive = Union[str, int, bool, dict, list]
@@ -97,16 +98,23 @@ class NbtList(Value):
 @dataclass
 class NbtPath(CmdObject):
     '''NBT Path container'''
-    _path: str
+    path: str
 
     def __str__(self):
-        return self._path
+        return self.path
     
+    def __getitem__(self, key: any) -> NbtPath:
+        if isinstance(key, str):
+            return self.key(key)
+        elif isinstance(dict, key):
+            return self.where(key)
+
     def key(self, subpath: str):
-        return replace(self, _path=f'{self._path}.{subpath}')
+        return replace(self, path=f'{self.path}.{subpath}')
     
-    def at(self, index: any):
-        return replace(self, _path=f'{self._path}[{index}]')
+    def where(self, index_or_query: any):
+        index_or_query = as_nbt(index_or_query)
+        return replace(self, path=f'{self.path}[{index_or_query}]')
 
 
 def as_nbt(primitive_value: any):

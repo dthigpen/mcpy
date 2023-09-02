@@ -16,8 +16,8 @@ plugins:
 
 nav:
 - Home: index.md
-- Get Started: tutorials/get-started.md
-- How-To Guides:
-  - user-guides/how-to-include-dependencies.md
+- Get Started: get-started.md
+- working-with-commands.md
+- how-to-include-dependencies.md
 - Mcpy API Reference: reference.md
 - Command API Reference: cmd_reference.md

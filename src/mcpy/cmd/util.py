@@ -42,7 +42,6 @@ class CmdObject:
     def __post_init__(self):
         if not self.validate():
             raise TypeError('Invalid arguments')
-    
     def validate(self):
         return True
 
