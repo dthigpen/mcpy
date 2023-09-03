@@ -26,7 +26,12 @@ markdown_extensions:
 - pymdownx.superfences
 
 plugins:
-  - mkdocstrings
+- mkdocstrings:
+    handlers:
+      python:
+        options:
+          show_source: false
+
 
 nav:
 - Home: index.md

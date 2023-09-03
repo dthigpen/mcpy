@@ -1,3 +1,11 @@
+'''
+Module for all data command container types and functions
+
+Attributes:
+    TargetType (Union[StoragePath, EntityPath, BlockPath]): Data types that can be used as the target of a data command. (e.g. the one being affected)
+    SourceType (Union[StoragePath, EntityPath, BlockPath, Value, NbtPrimitive]): Data types that can be used as the source of a data command. (e.g. the one being read from)
+'''
+
 from .nbt import Value, NbtPath, as_nbt, NbtPrimitive
 from .util import tokens_to_str
 from dataclasses import dataclass, field
@@ -55,7 +63,10 @@ class DataCondition:
 
 @dataclass
 class DataPath(NbtPath, DataCondition):
-    """Base class to all data path types"""
+    """Base class to all data path types
+    
+    See `BlockPath`, `EntityPath`, and `StoragePath` for examples.
+    """
 
     def to_score(self, holder: str = None, objective: str = None) -> Score:
         """Convert this data path to a score value
@@ -104,7 +115,7 @@ class DataPath(NbtPath, DataCondition):
         )
         return self
 
-    def merge(self, source: any, modify: bool=True) -> Self:
+    def merge(self, source: any, modify: bool = True) -> Self:
         """Merge the data source into this data path.
 
         Args:
@@ -144,7 +155,17 @@ class DataPath(NbtPath, DataCondition):
 
 @dataclass
 class StoragePath(DataPath, Tellable):
-    """A container for a storage path"""
+    """A container for a storage path
+
+    Attributes:
+        namespace: storage namespace
+    
+    Example:
+    ``` python
+    some_data = StoragePath('some.path', 'namespace:io')
+    some_data.set("a string")
+    ```
+    """
 
     namespace: str
 
@@ -162,7 +183,19 @@ class StoragePath(DataPath, Tellable):
 
 @dataclass
 class EntityPath(DataPath, Tellable):
-    """A container for an entity path"""
+    """A container for an entity path
+
+    Attributes:
+        selector: entity selector
+    
+    Example:
+    ``` python
+    inventory_items = EntityPath("Inventory", CurrentEntity())
+    count = (
+        inventory_items.where({"id": "minecraft:stick"}).to_score()
+    )
+    ```
+    """
 
     selector: str
 
@@ -180,7 +213,20 @@ class EntityPath(DataPath, Tellable):
 
 @dataclass
 class BlockPath(DataPath, Tellable):
-    """A container for a block path"""
+    """A container for a block path
+    
+    Attributes:
+        pos: block pos string triplet (e.g. "~ 1 ~")
+    
+    Example:
+    ``` python
+    chest_items = BlockPath("Items", "~1 ~2 ~1")
+    count = (
+        chest_items.where({"id": "minecraft:stick"}).to_score()
+    )
+    ```
+    
+    """
 
     pos: str
 
@@ -207,10 +253,10 @@ def get_target_type(target: TargetType | Value) -> str:
 
     Returns:
         string representation of type
-    
+
     Raises:
         ValueError: if given an unhandled container type
-    
+
     Example:
     ``` python
     get_target_type(StoragePath('some.path','my_storage:'))

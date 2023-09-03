@@ -2,6 +2,14 @@
 
 The command API is focused on making the built-in Minecraft commands easier to work with.
 
+## NBT Data
+
+::: mcpy.cmd.nbt
+
+## Selectors
+
+::: mcpy.cmd.selector
+
 ## Data Command
 
 ::: mcpy.cmd.data
