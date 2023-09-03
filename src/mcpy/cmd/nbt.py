@@ -217,7 +217,7 @@ class NbtPath(CmdObject):
         '''
         return replace(self, path=f'{self.path}.{subpath}')
     
-    def where(self, index_or_query: any):
+    def where(self, index_or_query: any) -> Self:
         '''Create a new path from the current and given index or query
         Attributes:
             index_or_query: Index or query
@@ -227,7 +227,7 @@ class NbtPath(CmdObject):
         index_or_query = as_nbt(index_or_query)
         return replace(self, path=f'{self.path}[{index_or_query}]')
     
-    def at(self, index: any):
+    def at(self, index: any) -> Self:
         '''Create a new path from the current and given index or query
         Attributes:
             index_or_query: Index or query
@@ -237,7 +237,7 @@ class NbtPath(CmdObject):
         return self.where(index)
 
 
-def as_nbt(primitive_value: any):
+def as_nbt(primitive_value: any) -> Union[Value, Str, Bool, Int, NbtObj, NbtList]:
     '''Convert the given type into its NBT wrapped type if possible
     
     Attributes:
