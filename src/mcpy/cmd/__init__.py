@@ -1,5 +1,4 @@
 # Command modules
-print('IMPORTED CMD')
 from .exec import *
 from .data import *
 from .scoreboard import *

@@ -7,6 +7,7 @@ from .context import (
     update_context,
 )
 
+
 @contextlib.contextmanager
 def directory(name: str) -> Iterator[None]:
     """Create a directory in the datapack
