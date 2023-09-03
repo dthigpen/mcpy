@@ -38,10 +38,11 @@ def file_path_to_mcfunction_path(path: Path):
 
 @dataclass
 class CmdObject:
-    
+    '''Base container type class that all container types inherit from'''
     def __post_init__(self):
         if not self.validate():
             raise TypeError('Invalid arguments')
+    
     def validate(self):
         return True
 

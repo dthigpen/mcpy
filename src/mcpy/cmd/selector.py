@@ -1,9 +1,24 @@
+'''
+Module for all entity selector container types and functions
+'''
+
 from __future__ import annotations
 from dataclasses import dataclass, field
 from .util import CmdObject
 from .data import EntityPath
 @dataclass
 class Selector(CmdObject):
+    '''Base container type for entity selectors
+    
+    Attributes:
+        entity_type: type of entity (e.g. @s, @p)
+        arguments: selector arguments built with `where` function
+
+    Example:
+    ``` python
+    s = Selector('@s').where('tag','foo')
+    ```
+    '''
     entity_type: str
     arguments: tuple = field(default_factory=tuple)
 
@@ -33,18 +48,67 @@ class Selector(CmdObject):
 
 
 class AllPlayers(Selector):
+    '''`@a` selector container type
+    
+    Example:
+    ``` python
+    s = AllPlayers().where('tag','foo')
+    ```
+    '''
     def __init__(self):
         super().__init__('@a')
 
 class RandomPlayer(Selector):
+    '''`@r` selector container type
+    
+    Example:
+    ``` python
+    s = RandomPlayer().where('tag','foo')
+    ```
+    '''
     def __init__(self):
         super().__init__('@r')
 
 class NearestPlayer(Selector):
+    '''`@p` selector container type
+    
+    Example:
+    ``` python
+    s = NearestPlayer().where('tag','foo')
+    ```
+    '''
     def __init__(self):
         super().__init__('@p')
 
 class CurrentEntity(Selector):
+    '''`@s` selector container type
+    
+    Example:
+    ``` python
+    s = CurrentEntity().where('tag','foo')
+    ```
+    '''
     def __init__(self):
         super().__init__('@s')
+
+class AllEntities(Selector):
+    '''`@e` selector container type
+    
+    Example:
+    ``` python
+    s = AllEntities().where('tag','foo')
+    ```
+    '''
+    def __init__(self):
+        super().__init__('@e')
+
+class Entities(AllEntities):
+    '''`@e` selector container type
+    
+    Example:
+    ``` python
+    s = Entities().where('tag','foo')
+    ```
+    '''
+    pass
 

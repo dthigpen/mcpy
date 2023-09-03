@@ -9,4 +9,3 @@ from .tellraw import *
 from .vars import *
 from .nbt import *
 from .selector import *
-#from .file_resource import Resource
