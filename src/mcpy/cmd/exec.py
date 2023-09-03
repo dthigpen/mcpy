@@ -34,16 +34,16 @@ def execute(*conditions: str, limit: int = 3):
         limit: the maximum number of inline commands to allow before creating a generated mcfunction file. If `None` then all child commands will be inline.
 
     Example:
-    ``` python
-    @mcfunction
-    def myfile3():
-        ...
-        with execute('if score $holder obj matches 1'):
-            yield 'say cmd 1'
-            yield 'say cmd 2'
-            yield 'say cmd 3'
-            yield 'say cmd 4'
-    ```
+        ``` python
+        @mcfunction
+        def myfile3():
+            ...
+            with execute('if score $holder obj matches 1'):
+                yield 'say cmd 1'
+                yield 'say cmd 2'
+                yield 'say cmd 3'
+                yield 'say cmd 4'
+        ```
     """
     conditions = stringify(conditions)
     lines_buffer = []

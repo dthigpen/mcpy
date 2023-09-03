@@ -29,13 +29,13 @@ class DataCondition:
             Condition string
 
         Example:
-        ``` py
-        @mcfunction
-            def foo():
-                data = EntityPath("SelectedItem", CurrentEntity())
-                with execute(unless(data.present())):
-                    ...
-        ```
+            ``` py
+            @mcfunction
+                def foo():
+                    data = EntityPath("SelectedItem", CurrentEntity())
+                    with execute(unless(data.present())):
+                        ...
+            ```
         """
         return f"data {get_target_type(self)} {self}"
 
@@ -48,15 +48,15 @@ class DataCondition:
             Condition string
 
         Example:
-        ``` py
-        @mcfunction
-            def foo():
-                data = EntityPath("SelectedItem", CurrentEntity())
-                with execute(
-                    unless(data.has_value({"id": "minecraft:apple", "Count": "1b"}))
-                ):
-                    ...
-        ```
+            ``` py
+            @mcfunction
+                def foo():
+                    data = EntityPath("SelectedItem", CurrentEntity())
+                    with execute(
+                        unless(data.has_value({"id": "minecraft:apple", "Count": "1b"}))
+                    ):
+                        ...
+            ```
         """
         raise NotImplementedError()
 
@@ -161,10 +161,10 @@ class StoragePath(DataPath, Tellable):
         namespace: storage namespace
     
     Example:
-    ``` python
-    some_data = StoragePath('some.path', 'namespace:io')
-    some_data.set("a string")
-    ```
+        ``` python
+        some_data = StoragePath('some.path', 'namespace:io')
+        some_data.set("a string")
+        ```
     """
 
     namespace: str
@@ -189,12 +189,12 @@ class EntityPath(DataPath, Tellable):
         selector: entity selector
     
     Example:
-    ``` python
-    inventory_items = EntityPath("Inventory", CurrentEntity())
-    count = (
-        inventory_items.where({"id": "minecraft:stick"}).to_score()
-    )
-    ```
+        ``` python
+        inventory_items = EntityPath("Inventory", CurrentEntity())
+        count = (
+            inventory_items.where({"id": "minecraft:stick"}).to_score()
+        )
+        ```
     """
 
     selector: str
@@ -219,12 +219,12 @@ class BlockPath(DataPath, Tellable):
         pos: block pos string triplet (e.g. "~ 1 ~")
     
     Example:
-    ``` python
-    chest_items = BlockPath("Items", "~1 ~2 ~1")
-    count = (
-        chest_items.where({"id": "minecraft:stick"}).to_score()
-    )
-    ```
+        ``` python
+        chest_items = BlockPath("Items", "~1 ~2 ~1")
+        count = (
+            chest_items.where({"id": "minecraft:stick"}).to_score()
+        )
+        ```
     
     """
 
@@ -258,10 +258,10 @@ def get_target_type(target: TargetType | Value) -> str:
         ValueError: if given an unhandled container type
 
     Example:
-    ``` python
-    get_target_type(StoragePath('some.path','my_storage:'))
-    # returns "storage"
-    ```
+        ``` python
+        get_target_type(StoragePath('some.path','my_storage:'))
+        # returns "storage"
+        ```
     """
     if isinstance(target, EntityPath):
         return "entity"

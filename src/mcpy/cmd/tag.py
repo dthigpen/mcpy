@@ -20,11 +20,11 @@ def tag_add(entity_selector: Selector, tag: Tag) -> Iterator[str]:
         yielded command
 
     Example:
-    ``` python
-    enabled = Tag('enabled')
-    tag_add(CurrentEntity(), enabled)
-    tag_add(CurrentEntity(), 'foo')
-    ```
+        ``` python
+        enabled = Tag('enabled')
+        tag_add(CurrentEntity(), enabled)
+        tag_add(CurrentEntity(), 'foo')
+        ```
     '''
     yield f'tag {entity_selector} add {tag}'
 
@@ -39,11 +39,11 @@ def tag_remove(entity_selector: Selector, tag: Tag) -> Iterator[str]:
         yielded command
 
     Example:
-    ``` python
-    enabled = Tag('enabled')
-    tag_remove(CurrentEntity(), enabled)
-    tag_remove(CurrentEntity(), 'foo')
-    ```
+        ``` python
+        enabled = Tag('enabled')
+        tag_remove(CurrentEntity(), enabled)
+        tag_remove(CurrentEntity(), 'foo')
+        ```
     '''
     yield f'tag {entity_selector} remove {tag}'
 
@@ -55,10 +55,10 @@ class Tag(CmdObject):
         name: Optional name for the tag
     
     Example:
-    ``` python
-    enabled = Tag('enabled')
-    temp_tag = Tag()
-    ```
+        ``` python
+        enabled = Tag('enabled')
+        temp_tag = Tag()
+        ```
     '''
     name: str = None
 
@@ -75,10 +75,10 @@ class Tag(CmdObject):
             New negated tag
         
         Example:
-        ``` python
-        enabled = Tag('enabled')
-        not_enabled = Entities().where('tag', enabled.negate())
-        ```
+            ``` python
+            enabled = Tag('enabled')
+            not_enabled = Entities().where('tag', enabled.negate())
+            ```
         '''
         if self.name[0] == '!':
             return Tag(f'{self.name[1:]}')
@@ -91,10 +91,10 @@ class Tag(CmdObject):
             New negated tag
 
         Example:
-        ``` python
-        enabled = Tag('enabled')
-        not_enabled = Entities().where('tag', ~enabled)
-        ```
+            ``` python
+            enabled = Tag('enabled')
+            not_enabled = Entities().where('tag', ~enabled)
+            ```
         '''
         return self.negate()
     
@@ -110,10 +110,10 @@ class Tag(CmdObject):
             Self
 
         Example:
-        ``` python
-        enabled = Tag('enabled')
-        enabled.add(CurrentEntity())
-        ```
+            ``` python
+            enabled = Tag('enabled')
+            enabled.add(CurrentEntity())
+            ```
         '''
         write(tag_add(entity_selector, self))
         return self
@@ -127,10 +127,10 @@ class Tag(CmdObject):
             Self
 
         Example:
-        ``` python
-        enabled = Tag('enabled')
-        enabled.remove(CurrentEntity())
-        ```
+            ``` python
+            enabled = Tag('enabled')
+            enabled.remove(CurrentEntity())
+            ```
         '''
         write(tag_remove(entity_selector, self))
         return self
