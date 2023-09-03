@@ -214,6 +214,12 @@ class NbtPath(CmdObject):
             subpath: Subpath key(s) to add to this path
         Returns:
             A new NbtPath
+
+        Example:
+            ``` python
+            path = str(NbtPath('foo').key('bar'))
+            # returns 'foo.bar'
+            ```
         '''
         return replace(self, path=f'{self.path}.{subpath}')
     
@@ -223,6 +229,12 @@ class NbtPath(CmdObject):
             index_or_query: Index or query
         Returns:
             A new NbtPath
+
+        Example:
+            ``` python
+            path = str(NbtPath('foo').where({"Count":Byte(2)}))
+            # returns 'foo[{"Count":1b}]'
+            ```
         '''
         index_or_query = as_nbt(index_or_query)
         return replace(self, path=f'{self.path}[{index_or_query}]')
@@ -233,6 +245,12 @@ class NbtPath(CmdObject):
             index_or_query: Index or query
         Returns:
             A new NbtPath
+        
+        Example:
+            ``` python
+            path = str(NbtPath('foo').where({"Count":Byte(2)}))
+            # returns 'foo[{"Count":1b}]'
+            ```
         '''
         return self.where(index)
 
