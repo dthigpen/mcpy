@@ -5,6 +5,11 @@ from abc import ABC, abstractmethod
 class Tellable(ABC):
     @abstractmethod
     def to_tellable(self) -> dict:
+        """Converts this container type to a tellraw printable element
+
+        Returns:
+            dict tellraw element
+        """
         pass
     
 # def tellraw(entity_selector: Selector, *items: any):
