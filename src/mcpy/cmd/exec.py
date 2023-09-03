@@ -1,3 +1,7 @@
+'''
+Module for all execute command container types and functions
+'''
+
 from .util import stringify, tokens_to_str
 from ..context import (
     get_context,
@@ -27,7 +31,19 @@ def execute(*conditions: str, limit: int = 3):
 
     Args:
         conditions: execute conditions e.g. if, unless, store, etc to apply to each command
-        limit: the maximum number of inline commands to allow before creating a generated mcfunction file
+        limit: the maximum number of inline commands to allow before creating a generated mcfunction file. If `None` then all child commands will be inline.
+
+    Example:
+    ``` python
+    @mcfunction
+    def myfile3():
+        ...
+        with execute('if score $holder obj matches 1'):
+            yield 'say cmd 1'
+            yield 'say cmd 2'
+            yield 'say cmd 3'
+            yield 'say cmd 4'
+    ```
     """
     conditions = stringify(conditions)
     lines_buffer = []
@@ -93,6 +109,20 @@ def execute(*conditions: str, limit: int = 3):
 
 
 def if_(*conditions: str) -> str:
+    '''Wrapper for building "execute if" conditions
+
+    Args:
+        conditions: all conditions to prefix with "if"
+    
+    Example:
+        ``` py
+        @mcfunction
+            def foo():
+                data = EntityPath("SelectedItem", CurrentEntity())
+                with execute(if_(data.present())):
+                    ...
+        ```
+    '''
     fragments = []
     for cond in conditions:
         fragments.append(f"if {cond}")
@@ -100,6 +130,20 @@ def if_(*conditions: str) -> str:
 
 
 def unless(*conditions: str) -> str:
+    '''Wrapper for building "execute unless" conditions
+
+    Args:
+        conditions: all conditions to prefix with "unless"
+    
+    Example:
+        ``` py
+        @mcfunction
+            def foo():
+                data = EntityPath("SelectedItem", CurrentEntity())
+                with execute(unless(data.present())):
+                    ...
+        ```
+    '''
     fragments = []
     for cond in conditions:
         fragments.append(f"unless {cond}")
