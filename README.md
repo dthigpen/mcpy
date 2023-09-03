@@ -1,6 +1,6 @@
 # mcpy
 
-A library for writing Minecraft datapacks using the Python language.
+A library for writing Minecraft datapacks using the Python language. See the [mcpy Docs](https://dthigpen.github.io/mcpy/) for details.
 
 ```python
 from mcpy import *
