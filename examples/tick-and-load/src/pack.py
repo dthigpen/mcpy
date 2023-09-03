@@ -7,7 +7,8 @@ def tick_and_load():
     pack_objective = Scoreboard.Objective(pack_namespace)
     with namespace("dt.example"):
         # define our on_load function
-        with mcfunction_old("on_load"):
+        @mcfunction
+        def on_load():
             yield pack_objective.add()
             yield Scoreboard.Player("*", pack_objective).reset()
             ticker_score = Scoreboard.Player("$dt.ticker", "dt.example")
@@ -15,11 +16,13 @@ def tick_and_load():
             yield "say Loaded Tick-And-Load!!!"
         # add it to the minecraft load tag
         with namespace("minecraft"):
-            with functions_old("load"):
+            @functions
+            def load():
                 yield {"values": ["dt.example:on_load"]}
 
         # now add our tick function
-        with mcfunction_old("on_tick"):
+        @mcfunction
+        def on_tick():
             two_score = Scoreboard.Player("$two", "dt.example")
             five_score = Scoreboard.Player("$five", "dt.example")
             mod_five_score = Scoreboard.Player("$dt.mod5", "dt.example")
@@ -42,5 +45,6 @@ def tick_and_load():
 
         # and add it to the minecraft tick tag
         with namespace("minecraft"):
-            with functions_old("tick"):
+            @functions
+            def tick():
                 yield {"values": ["dt.example:on_tick"]}
