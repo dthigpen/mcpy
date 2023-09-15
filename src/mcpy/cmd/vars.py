@@ -120,13 +120,14 @@ def scoped_mcfunction(generator_fn: Callable[[],Iterator]=None, *, name:str = No
 
         def wrapped_callable():
             with scope():
-                return func()
+                items = func()
+                if items:
+                    for item in items:
+                        yield item
         wrapped_callable.__name__ = func.__name__
         return ScopedFunctionResource(mcfunction(wrapped_callable, name=name, **kwargs).path)
 
     if generator_fn is None:
-        print('non')
         return decorator_mcfunction
     else:
-        print('scoped_mcfunction decorator_mcfunction with func')
         return decorator_mcfunction(generator_fn)
