@@ -17,6 +17,12 @@ class Selector(CmdObject):
     Example:
         ``` python
         s = Selector('@s').where('tag','foo')
+        # or use built in ones
+        s = CurrentEntity.where('tag','foo')
+        a = AllPlayers.where('tag','foo')
+        r = RandomPlayer.where('tag','foo')
+        p = NearestPlayer.where('tag','foo')
+        e = Entities.where('tag','foo')
         ```
     '''
     entity_type: str
@@ -46,69 +52,8 @@ class Selector(CmdObject):
             result += ']'
         return result
 
-
-class AllPlayers(Selector):
-    '''`@a` selector container type
-    
-    Example:
-        ``` python
-        s = AllPlayers().where('tag','foo')
-        ```
-    '''
-    def __init__(self):
-        super().__init__('@a')
-
-class RandomPlayer(Selector):
-    '''`@r` selector container type
-    
-    Example:
-        ``` python
-        s = RandomPlayer().where('tag','foo')
-        ```
-    '''
-    def __init__(self):
-        super().__init__('@r')
-
-class NearestPlayer(Selector):
-    '''`@p` selector container type
-    
-    Example:
-        ``` python
-        s = NearestPlayer().where('tag','foo')
-        ```
-    '''
-    def __init__(self):
-        super().__init__('@p')
-
-class CurrentEntity(Selector):
-    '''`@s` selector container type
-    
-    Example:
-        ``` python
-        s = CurrentEntity().where('tag','foo')
-        ```
-    '''
-    def __init__(self):
-        super().__init__('@s')
-
-class AllEntities(Selector):
-    '''`@e` selector container type
-    
-    Example:
-        ``` python
-        s = AllEntities().where('tag','foo')
-        ```
-    '''
-    def __init__(self):
-        super().__init__('@e')
-
-class Entities(AllEntities):
-    '''`@e` selector container type
-    
-    Example:
-        ``` python
-        s = Entities().where('tag','foo')
-        ```
-    '''
-    pass
-
+AllPlayers = Selector('@a')
+CurrentEntity = Selector('@s')
+RandomPlayer = Selector('@r')
+NearestPlayer = Selector('@p')
+Entities = Selector('@e')

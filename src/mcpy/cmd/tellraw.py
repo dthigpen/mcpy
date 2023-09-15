@@ -18,7 +18,7 @@ class Tellable(ABC):
         """
         pass
 
-def tellraw(entity_selector, *items: Union[Tellable,str,dict]) -> None:
+def tellraw(entity_selector: any, *items: Union[Tellable,str,dict]) -> None:
     '''Writes a tellraw command using the given items
     
     Args:
@@ -29,7 +29,7 @@ def tellraw(entity_selector, *items: Union[Tellable,str,dict]) -> None:
             ``` python
             foo_var = Var()
             foo_var.set(True)
-            tellraw(CurrentEntity(),"Enabled: ", foo_var)
+            tellraw(CurrentEntity,"Enabled: ", foo_var)
             ```
     '''
     res = []

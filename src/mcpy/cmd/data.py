@@ -32,7 +32,7 @@ class DataCondition:
             ``` py
             @mcfunction
                 def foo():
-                    data = EntityPath("SelectedItem", CurrentEntity())
+                    data = EntityPath("SelectedItem", CurrentEntity)
                     with execute(unless(data.present())):
                         ...
             ```
@@ -51,7 +51,7 @@ class DataCondition:
             ``` py
             @mcfunction
                 def foo():
-                    data = EntityPath("SelectedItem", CurrentEntity())
+                    data = EntityPath("SelectedItem", CurrentEntity)
                     with execute(
                         unless(data.has_value({"id": "minecraft:apple", "Count": "1b"}))
                     ):
@@ -190,7 +190,7 @@ class EntityPath(DataPath, Tellable):
     
     Example:
         ``` python
-        inventory_items = EntityPath("Inventory", CurrentEntity())
+        inventory_items = EntityPath("Inventory", CurrentEntity)
         count = (
             inventory_items.where({"id": "minecraft:stick"}).to_score()
         )
