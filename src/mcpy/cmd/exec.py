@@ -65,10 +65,10 @@ def execute(*conditions: str, limit: int = 3):
                 write(item)
         # if already wrote to generated file, continue writing lines to it
         elif gen_ctx:
-
-            @mcfunction(name=Path(gen_ctx.file_name).stem, mode="w")
-            def __gen_fn():
-                write(item)
+            with switch_context(gen_ctx):
+                @mcfunction(name=Path(gen_ctx.file_name).stem, mode="a")
+                def __gen_fn():
+                    write(item)
 
         else:
             lines_buffer.append(item)
