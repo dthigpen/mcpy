@@ -175,7 +175,7 @@ def test_mcfunction_execute(tmp_path):
             ''')
 def test_cmd_common():
     assert str(Selector('@z').where('tag','py.test')) == '@z[tag=py.test]'
-    assert str(CurrentEntity().where('tag','py.test').where('scores',{'py.score':'1..3'})) == '@s[tag=py.test,scores={py.score=1..3}]'
+    assert str(CurrentEntity.where('tag','py.test').where('scores',{'py.score':'1..3'})) == '@s[tag=py.test,scores={py.score=1..3}]'
 
 def test_cmd_tag():
     assert str(Tag('py.foo')) == 'py.foo'

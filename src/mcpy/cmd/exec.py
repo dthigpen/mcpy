@@ -118,7 +118,7 @@ def if_(*conditions: str) -> str:
         ``` py
         @mcfunction
             def foo():
-                data = EntityPath("SelectedItem", CurrentEntity())
+                data = EntityPath("SelectedItem", CurrentEntity)
                 with execute(if_(data.present())):
                     ...
         ```
@@ -139,7 +139,7 @@ def unless(*conditions: str) -> str:
         ``` py
         @mcfunction
             def foo():
-                data = EntityPath("SelectedItem", CurrentEntity())
+                data = EntityPath("SelectedItem", CurrentEntity)
                 with execute(unless(data.present())):
                     ...
         ```

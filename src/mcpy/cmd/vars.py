@@ -3,12 +3,13 @@ import contextlib
 from dataclasses import dataclass, field
 
 from ..context import write, get_global_context, get_context
+from ..decorators import mcfunction, FunctionResource
 from .scoreboard import Score, score_get
 from .data import *
 from .tag import Tag
 from .nbt import Value, NbtPrimitive
 from .function import function
-from typing import Union
+from typing import Union, Callable
 from .util import tokens_to_str
 from .exec import execute
 from .tellraw import Tellable
@@ -80,11 +81,52 @@ call_arg7 = CallVar('arg7')
 call_arg8 = CallVar('arg8')
 call_arg9 = CallVar('arg9')
 
-def call(mcfunction: str, *call_args, extra_args=None) -> Var:
+def call(resource_str: str, *call_args, extra_args=None) -> Var:
     for i, arg in enumerate(call_args):
         CallVar(f'arg{i}').set(arg)
     if extra_args is not None:
         for name, value in extra_args:
             CallVar(name).set(value)
-    write(function(mcfunction))
+    write(function(resource_str))
     return CallVar('return')
+
+
+class ScopedFunctionResource(FunctionResource):
+    def __call__(self, *args, extra_args = None) -> Var:
+        return call(self.path, *args, extra_args=extra_args)
+    
+def scoped_mcfunction(generator_fn: Callable[[],Iterator]=None, *, name:str = None, **kwargs: any) -> ScopedFunctionResource:
+    """A decorator for creating a scoped mcfunction file to use variables.
+    
+    The generator function can yield command strings or call write(<cmd>)
+
+    Args:
+        generator_fn: Generator function to build the file from
+        name: The name of the file, overrides the decorated function's name
+        kwargs: extra arguments to be passed to the underlying file function
+
+    Example:
+        ``` py
+        @scoped_mcfunction
+        def greet():
+            foo = Var()
+            var.set(2)
+            bar = some_scoped_function(foo).copy()
+            ret_var.set(bar)
+        ```
+    """
+
+    def decorator_mcfunction(func):
+
+        def wrapped_callable():
+            with scope():
+                return func()
+        wrapped_callable.__name__ = func.__name__
+        return ScopedFunctionResource(mcfunction(wrapped_callable, name=name, **kwargs).path)
+
+    if generator_fn is None:
+        print('non')
+        return decorator_mcfunction
+    else:
+        print('scoped_mcfunction decorator_mcfunction with func')
+        return decorator_mcfunction(generator_fn)

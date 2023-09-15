@@ -22,8 +22,8 @@ def tag_add(entity_selector: Selector, tag: Tag) -> Iterator[str]:
     Example:
         ``` python
         enabled = Tag('enabled')
-        tag_add(CurrentEntity(), enabled)
-        tag_add(CurrentEntity(), 'foo')
+        tag_add(CurrentEntity, enabled)
+        tag_add(CurrentEntity, 'foo')
         ```
     '''
     yield f'tag {entity_selector} add {tag}'
@@ -41,8 +41,8 @@ def tag_remove(entity_selector: Selector, tag: Tag) -> Iterator[str]:
     Example:
         ``` python
         enabled = Tag('enabled')
-        tag_remove(CurrentEntity(), enabled)
-        tag_remove(CurrentEntity(), 'foo')
+        tag_remove(CurrentEntity, enabled)
+        tag_remove(CurrentEntity, 'foo')
         ```
     '''
     yield f'tag {entity_selector} remove {tag}'
@@ -77,7 +77,7 @@ class Tag(CmdObject):
         Example:
             ``` python
             enabled = Tag('enabled')
-            not_enabled = Entities().where('tag', enabled.negate())
+            not_enabled = Entities.where('tag', enabled.negate())
             ```
         '''
         if self.name[0] == '!':
@@ -93,7 +93,7 @@ class Tag(CmdObject):
         Example:
             ``` python
             enabled = Tag('enabled')
-            not_enabled = Entities().where('tag', ~enabled)
+            not_enabled = Entities.where('tag', ~enabled)
             ```
         '''
         return self.negate()
@@ -112,7 +112,7 @@ class Tag(CmdObject):
         Example:
             ``` python
             enabled = Tag('enabled')
-            enabled.add(CurrentEntity())
+            enabled.add(CurrentEntity)
             ```
         '''
         write(tag_add(entity_selector, self))
@@ -129,7 +129,7 @@ class Tag(CmdObject):
         Example:
             ``` python
             enabled = Tag('enabled')
-            enabled.remove(CurrentEntity())
+            enabled.remove(CurrentEntity)
             ```
         '''
         write(tag_remove(entity_selector, self))
