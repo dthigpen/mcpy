@@ -5,6 +5,7 @@ tokens_to_str
 
 from ..context import write, get_global_context
 from .block import CmdObject
+from .tellraw import Tellable
 from dataclasses import dataclass
 
 @dataclass
@@ -17,7 +18,7 @@ class ScoreCondition:
         return f'score {self} matches {score_range}'
     
 @dataclass
-class Score(CmdObject, ScoreCondition):
+class Score(CmdObject, ScoreCondition, Tellable):
     '''Container to hold a score holder and objective'''
     holder: str = None
     objective: str = None
@@ -51,6 +52,10 @@ class Score(CmdObject, ScoreCondition):
         '''Command to enable a player score'''
         write(score_enable(self))
         return self
+    
+    def to_tellable(self) -> dict:
+        return {"score":{"name":self.holder,"objective":self.objective}}
+        
 
 def score_get(score: Score):
     '''Command to get a player score'''
@@ -67,3 +72,9 @@ def score_reset(score: Score):
 def score_enable(score: Score):
     '''Command to enable the score'''
     yield f'scoreboard players enable {score}'
+
+def score_objectives_add(name: str, type: str = None):
+    '''Command to add an objective. Type defaults to "dummy"'''
+    if type is None:
+        type = 'dummy'
+    yield f'scoreboard objectives add {name} {type}'

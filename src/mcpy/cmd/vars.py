@@ -50,7 +50,7 @@ class Var(StoragePath, Tellable):
     
 
     def to_tellable(self) -> dict:
-        return {"nbt": f'{self.prefix}{self.path}', get_target_type(self): self.namespace}
+        return {"nbt": f'{self.prefix}.{self.path}', get_target_type(self): self.namespace}
     
 
 @dataclass
