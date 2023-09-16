@@ -54,6 +54,13 @@ class Context:
             )
         path_items = (*map(lambda p: str(p), self.sub_dir_stack), Path(self.file_name).stem)
         return f'{self.namespace}:{"/".join(path_items)}'
+    
+    def get_resource(self) -> any:
+        """Returns the resource for the current context or None if the context does not have an associated resource. E.g. Resource, FunctionResource, etc"""
+        r = self.resource_type
+        if r is not None:
+            r = r(self.get_resource_path())
+        return r
     def get_path(self) -> Path:
         """Returns the current full path in the datapack"""
 
@@ -134,9 +141,9 @@ def call_self(*args: any, **kwargs: any) -> any:
                 call_self(Var().set_from_score(count))
         ```
     '''
-    r = get_context().resource_type
+    r = get_context().get_resource()
     if r is not None:
-        return r(get_context().get_resource_path())(*args, **kwargs)
+        return r(*args, **kwargs)
     else:
         raise ValueError('No resource type defined for this context!')
 

@@ -8,6 +8,8 @@ from .block import CmdObject
 from .tellraw import Tellable
 from dataclasses import dataclass
 
+MCPY_SCORE_OBJECTIVE = 'mcpy.var'
+
 @dataclass
 class ScoreCondition:
     
@@ -28,7 +30,7 @@ class Score(CmdObject, ScoreCondition, Tellable):
             count = get_global_context().increment_count('var_count')
             self.holder = f'$score{count}'
         if self.objective is None:
-            self.objective = 'mcpy.var'
+            self.objective = MCPY_SCORE_OBJECTIVE
 
     def __str__(self) -> str:
         return tokens_to_str(self.holder, self.objective)
@@ -41,6 +43,16 @@ class Score(CmdObject, ScoreCondition, Tellable):
     def set(self) -> Score:
         '''Command to set a player score'''
         write(score_set(self))
+        return self
+
+    def remove(self, count:int = 1) -> Score:
+        '''Command to remove an amount from a player score'''
+        write(score_remove(self, count))
+        return self
+    
+    def add(self, count:int = 1) -> Score:
+        '''Command to add an amount to a player score'''
+        write(score_add(self, count))
         return self
     
     def reset(self) -> Score:
@@ -64,6 +76,15 @@ def score_get(score: Score):
 def score_set(score: Score):
     '''Command to set a player score'''
     yield f'scoreboard players set {score}'
+
+
+def score_remove(score: Score, count: int = 1):
+    '''Command to remove an amount from a player score'''
+    yield f'scoreboard players remove {score} {count}'
+
+def score_add(score: Score, count: int = 1):
+    '''Command to add an amount to a player score'''
+    yield f'scoreboard players add {score} {count}'
 
 def score_reset(score: Score):
     '''Command to reset the score'''
