@@ -41,6 +41,7 @@ class Context:
     file_name: str = None
     opened_file: IO = None
     input_handler: Callable = None
+    resource_type: any = None
 
     def get_resource_path(self) -> str:
         if not self.file_category:
@@ -94,10 +95,6 @@ def write(item: any) -> None:
         ctx.input_handler(ctx, item)
 
 
-
-
-
-
 def get_context() -> Context:
     """Get the current context of the datapack
 
@@ -111,6 +108,37 @@ def get_context() -> Context:
 def get_global_context() -> GlobalContext:
     return __GLOBAL.get()
 
+
+def call_self(*args: any, **kwargs: any) -> any:
+    '''Perform a recursive call to the current resource
+    
+    Args:
+        args: Any args needed for the resource type of the current context. E.g. mcfunction's FunctionResource or scoped_mcfunction's ScopedFunctionResource
+        kwargs: Any kwargs needed for the resource type of the current context.
+    
+    Returns:
+        resource_return_type: The return of the call to the current resource
+
+    Example:
+        ``` python
+        @scoped_mcfunction
+        def countdown():
+            count = arg0.to_score()
+            # if the count is <= 0 do not continue
+            with execute(unless(count.matches("..0"))):
+                continue_var = Var().set(True)
+            # if continue is set to True
+            with execute(if_(continue_var.present())):
+                tellraw(NearestPlayer, "Countdown: ", continue_var)
+                count.remove()
+                call_self(Var().set_from_score(count))
+        ```
+    '''
+    r = get_context().resource_type
+    if r is not None:
+        return r(get_context().get_resource_path())(*args, **kwargs)
+    else:
+        raise ValueError('No resource type defined for this context!')
 
 @contextlib.contextmanager
 def switch_context(ctx: Context):

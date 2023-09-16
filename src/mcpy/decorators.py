@@ -97,6 +97,8 @@ def file(
 
     # decorator to write out function contents immediately
     def decorator_file(func):
+        if not hasattr(func, '_resource'):
+            func._resource = Resource
         nonlocal name
         if name is None:
             name = func.__name__
@@ -105,6 +107,7 @@ def file(
             file_name=name,
             file_category=category,
             input_handler=ctx_handler if ctx_handler else ctx.input_handler,
+            resource_type=func._resource
         ):
             ctx = get_context()
             ctx.get_path().parent.mkdir(parents=True, exist_ok=True)
@@ -177,6 +180,8 @@ def mcfunction(generator_fn: Callable[[],Iterator]=None, *, name:str = None, **k
         ```
     """
     def decorator_mcfunction(func):
+        if not hasattr(func, '_resource'):
+            func._resource = FunctionResource
         nonlocal name
         if name is None:
             name = func.__name__
@@ -212,7 +217,7 @@ def json_file(generator_fn: Callable[[],Iterator]=None, *, category: Literal["fu
 
     Example:
         ``` py
-        @jsonfile('tags')
+        @json_file('tags')
         def my_tag():
             yield {
                 "values": ["value1", "value2", "value3"]

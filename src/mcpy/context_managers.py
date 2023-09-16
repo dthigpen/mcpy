@@ -15,6 +15,12 @@ def directory(name: str) -> Iterator[None]:
     Args:
         name: The directory name
 
+    Example:
+        ``` python
+        with directory('api'):
+            with directory('foo/bar'):
+                ...
+        ```
     """
     ctx = get_context()
     with update_context(sub_dir_stack=(*ctx.sub_dir_stack, Path(name))):
@@ -28,6 +34,12 @@ def folder(name: str) -> Iterator[None]:
     Args:
         name: The directory name
 
+    Example:
+    ``` python
+    with folder('api'):
+        with folder('foo/bar'):
+            ...
+    ```
     """
     with directory(name):
         yield
@@ -40,6 +52,11 @@ def namespace(name: str) -> Iterator[None]:
     Args:
         name: The namespace
 
+    Example:
+    ``` python
+    with namespace('mypack'):
+        ...
+    ```
     """
     ctx = get_context()
     with update_context(namespace=name):
