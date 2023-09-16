@@ -117,7 +117,7 @@ def scoped_mcfunction(generator_fn: Callable[[],Iterator]=None, *, name:str = No
     """
 
     def decorator_mcfunction(func):
-
+        
         def wrapped_callable():
             with scope():
                 items = func()
@@ -125,6 +125,9 @@ def scoped_mcfunction(generator_fn: Callable[[],Iterator]=None, *, name:str = No
                     for item in items:
                         yield item
         wrapped_callable.__name__ = func.__name__
+        if not hasattr(func, '_resource'):
+            func._resource = ScopedFunctionResource
+            wrapped_callable._resource = ScopedFunctionResource
         return ScopedFunctionResource(mcfunction(wrapped_callable, name=name, **kwargs).path)
 
     if generator_fn is None:
