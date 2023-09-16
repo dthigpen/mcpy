@@ -111,7 +111,7 @@ class DataPath(NbtPath, DataCondition):
             Self
         """
         write(
-            f"execute store result storage {self} {result_type} {scale} run {score_get(score)}"
+            f"execute store result storage {self} {result_type} {scale} run {next(score_get(score))}"
         )
         return self
 

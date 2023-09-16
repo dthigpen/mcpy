@@ -9,3 +9,4 @@ from .tellraw import *
 from .vars import *
 from .nbt import *
 from .selector import *
+from .misc import *
