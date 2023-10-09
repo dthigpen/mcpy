@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - add-gh-action
   workflow_dispatch:
   
 jobs:
