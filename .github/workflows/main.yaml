@@ -6,7 +6,7 @@ on:
       - main
       - add-gh-action
   workflow_dispatch:
-  
+permissions: write-all
 jobs:
   docs:
     runs-on: ubuntu-latest
