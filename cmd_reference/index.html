@@ -1,0 +1,5460 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../reference/">
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.4">
+    
+    
+      
+        <title>Command API Reference - Mcpy Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.bd3936ea.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.356b1318.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#command-api-reference" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Mcpy Docs" class="md-header__button md-logo" aria-label="Mcpy Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Mcpy Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Command API Reference
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12c0-2.42-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Mcpy Docs" class="md-nav__button md-logo" aria-label="Mcpy Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    Mcpy Docs
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../get-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Get Started
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../working-with-commands/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Working With Commands
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../how-to-include-dependencies/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    How to include datapack dependencies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Mcpy API Reference
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Command API Reference
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Command API Reference
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#nbt-data" class="md-nav__link">
+    NBT Data
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.nbt" class="md-nav__link">
+    nbt
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.nbt.Bool" class="md-nav__link">
+    Bool
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.nbt.Byte" class="md-nav__link">
+    Byte
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.nbt.Float" class="md-nav__link">
+    Float
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.nbt.Int" class="md-nav__link">
+    Int
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.nbt.NbtList" class="md-nav__link">
+    NbtList
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.nbt.NbtObj" class="md-nav__link">
+    NbtObj
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.nbt.NbtPath" class="md-nav__link">
+    NbtPath
+  </a>
+  
+    <nav class="md-nav" aria-label="NbtPath">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mcpy.cmd.nbt.NbtPath.at" class="md-nav__link">
+    at()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mcpy.cmd.nbt.NbtPath.key" class="md-nav__link">
+    key()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mcpy.cmd.nbt.NbtPath.where" class="md-nav__link">
+    where()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.nbt.Short" class="md-nav__link">
+    Short
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.nbt.Str" class="md-nav__link">
+    Str
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.nbt.Value" class="md-nav__link">
+    Value
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.nbt.as_nbt" class="md-nav__link">
+    as_nbt()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selectors" class="md-nav__link">
+    Selectors
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.selector" class="md-nav__link">
+    selector
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.selector.Selector" class="md-nav__link">
+    Selector
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-command" class="md-nav__link">
+    Data Command
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.data" class="md-nav__link">
+    data
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.data.BlockPath" class="md-nav__link">
+    BlockPath
+  </a>
+  
+    <nav class="md-nav" aria-label="BlockPath">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mcpy.cmd.data.BlockPath.to_tellable" class="md-nav__link">
+    to_tellable()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.data.DataCondition" class="md-nav__link">
+    DataCondition
+  </a>
+  
+    <nav class="md-nav" aria-label="DataCondition">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mcpy.cmd.data.DataCondition.has_value" class="md-nav__link">
+    has_value()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mcpy.cmd.data.DataCondition.present" class="md-nav__link">
+    present()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.data.DataPath" class="md-nav__link">
+    DataPath
+  </a>
+  
+    <nav class="md-nav" aria-label="DataPath">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mcpy.cmd.data.DataPath.append" class="md-nav__link">
+    append()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mcpy.cmd.data.DataPath.merge" class="md-nav__link">
+    merge()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mcpy.cmd.data.DataPath.remove" class="md-nav__link">
+    remove()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mcpy.cmd.data.DataPath.set" class="md-nav__link">
+    set()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mcpy.cmd.data.DataPath.set_from_score" class="md-nav__link">
+    set_from_score()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mcpy.cmd.data.DataPath.to_score" class="md-nav__link">
+    to_score()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.data.EntityPath" class="md-nav__link">
+    EntityPath
+  </a>
+  
+    <nav class="md-nav" aria-label="EntityPath">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mcpy.cmd.data.EntityPath.to_tellable" class="md-nav__link">
+    to_tellable()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.data.StoragePath" class="md-nav__link">
+    StoragePath
+  </a>
+  
+    <nav class="md-nav" aria-label="StoragePath">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mcpy.cmd.data.StoragePath.to_tellable" class="md-nav__link">
+    to_tellable()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.data.data_get" class="md-nav__link">
+    data_get()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.data.data_merge" class="md-nav__link">
+    data_merge()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.data.data_modify_append" class="md-nav__link">
+    data_modify_append()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.data.data_modify_merge" class="md-nav__link">
+    data_modify_merge()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.data.data_modify_set" class="md-nav__link">
+    data_modify_set()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.data.data_remove" class="md-nav__link">
+    data_remove()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.data.get_target_type" class="md-nav__link">
+    get_target_type()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#execute-command" class="md-nav__link">
+    Execute Command
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.exec" class="md-nav__link">
+    exec
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.exec.execute" class="md-nav__link">
+    execute()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.exec.if_" class="md-nav__link">
+    if_()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.exec.unless" class="md-nav__link">
+    unless()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scoreboard-command" class="md-nav__link">
+    Scoreboard Command
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.scoreboard" class="md-nav__link">
+    scoreboard
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.scoreboard.Score" class="md-nav__link">
+    Score
+  </a>
+  
+    <nav class="md-nav" aria-label="Score">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mcpy.cmd.scoreboard.Score.add" class="md-nav__link">
+    add()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mcpy.cmd.scoreboard.Score.enable" class="md-nav__link">
+    enable()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mcpy.cmd.scoreboard.Score.get" class="md-nav__link">
+    get()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mcpy.cmd.scoreboard.Score.remove" class="md-nav__link">
+    remove()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mcpy.cmd.scoreboard.Score.reset" class="md-nav__link">
+    reset()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mcpy.cmd.scoreboard.Score.set" class="md-nav__link">
+    set()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.scoreboard.score_add" class="md-nav__link">
+    score_add()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.scoreboard.score_enable" class="md-nav__link">
+    score_enable()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.scoreboard.score_get" class="md-nav__link">
+    score_get()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.scoreboard.score_objectives_add" class="md-nav__link">
+    score_objectives_add()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.scoreboard.score_remove" class="md-nav__link">
+    score_remove()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.scoreboard.score_reset" class="md-nav__link">
+    score_reset()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.scoreboard.score_set" class="md-nav__link">
+    score_set()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tag-command" class="md-nav__link">
+    Tag Command
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.tag" class="md-nav__link">
+    tag
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.tag.Tag" class="md-nav__link">
+    Tag
+  </a>
+  
+    <nav class="md-nav" aria-label="Tag">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mcpy.cmd.tag.Tag.__invert__" class="md-nav__link">
+    __invert__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mcpy.cmd.tag.Tag.add" class="md-nav__link">
+    add()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mcpy.cmd.tag.Tag.negate" class="md-nav__link">
+    negate()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mcpy.cmd.tag.Tag.remove" class="md-nav__link">
+    remove()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.tag.tag_add" class="md-nav__link">
+    tag_add()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.tag.tag_remove" class="md-nav__link">
+    tag_remove()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tellraw-command" class="md-nav__link">
+    Tellraw Command
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.tellraw" class="md-nav__link">
+    tellraw
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#nbt-data" class="md-nav__link">
+    NBT Data
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.nbt" class="md-nav__link">
+    nbt
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.nbt.Bool" class="md-nav__link">
+    Bool
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.nbt.Byte" class="md-nav__link">
+    Byte
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.nbt.Float" class="md-nav__link">
+    Float
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.nbt.Int" class="md-nav__link">
+    Int
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.nbt.NbtList" class="md-nav__link">
+    NbtList
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.nbt.NbtObj" class="md-nav__link">
+    NbtObj
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.nbt.NbtPath" class="md-nav__link">
+    NbtPath
+  </a>
+  
+    <nav class="md-nav" aria-label="NbtPath">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mcpy.cmd.nbt.NbtPath.at" class="md-nav__link">
+    at()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mcpy.cmd.nbt.NbtPath.key" class="md-nav__link">
+    key()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mcpy.cmd.nbt.NbtPath.where" class="md-nav__link">
+    where()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.nbt.Short" class="md-nav__link">
+    Short
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.nbt.Str" class="md-nav__link">
+    Str
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.nbt.Value" class="md-nav__link">
+    Value
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.nbt.as_nbt" class="md-nav__link">
+    as_nbt()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selectors" class="md-nav__link">
+    Selectors
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.selector" class="md-nav__link">
+    selector
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.selector.Selector" class="md-nav__link">
+    Selector
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-command" class="md-nav__link">
+    Data Command
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.data" class="md-nav__link">
+    data
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.data.BlockPath" class="md-nav__link">
+    BlockPath
+  </a>
+  
+    <nav class="md-nav" aria-label="BlockPath">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mcpy.cmd.data.BlockPath.to_tellable" class="md-nav__link">
+    to_tellable()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.data.DataCondition" class="md-nav__link">
+    DataCondition
+  </a>
+  
+    <nav class="md-nav" aria-label="DataCondition">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mcpy.cmd.data.DataCondition.has_value" class="md-nav__link">
+    has_value()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mcpy.cmd.data.DataCondition.present" class="md-nav__link">
+    present()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.data.DataPath" class="md-nav__link">
+    DataPath
+  </a>
+  
+    <nav class="md-nav" aria-label="DataPath">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mcpy.cmd.data.DataPath.append" class="md-nav__link">
+    append()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mcpy.cmd.data.DataPath.merge" class="md-nav__link">
+    merge()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mcpy.cmd.data.DataPath.remove" class="md-nav__link">
+    remove()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mcpy.cmd.data.DataPath.set" class="md-nav__link">
+    set()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mcpy.cmd.data.DataPath.set_from_score" class="md-nav__link">
+    set_from_score()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mcpy.cmd.data.DataPath.to_score" class="md-nav__link">
+    to_score()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.data.EntityPath" class="md-nav__link">
+    EntityPath
+  </a>
+  
+    <nav class="md-nav" aria-label="EntityPath">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mcpy.cmd.data.EntityPath.to_tellable" class="md-nav__link">
+    to_tellable()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.data.StoragePath" class="md-nav__link">
+    StoragePath
+  </a>
+  
+    <nav class="md-nav" aria-label="StoragePath">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mcpy.cmd.data.StoragePath.to_tellable" class="md-nav__link">
+    to_tellable()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.data.data_get" class="md-nav__link">
+    data_get()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.data.data_merge" class="md-nav__link">
+    data_merge()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.data.data_modify_append" class="md-nav__link">
+    data_modify_append()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.data.data_modify_merge" class="md-nav__link">
+    data_modify_merge()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.data.data_modify_set" class="md-nav__link">
+    data_modify_set()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.data.data_remove" class="md-nav__link">
+    data_remove()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.data.get_target_type" class="md-nav__link">
+    get_target_type()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#execute-command" class="md-nav__link">
+    Execute Command
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.exec" class="md-nav__link">
+    exec
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.exec.execute" class="md-nav__link">
+    execute()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.exec.if_" class="md-nav__link">
+    if_()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.exec.unless" class="md-nav__link">
+    unless()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scoreboard-command" class="md-nav__link">
+    Scoreboard Command
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.scoreboard" class="md-nav__link">
+    scoreboard
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.scoreboard.Score" class="md-nav__link">
+    Score
+  </a>
+  
+    <nav class="md-nav" aria-label="Score">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mcpy.cmd.scoreboard.Score.add" class="md-nav__link">
+    add()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mcpy.cmd.scoreboard.Score.enable" class="md-nav__link">
+    enable()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mcpy.cmd.scoreboard.Score.get" class="md-nav__link">
+    get()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mcpy.cmd.scoreboard.Score.remove" class="md-nav__link">
+    remove()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mcpy.cmd.scoreboard.Score.reset" class="md-nav__link">
+    reset()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mcpy.cmd.scoreboard.Score.set" class="md-nav__link">
+    set()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.scoreboard.score_add" class="md-nav__link">
+    score_add()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.scoreboard.score_enable" class="md-nav__link">
+    score_enable()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.scoreboard.score_get" class="md-nav__link">
+    score_get()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.scoreboard.score_objectives_add" class="md-nav__link">
+    score_objectives_add()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.scoreboard.score_remove" class="md-nav__link">
+    score_remove()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.scoreboard.score_reset" class="md-nav__link">
+    score_reset()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.scoreboard.score_set" class="md-nav__link">
+    score_set()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tag-command" class="md-nav__link">
+    Tag Command
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.tag" class="md-nav__link">
+    tag
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.tag.Tag" class="md-nav__link">
+    Tag
+  </a>
+  
+    <nav class="md-nav" aria-label="Tag">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mcpy.cmd.tag.Tag.__invert__" class="md-nav__link">
+    __invert__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mcpy.cmd.tag.Tag.add" class="md-nav__link">
+    add()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mcpy.cmd.tag.Tag.negate" class="md-nav__link">
+    negate()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mcpy.cmd.tag.Tag.remove" class="md-nav__link">
+    remove()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.tag.tag_add" class="md-nav__link">
+    tag_add()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.tag.tag_remove" class="md-nav__link">
+    tag_remove()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tellraw-command" class="md-nav__link">
+    Tellraw Command
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcpy.cmd.tellraw" class="md-nav__link">
+    tellraw
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="command-api-reference">Command API Reference</h1>
+<p>The command API is focused on making the built-in Minecraft commands easier to work with.</p>
+<h2 id="nbt-data">NBT Data</h2>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<a id="mcpy.cmd.nbt"></a>
+  <div class="doc doc-contents first">
+  
+      <p>Module for all NBT related container types and functions.
+Not all of these NBT container types need to be constructed on their own because most functions that use them as parameters can convert their primitive types directly. (e.g. a <code>dict</code> can be used instead of constructing an <code>NbtObj</code>)</p>
+
+
+
+  <p><strong>Attributes:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>NbtPrimitive</code></td>
+          <td>
+                <code><span title="typing.Union">Union</span>[str, int, bool, dict, list]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Data types that can be converted into valid NBT data</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+
+<h2 id="mcpy.cmd.nbt.Bool" class="doc doc-heading">
+          <code>Bool</code>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><a class="autorefs autorefs-internal" title="mcpy.cmd.nbt.Value" href="#mcpy.cmd.nbt.Value">Value</a></code></p>
+
+  
+      <p>Container type for NBT Boolean values.</p>
+
+
+
+  <p><strong>Attributes:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>value</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Bool</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+<details class="example" open>
+  <summary>Example</summary>
+  <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">value</span> <span class="o">=</span> <span class="n">Bool</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+</span></code></pre></div>
+</details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+
+<h2 id="mcpy.cmd.nbt.Byte" class="doc doc-heading">
+          <code>Byte</code>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><a class="autorefs autorefs-internal" title="mcpy.cmd.nbt.Value" href="#mcpy.cmd.nbt.Value">Value</a></code></p>
+
+  
+      <p>Container type for NBT Byte values.</p>
+
+
+
+  <p><strong>Attributes:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>value</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Int representation of bytes</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+<details class="example" open>
+  <summary>Example</summary>
+  <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">value</span> <span class="o">=</span> <span class="n">Byte</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
+</span></code></pre></div>
+</details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+
+<h2 id="mcpy.cmd.nbt.Float" class="doc doc-heading">
+          <code>Float</code>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><a class="autorefs autorefs-internal" title="mcpy.cmd.nbt.Value" href="#mcpy.cmd.nbt.Value">Value</a></code></p>
+
+  
+      <p>Container type for NBT Float values.</p>
+
+
+
+  <p><strong>Attributes:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>value</code></td>
+          <td>
+                <code>float</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Float</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+<details class="example" open>
+  <summary>Example</summary>
+  <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">value</span> <span class="o">=</span> <span class="n">Float</span><span class="p">(</span><span class="mf">12.3</span><span class="p">)</span>
+</span></code></pre></div>
+</details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+
+<h2 id="mcpy.cmd.nbt.Int" class="doc doc-heading">
+          <code>Int</code>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><a class="autorefs autorefs-internal" title="mcpy.cmd.nbt.Value" href="#mcpy.cmd.nbt.Value">Value</a></code></p>
+
+  
+      <p>Container type for NBT Int values.</p>
+
+
+
+  <p><strong>Attributes:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>value</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Int</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+<details class="example" open>
+  <summary>Example</summary>
+  <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">value</span> <span class="o">=</span> <span class="n">Int</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
+</span></code></pre></div>
+</details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+
+<h2 id="mcpy.cmd.nbt.NbtList" class="doc doc-heading">
+          <code>NbtList</code>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><a class="autorefs autorefs-internal" title="mcpy.cmd.nbt.Value" href="#mcpy.cmd.nbt.Value">Value</a></code></p>
+
+  
+      <p>Container type for NBT List values.</p>
+
+
+
+  <p><strong>Attributes:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>value</code></td>
+          <td>
+                <code>list</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>List</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+<details class="example" open>
+  <summary>Example</summary>
+  <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">value</span> <span class="o">=</span> <span class="n">NbtList</span><span class="p">([</span><span class="s1">&#39;foo&#39;</span><span class="p">,</span><span class="s1">&#39;bar&#39;</span><span class="p">])</span>
+</span></code></pre></div>
+</details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+
+<h2 id="mcpy.cmd.nbt.NbtObj" class="doc doc-heading">
+          <code>NbtObj</code>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><a class="autorefs autorefs-internal" title="mcpy.cmd.nbt.Value" href="#mcpy.cmd.nbt.Value">Value</a></code></p>
+
+  
+      <p>Container type for NBT Compound values. (e.i. JSON object)</p>
+
+
+
+  <p><strong>Attributes:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>value</code></td>
+          <td>
+                <code>dict</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Dict representation of object</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+<details class="example" open>
+  <summary>Example</summary>
+  <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">value</span> <span class="o">=</span> <span class="n">NbtObj</span><span class="p">({</span><span class="s1">&#39;name&#39;</span><span class="p">:</span><span class="s1">&#39;Some name&#39;</span><span class="p">})</span>
+</span></code></pre></div>
+</details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+
+<h2 id="mcpy.cmd.nbt.NbtPath" class="doc doc-heading">
+          <code>NbtPath</code>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><span title="mcpy.cmd.block.CmdObject">CmdObject</span></code></p>
+
+  
+      <p>Container type for NBT paths</p>
+
+
+
+  <p><strong>Attributes:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>path</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>String data path (e.g. Inventory[0])</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+<details class="example" open>
+  <summary>Example</summary>
+  <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">value</span> <span class="o">=</span> <span class="n">NbtPath</span><span class="p">(</span><span class="s1">&#39;some.nested.path&#39;</span><span class="p">)</span>
+</span></code></pre></div>
+</details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="mcpy.cmd.nbt.NbtPath.at" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">at</span><span class="p">(</span><span class="n">index</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Create a new path from the current and given index or query
+Attributes:
+    index_or_query: Index or query
+Returns:
+    A new NbtPath</p>
+
+<details class="example" open>
+  <summary>Example</summary>
+  <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">NbtPath</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">({</span><span class="s2">&quot;Count&quot;</span><span class="p">:</span><span class="n">Byte</span><span class="p">(</span><span class="mi">2</span><span class="p">)}))</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c1"># returns &#39;foo[{&quot;Count&quot;:1b}]&#39;</span>
+</span></code></pre></div>
+</details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="mcpy.cmd.nbt.NbtPath.key" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">key</span><span class="p">(</span><span class="n">subpath</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Create a new path from the current and given subpath
+Attributes:
+    subpath: Subpath key(s) to add to this path
+Returns:
+    A new NbtPath</p>
+
+<details class="example" open>
+  <summary>Example</summary>
+  <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">NbtPath</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="s1">&#39;bar&#39;</span><span class="p">))</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c1"># returns &#39;foo.bar&#39;</span>
+</span></code></pre></div>
+</details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="mcpy.cmd.nbt.NbtPath.where" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">where</span><span class="p">(</span><span class="n">index_or_query</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Create a new path from the current and given index or query
+Attributes:
+    index_or_query: Index or query
+Returns:
+    A new NbtPath</p>
+
+<details class="example" open>
+  <summary>Example</summary>
+  <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">NbtPath</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">({</span><span class="s2">&quot;Count&quot;</span><span class="p">:</span><span class="n">Byte</span><span class="p">(</span><span class="mi">2</span><span class="p">)}))</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c1"># returns &#39;foo[{&quot;Count&quot;:1b}]&#39;</span>
+</span></code></pre></div>
+</details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+
+<h2 id="mcpy.cmd.nbt.Short" class="doc doc-heading">
+          <code>Short</code>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><a class="autorefs autorefs-internal" title="mcpy.cmd.nbt.Value" href="#mcpy.cmd.nbt.Value">Value</a></code></p>
+
+  
+      <p>Container type for NBT Short values.</p>
+
+
+
+  <p><strong>Attributes:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>value</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Int representation of short</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+<details class="example" open>
+  <summary>Example</summary>
+  <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">value</span> <span class="o">=</span> <span class="n">Short</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
+</span></code></pre></div>
+</details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+
+<h2 id="mcpy.cmd.nbt.Str" class="doc doc-heading">
+          <code>Str</code>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><a class="autorefs autorefs-internal" title="mcpy.cmd.nbt.Value" href="#mcpy.cmd.nbt.Value">Value</a></code></p>
+
+  
+      <p>Container type for string values</p>
+
+
+
+  <p><strong>Attributes:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>value</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>String value. Double quotes will be escaped when used in commands</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+<details class="example" open>
+  <summary>Example</summary>
+  <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">value</span> <span class="o">=</span> <span class="n">Str</span><span class="p">(</span><span class="s1">&#39;Some name&#39;</span><span class="p">)</span>
+</span></code></pre></div>
+</details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+
+<h2 id="mcpy.cmd.nbt.Value" class="doc doc-heading">
+          <code>Value</code>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><span title="mcpy.cmd.block.CmdObject">CmdObject</span></code></p>
+
+  
+      <p>Base container type for all NBT value types.
+Can also be used to express any string-able value.</p>
+
+
+
+  <p><strong>Attributes:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>value</code></td>
+          <td>
+                <code>any</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Raw value. String representation will be used in commands.</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+<details class="example" open>
+  <summary>Example</summary>
+  <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">macro_value</span> <span class="o">=</span> <span class="n">Value</span><span class="p">(</span><span class="s1">&#39;$(my_macro_var)&#39;</span><span class="p">)</span>
+</span></code></pre></div>
+</details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h2 id="mcpy.cmd.nbt.as_nbt" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">as_nbt</span><span class="p">(</span><span class="n">primitive_value</span><span class="p">)</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Convert the given type into its NBT wrapped type if possible</p>
+
+
+
+  <p><strong>Attributes:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>primitive_value</code></td>
+          <td>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>value</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="typing.Union">Union</span>[<a class="autorefs autorefs-internal" title="mcpy.cmd.nbt.Value" href="#mcpy.cmd.nbt.Value">Value</a>, <a class="autorefs autorefs-internal" title="mcpy.cmd.nbt.Str" href="#mcpy.cmd.nbt.Str">Str</a>, <a class="autorefs autorefs-internal" title="mcpy.cmd.nbt.Bool" href="#mcpy.cmd.nbt.Bool">Bool</a>, <a class="autorefs autorefs-internal" title="mcpy.cmd.nbt.Int" href="#mcpy.cmd.nbt.Int">Int</a>, <a class="autorefs autorefs-internal" title="mcpy.cmd.nbt.NbtObj" href="#mcpy.cmd.nbt.NbtObj">NbtObj</a>, <a class="autorefs autorefs-internal" title="mcpy.cmd.nbt.NbtList" href="#mcpy.cmd.nbt.NbtList">NbtList</a>]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>NBT subtype that corresponds to the given Python type value</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  <p><strong>Raises:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>ValueError</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>When a NBT type is not found for the given value</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div><h2 id="selectors">Selectors</h2>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<a id="mcpy.cmd.selector"></a>
+  <div class="doc doc-contents first">
+  
+      <p>Module for all entity selector container types and functions</p>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+
+<h2 id="mcpy.cmd.selector.Selector" class="doc doc-heading">
+          <code>Selector</code>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><span title="mcpy.cmd.util.CmdObject">CmdObject</span></code></p>
+
+  
+      <p>Base container type for entity selectors</p>
+
+
+
+  <p><strong>Attributes:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>entity_type</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>type of entity (e.g. @s, @p)</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><code>arguments</code></td>
+          <td>
+                <code>tuple</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>selector arguments built with <code>where</code> function</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+<details class="example" open>
+  <summary>Example</summary>
+  <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">s</span> <span class="o">=</span> <span class="n">Selector</span><span class="p">(</span><span class="s1">&#39;@s&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;tag&#39;</span><span class="p">,</span><span class="s1">&#39;foo&#39;</span><span class="p">)</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c1"># or use built in ones</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">s</span> <span class="o">=</span> <span class="n">CurrentEntity</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;tag&#39;</span><span class="p">,</span><span class="s1">&#39;foo&#39;</span><span class="p">)</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">a</span> <span class="o">=</span> <span class="n">AllPlayers</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;tag&#39;</span><span class="p">,</span><span class="s1">&#39;foo&#39;</span><span class="p">)</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">r</span> <span class="o">=</span> <span class="n">RandomPlayer</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;tag&#39;</span><span class="p">,</span><span class="s1">&#39;foo&#39;</span><span class="p">)</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="n">p</span> <span class="o">=</span> <span class="n">NearestPlayer</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;tag&#39;</span><span class="p">,</span><span class="s1">&#39;foo&#39;</span><span class="p">)</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="n">e</span> <span class="o">=</span> <span class="n">Entities</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;tag&#39;</span><span class="p">,</span><span class="s1">&#39;foo&#39;</span><span class="p">)</span>
+</span></code></pre></div>
+</details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+
+  </div>
+
+  </div>
+
+</div><h2 id="data-command">Data Command</h2>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<a id="mcpy.cmd.data"></a>
+  <div class="doc doc-contents first">
+  
+      <p>Module for all data command container types and functions</p>
+
+
+
+  <p><strong>Attributes:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>TargetType</code></td>
+          <td>
+                <code><span title="typing.Union">Union</span>[<a class="autorefs autorefs-internal" title="mcpy.cmd.data.StoragePath" href="#mcpy.cmd.data.StoragePath">StoragePath</a>, <a class="autorefs autorefs-internal" title="mcpy.cmd.data.EntityPath" href="#mcpy.cmd.data.EntityPath">EntityPath</a>, <a class="autorefs autorefs-internal" title="mcpy.cmd.data.BlockPath" href="#mcpy.cmd.data.BlockPath">BlockPath</a>]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Data types that can be used as the target of a data command. (e.g. the one being affected)</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><code>SourceType</code></td>
+          <td>
+                <code><span title="typing.Union">Union</span>[<a class="autorefs autorefs-internal" title="mcpy.cmd.data.StoragePath" href="#mcpy.cmd.data.StoragePath">StoragePath</a>, <a class="autorefs autorefs-internal" title="mcpy.cmd.data.EntityPath" href="#mcpy.cmd.data.EntityPath">EntityPath</a>, <a class="autorefs autorefs-internal" title="mcpy.cmd.data.BlockPath" href="#mcpy.cmd.data.BlockPath">BlockPath</a>, <a class="autorefs autorefs-internal" title="mcpy.cmd.nbt.Value" href="#mcpy.cmd.nbt.Value">Value</a>, <span title="mcpy.cmd.nbt.NbtPrimitive">NbtPrimitive</span>]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Data types that can be used as the source of a data command. (e.g. the one being read from)</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+
+<h2 id="mcpy.cmd.data.BlockPath" class="doc doc-heading">
+          <code>BlockPath</code>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><a class="autorefs autorefs-internal" title="mcpy.cmd.data.DataPath" href="#mcpy.cmd.data.DataPath">DataPath</a></code>, <code><span title="mcpy.cmd.tellraw.Tellable">Tellable</span></code></p>
+
+  
+      <p>A container for a block path</p>
+
+
+
+  <p><strong>Attributes:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>pos</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>block pos string triplet (e.g. "~ 1 ~")</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+<details class="example" open>
+  <summary>Example</summary>
+  <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">chest_items</span> <span class="o">=</span> <span class="n">BlockPath</span><span class="p">(</span><span class="s2">&quot;Items&quot;</span><span class="p">,</span> <span class="s2">&quot;~1 ~2 ~1&quot;</span><span class="p">)</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">count</span> <span class="o">=</span> <span class="p">(</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">chest_items</span><span class="o">.</span><span class="n">where</span><span class="p">({</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;minecraft:stick&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">to_score</span><span class="p">()</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="p">)</span>
+</span></code></pre></div>
+</details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="mcpy.cmd.data.BlockPath.to_tellable" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">to_tellable</span><span class="p">()</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Converts this container type to a tellraw printable element</p>
+
+
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>dict</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>dict tellraw element</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+
+<h2 id="mcpy.cmd.data.DataCondition" class="doc doc-heading">
+          <code>DataCondition</code>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+
+  
+      <p>Parent class of data command container types that can be used in execute conditions</p>
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="mcpy.cmd.data.DataCondition.has_value" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">has_value</span><span class="p">(</span><span class="n">expected_value</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>condition for the checking the value at a data path
+Args:
+    expected_value: NBT value to compare against
+Returns:
+    Condition string</p>
+
+<details class="example" open>
+  <summary>Example</summary>
+  <div class="language-py highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nd">@mcfunction</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="k">def</span> <span class="nf">foo</span><span class="p">():</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>        <span class="n">data</span> <span class="o">=</span> <span class="n">EntityPath</span><span class="p">(</span><span class="s2">&quot;SelectedItem&quot;</span><span class="p">,</span> <span class="n">CurrentEntity</span><span class="p">)</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>        <span class="k">with</span> <span class="n">execute</span><span class="p">(</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>            <span class="n">unless</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">has_value</span><span class="p">({</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;minecraft:apple&quot;</span><span class="p">,</span> <span class="s2">&quot;Count&quot;</span><span class="p">:</span> <span class="s2">&quot;1b&quot;</span><span class="p">}))</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>        <span class="p">):</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>            <span class="o">...</span>
+</span></code></pre></div>
+</details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="mcpy.cmd.data.DataCondition.present" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">present</span><span class="p">()</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>condition for the existence of the this data path</p>
+
+
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Condition string</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+<details class="example" open>
+  <summary>Example</summary>
+  <div class="language-py highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nd">@mcfunction</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="k">def</span> <span class="nf">foo</span><span class="p">():</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>        <span class="n">data</span> <span class="o">=</span> <span class="n">EntityPath</span><span class="p">(</span><span class="s2">&quot;SelectedItem&quot;</span><span class="p">,</span> <span class="n">CurrentEntity</span><span class="p">)</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>        <span class="k">with</span> <span class="n">execute</span><span class="p">(</span><span class="n">unless</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">present</span><span class="p">())):</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>            <span class="o">...</span>
+</span></code></pre></div>
+</details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+
+<h2 id="mcpy.cmd.data.DataPath" class="doc doc-heading">
+          <code>DataPath</code>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><a class="autorefs autorefs-internal" title="mcpy.cmd.nbt.NbtPath" href="#mcpy.cmd.nbt.NbtPath">NbtPath</a></code>, <code><a class="autorefs autorefs-internal" title="mcpy.cmd.data.DataCondition" href="#mcpy.cmd.data.DataCondition">DataCondition</a></code></p>
+
+  
+      <p>Base class to all data path types</p>
+<p>See <code>BlockPath</code>, <code>EntityPath</code>, and <code>StoragePath</code> for examples.</p>
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="mcpy.cmd.data.DataPath.append" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Append the value to the end of this data path</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>value</code></td>
+          <td>
+                <code>any</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Source data type</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="typing_extensions.Self">Self</span></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Self</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="mcpy.cmd.data.DataPath.merge" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">merge</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">modify</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Merge the data source into this data path.</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>source</code></td>
+          <td>
+                <code>any</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Source data type</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>modify</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Flag for using "data modify ... merge" or "data merge ..."</p>
+            </div>
+          </td>
+          <td>
+                <code>True</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="typing_extensions.Self">Self</span></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Self</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="mcpy.cmd.data.DataPath.remove" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">remove</span><span class="p">()</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Remove the data at this data path</p>
+
+
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="typing_extensions.Self">Self</span></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Self</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="mcpy.cmd.data.DataPath.set" class="doc doc-heading">
+          <code class="highlight language-python"><span class="nb">set</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Set the data path to the given value</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>value</code></td>
+          <td>
+                <code>any</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Can be of any data path, NBT primitive, or Value type.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="typing_extensions.Self">Self</span></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Self</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="mcpy.cmd.data.DataPath.set_from_score" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">set_from_score</span><span class="p">(</span><span class="n">score</span><span class="p">,</span> <span class="n">result_type</span><span class="o">=</span><span class="s1">&#39;int&#39;</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Save the given score's value into this data path</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>score</code></td>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="mcpy.cmd.scoreboard.Score" href="#mcpy.cmd.scoreboard.Score">Score</a></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>source score</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>result_type</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>data path data type</p>
+            </div>
+          </td>
+          <td>
+                <code>&#39;int&#39;</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>scale</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>multiplier</p>
+            </div>
+          </td>
+          <td>
+                <code>1</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="typing_extensions.Self">Self</span></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Self</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="mcpy.cmd.data.DataPath.to_score" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">to_score</span><span class="p">(</span><span class="n">holder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">objective</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Convert this data path to a score value</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>holder</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>score holder</p>
+            </div>
+          </td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>objective</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>score objective</p>
+            </div>
+          </td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="mcpy.cmd.scoreboard.Score" href="#mcpy.cmd.scoreboard.Score">Score</a></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Score</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+
+<h2 id="mcpy.cmd.data.EntityPath" class="doc doc-heading">
+          <code>EntityPath</code>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><a class="autorefs autorefs-internal" title="mcpy.cmd.data.DataPath" href="#mcpy.cmd.data.DataPath">DataPath</a></code>, <code><span title="mcpy.cmd.tellraw.Tellable">Tellable</span></code></p>
+
+  
+      <p>A container for an entity path</p>
+
+
+
+  <p><strong>Attributes:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>selector</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>entity selector</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+<details class="example" open>
+  <summary>Example</summary>
+  <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">inventory_items</span> <span class="o">=</span> <span class="n">EntityPath</span><span class="p">(</span><span class="s2">&quot;Inventory&quot;</span><span class="p">,</span> <span class="n">CurrentEntity</span><span class="p">)</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">count</span> <span class="o">=</span> <span class="p">(</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">inventory_items</span><span class="o">.</span><span class="n">where</span><span class="p">({</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;minecraft:stick&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">to_score</span><span class="p">()</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="p">)</span>
+</span></code></pre></div>
+</details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="mcpy.cmd.data.EntityPath.to_tellable" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">to_tellable</span><span class="p">()</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Converts this container type to a tellraw printable element</p>
+
+
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>dict</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>dict tellraw element</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+
+<h2 id="mcpy.cmd.data.StoragePath" class="doc doc-heading">
+          <code>StoragePath</code>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><a class="autorefs autorefs-internal" title="mcpy.cmd.data.DataPath" href="#mcpy.cmd.data.DataPath">DataPath</a></code>, <code><span title="mcpy.cmd.tellraw.Tellable">Tellable</span></code></p>
+
+  
+      <p>A container for a storage path</p>
+
+
+
+  <p><strong>Attributes:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>namespace</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>storage namespace</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+<details class="example" open>
+  <summary>Example</summary>
+  <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">some_data</span> <span class="o">=</span> <span class="n">StoragePath</span><span class="p">(</span><span class="s1">&#39;some.path&#39;</span><span class="p">,</span> <span class="s1">&#39;namespace:io&#39;</span><span class="p">)</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">some_data</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;a string&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+</details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="mcpy.cmd.data.StoragePath.to_tellable" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">to_tellable</span><span class="p">()</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Converts this container type to a tellraw printable element</p>
+
+
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>dict</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>dict tellraw element</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h2 id="mcpy.cmd.data.data_get" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">data_get</span><span class="p">(</span><span class="n">target</span><span class="p">)</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Command template function for "data get ..."</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>target</code></td>
+          <td>
+                <code><span title="mcpy.cmd.data.TargetType">TargetType</span></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>target path</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="typing.Iterator">Iterator</span>[str]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>yielded command</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h2 id="mcpy.cmd.data.data_merge" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">data_merge</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">)</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Command template function for "data merge ..."</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>target</code></td>
+          <td>
+                <code><span title="mcpy.cmd.data.TargetType">TargetType</span></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>target path</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>source</code></td>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="mcpy.cmd.nbt.Value" href="#mcpy.cmd.nbt.Value">Value</a></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>source path or value</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="typing.Iterator">Iterator</span>[str]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>yielded command</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h2 id="mcpy.cmd.data.data_modify_append" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">data_modify_append</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">)</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Command template function for "data modify ... append ..."</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>target</code></td>
+          <td>
+                <code><span title="mcpy.cmd.data.TargetType">TargetType</span></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>target path</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>source</code></td>
+          <td>
+                <code><span title="mcpy.cmd.data.SourceType">SourceType</span></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>source path or value</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="typing.Iterator">Iterator</span>[str]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>yielded command</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h2 id="mcpy.cmd.data.data_modify_merge" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">data_modify_merge</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">)</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Command template function for "data modify ... merge ..."</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>target</code></td>
+          <td>
+                <code><span title="mcpy.cmd.data.TargetType">TargetType</span></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>target path</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>source</code></td>
+          <td>
+                <code><span title="mcpy.cmd.data.SourceType">SourceType</span></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>source path or value</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="typing.Iterator">Iterator</span>[str]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>yielded command</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h2 id="mcpy.cmd.data.data_modify_set" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">data_modify_set</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">)</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Sets the target path to the given source path or value</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>target</code></td>
+          <td>
+                <code><span title="mcpy.cmd.data.TargetType">TargetType</span></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>target path</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>source</code></td>
+          <td>
+                <code><span title="mcpy.cmd.data.SourceType">SourceType</span></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>source path or value</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="typing.Iterator">Iterator</span>[str]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>yielded command</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h2 id="mcpy.cmd.data.data_remove" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">data_remove</span><span class="p">(</span><span class="n">target</span><span class="p">)</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Command template function for "data remove ..."
+Args:
+    target: target path</p>
+
+
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="typing.Iterator">Iterator</span>[str]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>yielded command</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h2 id="mcpy.cmd.data.get_target_type" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">get_target_type</span><span class="p">(</span><span class="n">target</span><span class="p">)</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Utility function for getting the string representation of the class type to be used in commands
+Args:
+    target: data path, NBT primitive, or value type</p>
+
+
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>string representation of type</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  <p><strong>Raises:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>ValueError</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>if given an unhandled container type</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+<details class="example" open>
+  <summary>Example</summary>
+  <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">get_target_type</span><span class="p">(</span><span class="n">StoragePath</span><span class="p">(</span><span class="s1">&#39;some.path&#39;</span><span class="p">,</span><span class="s1">&#39;my_storage:&#39;</span><span class="p">))</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c1"># returns &quot;storage&quot;</span>
+</span></code></pre></div>
+</details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div><h2 id="execute-command">Execute Command</h2>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<a id="mcpy.cmd.exec"></a>
+  <div class="doc doc-contents first">
+  
+      <p>Module for all execute command container types and functions</p>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h2 id="mcpy.cmd.exec.execute" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">execute</span><span class="p">(</span><span class="o">*</span><span class="n">conditions</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Context manager to execute the inner statements with the given conditions</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>conditions</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>execute conditions e.g. if, unless, store, etc to apply to each command</p>
+            </div>
+          </td>
+          <td>
+                <code>()</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>limit</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>the maximum number of inline commands to allow before creating a generated mcfunction file. If <code>None</code> then all child commands will be inline.</p>
+            </div>
+          </td>
+          <td>
+                <code>3</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+<details class="example" open>
+  <summary>Example</summary>
+  <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nd">@mcfunction</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">def</span> <span class="nf">myfile3</span><span class="p">():</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="o">...</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="k">with</span> <span class="n">execute</span><span class="p">(</span><span class="s1">&#39;if score $holder obj matches 1&#39;</span><span class="p">):</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>        <span class="k">yield</span> <span class="s1">&#39;say cmd 1&#39;</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>        <span class="k">yield</span> <span class="s1">&#39;say cmd 2&#39;</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>        <span class="k">yield</span> <span class="s1">&#39;say cmd 3&#39;</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>        <span class="k">yield</span> <span class="s1">&#39;say cmd 4&#39;</span>
+</span></code></pre></div>
+</details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h2 id="mcpy.cmd.exec.if_" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">if_</span><span class="p">(</span><span class="o">*</span><span class="n">conditions</span><span class="p">)</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Wrapper for building "execute if" conditions</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>conditions</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>all conditions to prefix with "if"</p>
+            </div>
+          </td>
+          <td>
+                <code>()</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+<details class="example" open>
+  <summary>Example</summary>
+  <div class="language-py highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nd">@mcfunction</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="k">def</span> <span class="nf">foo</span><span class="p">():</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>        <span class="n">data</span> <span class="o">=</span> <span class="n">EntityPath</span><span class="p">(</span><span class="s2">&quot;SelectedItem&quot;</span><span class="p">,</span> <span class="n">CurrentEntity</span><span class="p">)</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>        <span class="k">with</span> <span class="n">execute</span><span class="p">(</span><span class="n">if_</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">present</span><span class="p">())):</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>            <span class="o">...</span>
+</span></code></pre></div>
+</details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h2 id="mcpy.cmd.exec.unless" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">unless</span><span class="p">(</span><span class="o">*</span><span class="n">conditions</span><span class="p">)</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Wrapper for building "execute unless" conditions</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>conditions</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>all conditions to prefix with "unless"</p>
+            </div>
+          </td>
+          <td>
+                <code>()</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+<details class="example" open>
+  <summary>Example</summary>
+  <div class="language-py highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nd">@mcfunction</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="k">def</span> <span class="nf">foo</span><span class="p">():</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>        <span class="n">data</span> <span class="o">=</span> <span class="n">EntityPath</span><span class="p">(</span><span class="s2">&quot;SelectedItem&quot;</span><span class="p">,</span> <span class="n">CurrentEntity</span><span class="p">)</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>        <span class="k">with</span> <span class="n">execute</span><span class="p">(</span><span class="n">unless</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">present</span><span class="p">())):</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>            <span class="o">...</span>
+</span></code></pre></div>
+</details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div><h2 id="scoreboard-command">Scoreboard Command</h2>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<a id="mcpy.cmd.scoreboard"></a>
+  <div class="doc doc-contents first">
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+
+<h2 id="mcpy.cmd.scoreboard.Score" class="doc doc-heading">
+          <code>Score</code>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><span title="mcpy.cmd.block.CmdObject">CmdObject</span></code>, <code><span title="mcpy.cmd.scoreboard.ScoreCondition">ScoreCondition</span></code>, <code><span title="mcpy.cmd.tellraw.Tellable">Tellable</span></code></p>
+
+  
+      <p>Container to hold a score holder and objective</p>
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="mcpy.cmd.scoreboard.Score.add" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">add</span><span class="p">(</span><span class="n">count</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Command to add an amount to a player score</p>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="mcpy.cmd.scoreboard.Score.enable" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">enable</span><span class="p">()</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Command to enable a player score</p>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="mcpy.cmd.scoreboard.Score.get" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">get</span><span class="p">()</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Command to get a player score</p>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="mcpy.cmd.scoreboard.Score.remove" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">remove</span><span class="p">(</span><span class="n">count</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Command to remove an amount from a player score</p>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="mcpy.cmd.scoreboard.Score.reset" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">reset</span><span class="p">()</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Command to reset a player score</p>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="mcpy.cmd.scoreboard.Score.set" class="doc doc-heading">
+          <code class="highlight language-python"><span class="nb">set</span><span class="p">()</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Command to set a player score</p>
+
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h2 id="mcpy.cmd.scoreboard.score_add" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">score_add</span><span class="p">(</span><span class="n">score</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Command to add an amount to a player score</p>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h2 id="mcpy.cmd.scoreboard.score_enable" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">score_enable</span><span class="p">(</span><span class="n">score</span><span class="p">)</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Command to enable the score</p>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h2 id="mcpy.cmd.scoreboard.score_get" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">score_get</span><span class="p">(</span><span class="n">score</span><span class="p">)</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Command to get a player score</p>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h2 id="mcpy.cmd.scoreboard.score_objectives_add" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">score_objectives_add</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Command to add an objective. Type defaults to "dummy"</p>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h2 id="mcpy.cmd.scoreboard.score_remove" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">score_remove</span><span class="p">(</span><span class="n">score</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Command to remove an amount from a player score</p>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h2 id="mcpy.cmd.scoreboard.score_reset" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">score_reset</span><span class="p">(</span><span class="n">score</span><span class="p">)</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Command to reset the score</p>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h2 id="mcpy.cmd.scoreboard.score_set" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">score_set</span><span class="p">(</span><span class="n">score</span><span class="p">)</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Command to set a player score</p>
+
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div><h2 id="tag-command">Tag Command</h2>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<a id="mcpy.cmd.tag"></a>
+  <div class="doc doc-contents first">
+  
+      <p>Module for all tag command container types and functions</p>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+
+<h2 id="mcpy.cmd.tag.Tag" class="doc doc-heading">
+          <code>Tag</code>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><span title="mcpy.cmd.util.CmdObject">CmdObject</span></code></p>
+
+  
+      <p>Command template function to add a tag to the given selector</p>
+
+
+
+  <p><strong>Attributes:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>name</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Optional name for the tag</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+<details class="example" open>
+  <summary>Example</summary>
+  <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">enabled</span> <span class="o">=</span> <span class="n">Tag</span><span class="p">(</span><span class="s1">&#39;enabled&#39;</span><span class="p">)</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">temp_tag</span> <span class="o">=</span> <span class="n">Tag</span><span class="p">()</span>
+</span></code></pre></div>
+</details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="mcpy.cmd.tag.Tag.__invert__" class="doc doc-heading">
+          <code class="highlight language-python"><span class="fm">__invert__</span><span class="p">()</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Operator to negate a tag. See <code>Tag.negate</code></p>
+
+
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="mcpy.cmd.tag.Tag" href="#mcpy.cmd.tag.Tag">Tag</a></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>New negated tag</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+<details class="example" open>
+  <summary>Example</summary>
+  <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">enabled</span> <span class="o">=</span> <span class="n">Tag</span><span class="p">(</span><span class="s1">&#39;enabled&#39;</span><span class="p">)</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">not_enabled</span> <span class="o">=</span> <span class="n">Entities</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;tag&#39;</span><span class="p">,</span> <span class="o">~</span><span class="n">enabled</span><span class="p">)</span>
+</span></code></pre></div>
+</details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="mcpy.cmd.tag.Tag.add" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">add</span><span class="p">(</span><span class="n">entity_selector</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Add this tag to the given entity</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>entity_selector</code></td>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="mcpy.cmd.selector.Selector" href="#mcpy.cmd.selector.Selector">Selector</a></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Entity to add this tag to</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+      <p>Returns:
+    Self</p>
+
+<details class="example" open>
+  <summary>Example</summary>
+  <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">enabled</span> <span class="o">=</span> <span class="n">Tag</span><span class="p">(</span><span class="s1">&#39;enabled&#39;</span><span class="p">)</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">enabled</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">CurrentEntity</span><span class="p">)</span>
+</span></code></pre></div>
+</details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="mcpy.cmd.tag.Tag.negate" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">negate</span><span class="p">()</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Negates this tag by prefixing a <code>!</code>.</p>
+
+
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="mcpy.cmd.tag.Tag" href="#mcpy.cmd.tag.Tag">Tag</a></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>New negated tag</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+<details class="example" open>
+  <summary>Example</summary>
+  <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">enabled</span> <span class="o">=</span> <span class="n">Tag</span><span class="p">(</span><span class="s1">&#39;enabled&#39;</span><span class="p">)</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">not_enabled</span> <span class="o">=</span> <span class="n">Entities</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;tag&#39;</span><span class="p">,</span> <span class="n">enabled</span><span class="o">.</span><span class="n">negate</span><span class="p">())</span>
+</span></code></pre></div>
+</details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="mcpy.cmd.tag.Tag.remove" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">remove</span><span class="p">(</span><span class="n">entity_selector</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Remove this tag from the given entity</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>entity_selector</code></td>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="mcpy.cmd.selector.Selector" href="#mcpy.cmd.selector.Selector">Selector</a></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Entity to remove this tag from</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+      <p>Returns:
+    Self</p>
+
+<details class="example" open>
+  <summary>Example</summary>
+  <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">enabled</span> <span class="o">=</span> <span class="n">Tag</span><span class="p">(</span><span class="s1">&#39;enabled&#39;</span><span class="p">)</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">enabled</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">CurrentEntity</span><span class="p">)</span>
+</span></code></pre></div>
+</details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h2 id="mcpy.cmd.tag.tag_add" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">tag_add</span><span class="p">(</span><span class="n">entity_selector</span><span class="p">,</span> <span class="n">tag</span><span class="p">)</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Command template function to add a tag to the given selector</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>entity_selector</code></td>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="mcpy.cmd.selector.Selector" href="#mcpy.cmd.selector.Selector">Selector</a></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Entity to add the tag to</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>tag</code></td>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="mcpy.cmd.tag.Tag" href="#mcpy.cmd.tag.Tag">Tag</a></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>tag to add</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="collections.abc.Iterator">Iterator</span>[str]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>yielded command</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+<details class="example" open>
+  <summary>Example</summary>
+  <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">enabled</span> <span class="o">=</span> <span class="n">Tag</span><span class="p">(</span><span class="s1">&#39;enabled&#39;</span><span class="p">)</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">tag_add</span><span class="p">(</span><span class="n">CurrentEntity</span><span class="p">,</span> <span class="n">enabled</span><span class="p">)</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">tag_add</span><span class="p">(</span><span class="n">CurrentEntity</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">)</span>
+</span></code></pre></div>
+</details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h2 id="mcpy.cmd.tag.tag_remove" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">tag_remove</span><span class="p">(</span><span class="n">entity_selector</span><span class="p">,</span> <span class="n">tag</span><span class="p">)</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Command template function to remove a tag to the given selector</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>entity_selector</code></td>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="mcpy.cmd.selector.Selector" href="#mcpy.cmd.selector.Selector">Selector</a></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Entity to remove the tag to</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>tag</code></td>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="mcpy.cmd.tag.Tag" href="#mcpy.cmd.tag.Tag">Tag</a></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>tag to remove</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="collections.abc.Iterator">Iterator</span>[str]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>yielded command</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+<details class="example" open>
+  <summary>Example</summary>
+  <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">enabled</span> <span class="o">=</span> <span class="n">Tag</span><span class="p">(</span><span class="s1">&#39;enabled&#39;</span><span class="p">)</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">tag_remove</span><span class="p">(</span><span class="n">CurrentEntity</span><span class="p">,</span> <span class="n">enabled</span><span class="p">)</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">tag_remove</span><span class="p">(</span><span class="n">CurrentEntity</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">)</span>
+</span></code></pre></div>
+</details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div><h2 id="tellraw-command">Tellraw Command</h2>
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<a id="mcpy.cmd.tellraw"></a>
+  <div class="doc doc-contents first">
+  
+      <p>Writes a tellraw command using the given items</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>entity_selector</code></td>
+          <td>
+                <code>any</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Entity to tell the message to</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>items</code></td>
+          <td>
+                <code><span title="typing.Union">Union</span>[<span title="mcpy.cmd.tellraw.Tellable">Tellable</span>, str, dict]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>items to include in the tellraw command</p>
+            </div>
+          </td>
+          <td>
+                <code>()</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+<details class="example" open>
+  <summary>Example</summary>
+  <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">foo_var</span> <span class="o">=</span> <span class="n">Var</span><span class="p">()</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">foo_var</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">tellraw</span><span class="p">(</span><span class="n">CurrentEntity</span><span class="p">,</span><span class="s2">&quot;Enabled: &quot;</span><span class="p">,</span> <span class="n">foo_var</span><span class="p">)</span>
+</span></code></pre></div>
+</details>
+  </div>
+
+</div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.94c44541.min.js"></script>
+      
+    
+  </body>
+</html>
